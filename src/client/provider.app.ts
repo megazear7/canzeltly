@@ -2,7 +2,6 @@ import { provide } from "@lit/context";
 import { property } from "lit/decorators.js";
 import { AppContext, appContext } from "./context.js";
 import { LoadingStatus } from "../shared/type.loading.js";
-import { getAppConfigService } from "../shared/service.get-app-config.js";
 import { CanzeltlyAbstractProvider } from "./provider.abstract.js";
 
 export abstract class CanzeltlyAppProvider extends CanzeltlyAbstractProvider {
@@ -18,9 +17,5 @@ export abstract class CanzeltlyAppProvider extends CanzeltlyAbstractProvider {
   }
 
   async load(): Promise<void> {
-    this.appContext = {
-      app: await getAppConfigService.fetch(),
-      status: LoadingStatus.enum.success,
-    };
   }
 }

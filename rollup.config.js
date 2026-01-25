@@ -1,11 +1,13 @@
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import typescript from '@rollup/plugin-typescript';
+import copy from 'rollup-plugin-copy'
+import watchGlobs from 'rollup-plugin-watch-globs';
 
 export default {
   input: 'src/client/app.ts',
   output: {
-    file: 'dist/client/bundle.js',
+    file: 'dist/bundle.js',
     format: 'esm',
   },
   onwarn(warning) {
@@ -18,8 +20,16 @@ export default {
     typescript({
       declaration: false,
       declarationMap: false,
-      outDir: 'dist/client',
+      outDir: 'dist',
     }),
     resolve(),
+    copy({
+      targets: [
+        { src: 'src/static/**/*', dest: 'dist' }
+      ]
+    }),
+    watchGlobs([
+      'src/static/**/*',
+    ]),
   ],
 };

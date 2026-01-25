@@ -2,7 +2,7 @@ import { css, html, LitElement, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { RouteConfig, RouteName } from "../shared/type.routes.js";
 import { parseRouteParams } from "../shared/util.route-params.js";
-import { routes } from "../shared/service.client.js";
+import { routes } from "./app.routes.js";
 import { CanzeltlyAbstractProvider } from "./provider.abstract.js";
 import { CanzeltlyToast } from "./component.toast.js";
 import { CanzeltlySaveIndicator } from "./component.save-indicator.js";

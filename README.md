@@ -1,13 +1,10 @@
-# ZeltTemplate
-
-This project was built with the [Zelt Template](https://github.com/megazear7/zelt-stack-template)
+# Canzelty
 
 ## Setup
 
 ```sh
 nvm use 22
 npm install
-npm run init
 npm start
 ```
 
