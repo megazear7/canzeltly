@@ -1,5 +1,5 @@
 import { css, html, LitElement, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, query } from "lit/decorators.js";
 import { Game } from "../game/game.js";
 import { globalStyles } from "./styles.global.js";
 
@@ -22,8 +22,9 @@ export class CanzeltlyPlay extends LitElement {
   ];
 
   private game?: Game;
-  private canvas?: HTMLCanvasElement;
   private animationId?: number;
+
+  @query("canvas") private canvas?: HTMLCanvasElement;
 
   override render(): TemplateResult {
     return html`
@@ -33,7 +34,6 @@ export class CanzeltlyPlay extends LitElement {
 
   override async connectedCallback(): Promise<void> {
     super.connectedCallback();
-    this.canvas = this.shadowRoot?.querySelector("canvas") as HTMLCanvasElement;
     if (this.name) {
       this.game = new Game(this.name);
       this.startGameLoop();

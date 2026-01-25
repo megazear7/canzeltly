@@ -8,13 +8,15 @@ export class Game {
 
   constructor(name: GameName) {
     this.name = name;
-    this.objects = [new Ball(this, {
-      category: GameObjectCategory.enum.ball,
-      x: 50,
-      y: 50,
-      dx: 2,
-      dy: 3,
-    })];
+    this.objects = [
+      new Ball(this, {
+        category: GameObjectCategory.enum.ball,
+        x: 50,
+        y: 50,
+        dx: 2,
+        dy: 3,
+      }),
+    ];
   }
 
   start(): void {
