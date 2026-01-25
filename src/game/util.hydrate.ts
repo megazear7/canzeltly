@@ -1,7 +1,6 @@
-import { GameObject, GameObjectState } from "./game.object";
-import { Game } from "./game";
-import { Circle, CircleState } from "./game.circle";
-import { GameObjectCategory } from "./type.game";
+import { GameObject, GameObjectCategory, GameObjectState } from "./game.object.js";
+import { Game } from "./game.js";
+import { Circle, CircleState } from "./game.circle.js";
 
 export function hydrateObjects(game: Game, objects: GameObjectState[]): GameObject<GameObjectState>[] {
   return objects.map((objState) => {

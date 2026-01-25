@@ -1,9 +1,11 @@
 import z from "zod";
 import { GameObject, GameObjectState } from "./game.object.js";
-import { GameName } from "./type.game.js";
 import { hydrateObjects } from "./util.hydrate.js";
 import { GameInput } from "./game.input.js";
 import { newGame } from "./util.new-game.js";
+
+export const GameName = z.string().min(1);
+export type GameName = z.infer<typeof GameName>;
 
 export const GameState = z.object({
   name: GameName,

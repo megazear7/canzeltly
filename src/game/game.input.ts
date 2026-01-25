@@ -1,6 +1,6 @@
 import { Circle } from "./game.circle.js";
 import { Game } from "./game.js";
-import { GameObjectCategory } from "./type.game.js";
+import { GameObjectCategory } from "./game.object.js";
 
 export class GameInput {
   game: Game;

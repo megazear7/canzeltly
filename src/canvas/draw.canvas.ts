@@ -12,6 +12,10 @@ export function draw(game: Game, canvas: HTMLCanvasElement): void {
   canvas.width = canvas.clientWidth;
   canvas.height = canvas.clientHeight;
 
+  // Temporary testing: Draw a green rectangle on the entire canvas
+  ctx.fillStyle = "green";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   // Render objects
   game.objects.forEach((obj) => drawObject(game, obj.state, ctx));
 }

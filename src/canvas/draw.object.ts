@@ -1,7 +1,6 @@
-import { Game } from "../game/game";
-import { GameObjectState } from "../game/game.object";
-import { GameObjectCategory } from "../game/type.game";
-import { drawCircle } from "./draw.circle";
+import { Game } from "../game/game.js";
+import { GameObjectCategory, GameObjectState } from "../game/game.object.js";
+import { drawCircle } from "./draw.circle.js";
 import { mapToCanvas } from "./util.map-to-canvas.js";
 
 export function drawObject(game: Game, gameObject: GameObjectState, ctx: CanvasRenderingContext2D): void {

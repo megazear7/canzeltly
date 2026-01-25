@@ -1,6 +1,8 @@
 import z from "zod";
 import { Game } from "./game.js";
-import { GameObjectCategory } from "./type.game.js";
+
+export const GameObjectCategory = z.enum(["Circle", "Unknown"]);
+export type GameObjectCategory = z.infer<typeof GameObjectCategory>;
 
 export const GameObjectState = z.object({
   category: GameObjectCategory,
