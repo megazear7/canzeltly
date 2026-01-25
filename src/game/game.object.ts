@@ -1,5 +1,11 @@
+import z from "zod";
 import { Game } from "./game.js";
-import { GameObjectState } from "./type.game.js";
+import { GameObjectCategory } from "./type.game.js";
+
+export const GameObjectState = z.object({
+  category: GameObjectCategory,
+});
+export type GameObjectState = z.infer<typeof GameObjectState>;
 
 export abstract class GameObject<T extends GameObjectState> {
   game: Game;
@@ -10,7 +16,12 @@ export abstract class GameObject<T extends GameObjectState> {
     this.state = state;
   }
 
-  abstract update(): void;
+  update(): void {
+    this.updateState();
+    this.checkForDestroy();
+  }
 
+  abstract updateState(): void;
+  abstract checkForDestroy(): void;
   abstract draw(ctx: CanvasRenderingContext2D): void;
 }

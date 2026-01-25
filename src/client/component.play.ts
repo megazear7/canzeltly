@@ -2,6 +2,7 @@ import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { Game } from "../game/game.js";
 import { globalStyles } from "./styles.global.js";
+import { contextDraw } from "../canvas/draw.canvas.js";
 
 @customElement("canzeltly-play")
 export class CanzeltlyPlay extends LitElement {
@@ -21,7 +22,7 @@ export class CanzeltlyPlay extends LitElement {
     `,
   ];
 
-  private game?: Game;
+  private game!: Game;
   private animationId?: number;
 
   @query("canvas") private canvas?: HTMLCanvasElement;
@@ -35,7 +36,7 @@ export class CanzeltlyPlay extends LitElement {
   override async connectedCallback(): Promise<void> {
     super.connectedCallback();
     if (this.name) {
-      this.game = new Game(this.name);
+      this.game = new Game();
       this.startGameLoop();
     }
   }
@@ -45,25 +46,20 @@ export class CanzeltlyPlay extends LitElement {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
     }
+    this.detachGameInputListeners();
   }
 
   private startGameLoop(): void {
+    this.attachGameInputListeners();
     const loop = (): void => {
-      this.updateGame();
+      this.game.update();
       this.drawGame();
+      if (this.canvas) {
+        this.game.alignViewport(this.canvas.width / this.canvas.height);
+      }
       this.animationId = requestAnimationFrame(loop);
     };
     loop();
-  }
-
-  private updateGame(): void {
-    if (this.game) {
-      // Update game logic here
-      // For example, move objects based on velocity
-      this.game.objects.forEach((obj) => {
-        obj.update();
-      });
-    }
   }
 
   private drawGame(): void {
@@ -79,9 +75,49 @@ export class CanzeltlyPlay extends LitElement {
 
         // Render objects
         this.game.objects.forEach((obj) => {
-          obj.draw(ctx);
+          contextDraw(this.game, obj.state, ctx);
         });
       }
     }
   }
+
+  private attachGameInputListeners(): void {
+    window.addEventListener("keydown", this.keyDown.bind(this));
+    window.addEventListener("keyup", this.keyUp.bind(this));
+  }
+
+  private detachGameInputListeners(): void {
+    window.removeEventListener("keydown", this.keyDown.bind(this));
+    window.removeEventListener("keyup", this.keyUp.bind(this));
+  }
+
+  private keyDown(event: KeyboardEvent): void {
+    switch (event.key) {
+      case "ArrowUp":
+        this.game?.input.moveViewport(0, -10);
+        break;
+      case "ArrowDown":
+        this.game?.input.moveViewport(0, 10);
+        break;
+      case "ArrowLeft":
+        this.game?.input.moveViewport(-10, 0);
+        break;
+      case "ArrowRight":
+        this.game?.input.moveViewport(10, 0);
+        break;
+      case "+":
+      case "=":
+        this.game?.input.zoomIn(1.1);
+        break;
+      case "-":
+      case "_":
+        this.game?.input.zoomOut(1.1);
+        break;
+      case "c":
+        this.game?.input.addCircle();
+        break;
+    }
+  }
+
+  private keyUp(): void {}
 }
