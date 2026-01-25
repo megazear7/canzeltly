@@ -9,7 +9,7 @@
     "build": "rollup -c",
     "serve": "run-p watch serve:client",
     "watch": "rollup -c --watch",
-    "serve:client": "serve ./dist",
+    "serve:client": "serve ./dist --single",
     "lint": "prettier src --check && eslint src",
     "fix": "prettier src --write && eslint src --fix"
   },

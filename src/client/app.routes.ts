@@ -5,4 +5,8 @@ export const routes = [
     name: RouteName.enum.home,
     path: "/",
   },
+  {
+    name: RouteName.enum.play,
+    path: "/play/:id",
+  },
 ];

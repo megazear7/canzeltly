@@ -11,10 +11,11 @@ import { NavigationEventName } from "./event.navigation.js";
 import { SuccessEventName } from "./event.success.js";
 import { WarningEventName } from "./event.warning.js";
 import "./page.home.js";
-import "./page.example.js";
+import "./page.play.js";
 import "./page.not-found.js";
 import "./component.toast.js";
 import "./component.save-indicator.js";
+import "./component.play.js";
 
 @customElement("canzeltly-app")
 export class CanzeltlyApp extends LitElement {
@@ -77,10 +78,10 @@ export class CanzeltlyApp extends LitElement {
                 <div class="app-bar"></div>
                 <canzeltly-home-page></canzeltly-home-page>
               `;
-            case RouteName.enum.example:
+            case RouteName.enum.play:
               return html`
                 <div class="app-bar"></div>
-                <canzeltly-example-page></canzeltly-example-page>
+                <canzeltly-play-page></canzeltly-play-page>
               `;
             default:
               return html`

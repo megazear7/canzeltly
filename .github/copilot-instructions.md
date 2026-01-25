@@ -8,24 +8,14 @@
  - Use descriptive names for variables, functions, classes, and files.
  - Ensure code is modular and reusable where possible.
 
-## Shared
-
-### Shared Types
- - Types must be created at `shared/type.<type-name>.ts`
- - Types must be grouped by functionality.
- - Types must use Zod schemas for validation.
- - Types must be defined even for strings or numbers that have specific meanings.
- - Types must be imported by the client code and used in API calls, components, providers, pages, utils, and all other code.
- - Types must be imported by the server code and used in controllers, services, utils, prompts, and all other code.
-
-### Shared Utilities
- - Shared utilities must be created at `shared/util.<util-name>.ts` when they can be used by both client and server code.
- - Shared utilities must be grouped by functionality.
- - Shared utilities must be pure functions without side effects.
- - Shared utilities must be imported and used in client and server code as needed.
- - Shared utilities must not rely on Browser or Node.js specific APIs so that they can be used in both environments.
-
 ## Client
+
+### Client Providers
+ - Providers must be created at `src/client/provider.<provider-name>.ts`
+ - Providers must handle data fetching and state management.
+ - Provider must fetch data by importing services from `src/shared/service.<service-name>.ts` and calling the `fetch()` method.
+ - Providers must use context to share data with components.
+ - Providers must return typed data imported from `shared/type.<type-name>.ts`
 
 ### Client Pages
  - Pages must be created at `src/client/page.<page-name>.ts`
@@ -53,6 +43,29 @@
  - When creating a new event, refer to other event files for structure.
  - Event must be imported by `src/client/util.events.ts` and added to the `ZeltTemplateEvent` type.
  - Events must be dispatched with `dispatch(this, ExampleEvent());`
+
+## Shared
+
+### Shared Types
+ - Types must be created at `shared/type.<type-name>.ts`
+ - Types must be grouped by functionality.
+ - Types must use Zod schemas for validation.
+ - Types must be defined even for strings or numbers that have specific meanings.
+ - Types must be imported by the client code and used in API calls, components, providers, pages, utils, and all other code.
+ - Types must be imported by the server code and used in controllers, services, utils, prompts, and all other code.
+
+### Shared Utilities
+ - Shared utilities must be created at `shared/util.<util-name>.ts` when they can be used by both client and server code.
+ - Shared utilities must be grouped by functionality.
+ - Shared utilities must be pure functions without side effects.
+ - Shared utilities must be imported and used in client and server code as needed.
+ - Shared utilities must not rely on Browser or Node.js specific APIs so that they can be used in both environments.
+
+## State
+
+  - State types must be created at `src/state/<state-name>.type.ts`
+  - State types must use Zod schemas for validation.
+  - State types must represent the state of the objects being rendered in the canvas.
 
 ## Development Practices
 

@@ -16,6 +16,5 @@ export abstract class CanzeltlyAppProvider extends CanzeltlyAbstractProvider {
     this.load();
   }
 
-  async load(): Promise<void> {
-  }
+  async load(): Promise<void> {}
 }

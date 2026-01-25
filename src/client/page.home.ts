@@ -19,7 +19,7 @@ export class CanzeltlyHomePage extends CanzeltlyAppProvider {
       <main>
         <img src="/logo/logo-512x512.png" alt="Canzeltly Logo" width="200" />
         <h1>Canzeltly</h1>
-        <p><a href="/example/123" class="standalone">Go to Example Page</a></p>
+        <p><a href="/play/123" class="standalone">Play the Game</a></p>
       </main>
     `;
   }
