@@ -2,7 +2,7 @@ import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { Game } from "../game/game.js";
 import { globalStyles } from "./styles.global.js";
-import { contextDraw } from "../canvas/draw.canvas.js";
+import { draw } from "../canvas/draw.canvas.js";
 
 @customElement("canzeltly-play")
 export class CanzeltlyPlay extends LitElement {
@@ -22,7 +22,7 @@ export class CanzeltlyPlay extends LitElement {
     `,
   ];
 
-  private game!: Game;
+  private game?: Game;
   private animationId?: number;
 
   @query("canvas") private canvas?: HTMLCanvasElement;
@@ -52,33 +52,14 @@ export class CanzeltlyPlay extends LitElement {
   private startGameLoop(): void {
     this.attachGameInputListeners();
     const loop = (): void => {
-      this.game.update();
-      this.drawGame();
-      if (this.canvas) {
+      if (this.canvas && this.game) {
+        this.game.update();
         this.game.alignViewport(this.canvas.width / this.canvas.height);
+        draw(this.game, this.canvas);
       }
       this.animationId = requestAnimationFrame(loop);
     };
     loop();
-  }
-
-  private drawGame(): void {
-    if (this.canvas && this.game) {
-      const ctx = this.canvas.getContext("2d");
-      if (ctx) {
-        // Clear canvas
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Set canvas size
-        this.canvas.width = this.canvas.clientWidth;
-        this.canvas.height = this.canvas.clientHeight;
-
-        // Render objects
-        this.game.objects.forEach((obj) => {
-          contextDraw(this.game.mapToViewport(obj.state), ctx);
-        });
-      }
-    }
   }
 
   private attachGameInputListeners(): void {
@@ -111,7 +92,7 @@ export class CanzeltlyPlay extends LitElement {
         break;
       case "-":
       case "_":
-        this.game?.input.zoomOut(1.1);
+        this.game?.input.zoomOut(0.9);
         break;
       case "c":
         this.game?.input.addCircle();
