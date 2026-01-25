@@ -13,10 +13,10 @@ export class GameInput {
     this.game.objects.push(
       new Circle(this.game, {
         category: GameObjectCategory.enum.Circle,
-        radius: 20,
-        color: "#ff0000",
+        size: 20,
         x: Math.random() * this.game.state.world.width,
         y: Math.random() * this.game.state.world.height,
+        color: "#ff0000",
         dx: 0,
         dy: 0,
       }),

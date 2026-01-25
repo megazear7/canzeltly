@@ -75,7 +75,7 @@ export class CanzeltlyPlay extends LitElement {
 
         // Render objects
         this.game.objects.forEach((obj) => {
-          contextDraw(this.game, obj.state, ctx);
+          contextDraw(this.game.mapToViewport(obj.state), ctx);
         });
       }
     }

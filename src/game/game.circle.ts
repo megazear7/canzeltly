@@ -1,14 +1,11 @@
 import z from "zod";
 import { Game } from "./game.js";
-import { GameObject } from "./game.object.js";
+import { GameObject, GameObjectState } from "./game.object.js";
 import { GameObjectCategory } from "./type.game.js";
 
-export const CircleState = z.object({
+export const CircleState = GameObjectState.extend({
   category: z.literal(GameObjectCategory.enum.Circle),
-  radius: z.number(),
   color: z.string(),
-  x: z.number(),
-  y: z.number(),
   dx: z.number(),
   dy: z.number(),
 });

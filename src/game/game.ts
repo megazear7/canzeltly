@@ -59,4 +59,16 @@ export class Game {
     // Ensure viewport constraints are still respected after adjustment
     this.input.constrainViewport();
   }
+
+  mapToViewport(obj: GameObjectState): GameObjectState {
+    const scaleX = this.state.viewport.width / this.state.world.width;
+    const scaleY = this.state.viewport.height / this.state.world.height;
+
+    return {
+      ...obj,
+      size: obj.size * ((scaleX + scaleY) / 2),
+      x: (obj.x - this.state.viewport.x) * scaleX,
+      y: (obj.y - this.state.viewport.y) * scaleY,
+    };
+  }
 }

@@ -13,3 +13,4 @@ description: 'Commit the current changes'
  - Write a clear and concise commit message summarizing the changes.
  - Ensure the commit message follows best practices (e.g., imperative mood, brief summary).
  - Run `git commit -m "<your commit message>"` to create the commit with the prepared message.
+ - Run `git push` to push the committed changes to the remote repository.

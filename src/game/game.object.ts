@@ -4,6 +4,9 @@ import { GameObjectCategory } from "./type.game.js";
 
 export const GameObjectState = z.object({
   category: GameObjectCategory,
+  size: z.number(),
+  x: z.number(),
+  y: z.number(),
 });
 export type GameObjectState = z.infer<typeof GameObjectState>;
 
