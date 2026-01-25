@@ -12,13 +12,14 @@ description: 'Create new game object'
 # Steps to follow
 
 - Review the circle game object as an example:
-    - Definition: `src/game/game.circle.ts`
+    - Definition: `src/game/object.circle.ts`
     - Draw: `src/canvas/draw.circle.ts`
 - Choose a name for the game object based on the user instructions
 - Add the name to the `GameObjectCategory` enum in `src/game/game.object.ts`
-- Define the game object state by creating a new file at `src/game/game.example.ts` with a new Zod type
+- Define the game object state by creating a new file at `src/game/object.example.ts` with a new Zod type
     - Example: `export const ExampleState = GameObjectState.extend({...})`
-- Add to the `src/game/game.example.ts` file the game object class that extends `GameObject<ExampleState>`
+- Add to the `src/game/object.example.ts` file the game object class that extends `GameObject<ExampleState>`
+- Update the `hydrateObjects` method in the `src/game/util.hydrate.ts` file to include the new game object
 - Add a `drawExample` method to a file at `src/canvas/draw.circle.ts`
 - Update the switch statement in the `drawObject` method in the `src/canvas/draw.object.ts` file
 

@@ -1,5 +1,5 @@
-import { Circle } from "./game.circle.js";
-import { Game } from "./game.js";
+import { Circle } from "./object.circle.js";
+import { Game, MAIN_OBJECT_LAYER_INDEX } from "./game.js";
 import { GameObjectCategory } from "./game.object.js";
 
 export class GameInput {
@@ -10,7 +10,7 @@ export class GameInput {
   }
 
   addCircle(): void {
-    this.game.objects.push(
+    this.game.layers[MAIN_OBJECT_LAYER_INDEX].push(
       new Circle(this.game, {
         category: GameObjectCategory.enum.Circle,
         size: 20,

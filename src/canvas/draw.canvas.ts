@@ -17,5 +17,7 @@ export function draw(game: Game, canvas: HTMLCanvasElement): void {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Render objects
-  game.objects.forEach((obj) => drawObject(game, obj.state, ctx));
+  game.layers.forEach((layer) => {
+    layer.forEach((obj) => drawObject(game, obj.state, ctx));
+  });
 }

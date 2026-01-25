@@ -4,8 +4,14 @@ import { hydrateObjects } from "./util.hydrate.js";
 import { GameInput } from "./game.input.js";
 import { newGame } from "./util.new-game.js";
 
+export const BACKGROUND_ENVIRONMENT_LAYER_INDEX = 0;
+export const MAIN_OBJECT_LAYER_INDEX = 1;
+
 export const GameName = z.string().min(1);
 export type GameName = z.infer<typeof GameName>;
+
+export const GameObjectLayer = z.array(GameObjectState);
+export type GameObjectLayer = z.infer<typeof GameObjectLayer>;
 
 export const GameState = z.object({
   name: GameName,
@@ -19,30 +25,26 @@ export const GameState = z.object({
     width: z.number(),
     height: z.number(),
   }),
-  objects: z.array(GameObjectState),
+  layers: z.array(GameObjectLayer),
 });
 export type GameState = z.infer<typeof GameState>;
 
 export class Game {
   state: GameState;
-  objects: GameObject<GameObjectState>[];
+  layers: GameObject<GameObjectState>[][];
   input: GameInput;
 
   constructor(state?: GameState) {
     this.state = state || newGame();
-    this.objects = hydrateObjects(this, this.state.objects);
+    this.layers = hydrateObjects(this, this.state.layers);
     this.input = new GameInput(this);
   }
 
   update(): void {
-    this.objects.forEach((obj) => {
-      obj.update();
-    });
-  }
-
-  draw(ctx: CanvasRenderingContext2D): void {
-    this.objects.forEach((obj) => {
-      obj.draw(ctx);
+    this.layers.forEach((layer) => {
+      layer.forEach((obj) => {
+        obj.update();
+      });
     });
   }
 
@@ -72,5 +74,15 @@ export class Game {
       x: (obj.x - this.state.viewport.x) * scaleX,
       y: (obj.y - this.state.viewport.y) * scaleY,
     };
+  }
+
+  removeObject(obj: GameObject<GameObjectState>): void {
+    for (const layer of this.layers) {
+      const index = layer.indexOf(obj);
+      if (index > -1) {
+        layer.splice(index, 1);
+        return;
+      }
+    }
   }
 }

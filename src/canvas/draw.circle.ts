@@ -1,4 +1,4 @@
-import { CircleState } from "../game/game.circle.js";
+import { CircleState } from "../game/object.circle.js";
 import { GameObjectState } from "../game/game.object.js";
 
 export function drawCircle(obj: GameObjectState, ctx: CanvasRenderingContext2D): void {

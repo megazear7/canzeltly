@@ -1,4 +1,4 @@
-import { css, html, LitElement, PropertyValues, TemplateResult } from "lit";
+import { html, LitElement, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { RouteConfig, RouteName } from "../shared/type.routes.js";
 import { parseRouteParams } from "../shared/util.route-params.js";
@@ -19,19 +19,7 @@ import "./component.play.js";
 
 @customElement("canzeltly-app")
 export class CanzeltlyApp extends LitElement {
-  static override styles = [
-    css`
-      .app-bar {
-        border-top: 3px solid transparent;
-        border-image: linear-gradient(to right, var(--color-1) 10%, var(--color-2) 90%) 2;
-        position: fixed;
-        width: 100vw;
-        top: 0;
-        left: 0;
-        z-index: 999;
-      }
-    `,
-  ];
+  static override styles = [];
   routes: RouteConfig[] = routes;
 
   @property({ type: String })
@@ -75,17 +63,14 @@ export class CanzeltlyApp extends LitElement {
           switch (this.currentRoute!.name) {
             case RouteName.enum.home:
               return html`
-                <div class="app-bar"></div>
                 <canzeltly-home-page></canzeltly-home-page>
               `;
             case RouteName.enum.play:
               return html`
-                <div class="app-bar"></div>
                 <canzeltly-play-page></canzeltly-play-page>
               `;
             default:
               return html`
-                <div class="app-bar"></div>
                 <canzeltly-not-found-page></canzeltly-not-found-page>
               `;
           }

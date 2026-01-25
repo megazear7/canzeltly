@@ -1,7 +1,8 @@
 import z from "zod";
 import { Game } from "./game.js";
+import { isInWorld } from "./util.is-in-world.js";
 
-export const GameObjectCategory = z.enum(["Circle", "Unknown"]);
+export const GameObjectCategory = z.enum(["Circle", "Square", "Unknown"]);
 export type GameObjectCategory = z.infer<typeof GameObjectCategory>;
 
 export const GameObjectState = z.object({
@@ -26,7 +27,11 @@ export abstract class GameObject<T extends GameObjectState> {
     this.checkForDestroy();
   }
 
+  checkForDestroy(): void {
+    if (!isInWorld(this)) {
+      this.game.removeObject(this);
+    }
+  }
+
   abstract updateState(): void;
-  abstract checkForDestroy(): void;
-  abstract draw(ctx: CanvasRenderingContext2D): void;
 }
