@@ -5,6 +5,7 @@ import { GameObject, GameObjectCategory, GameObjectState } from "./game.object.j
 export const CircleState = GameObjectState.extend({
   category: z.literal(GameObjectCategory.enum.Circle),
   color: z.string(),
+  size: z.number(),
   dx: z.number(),
   dy: z.number(),
 });

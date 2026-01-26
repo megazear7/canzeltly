@@ -37,7 +37,6 @@ export class CanzeltlyPlay extends LitElement {
     super.connectedCallback();
     if (this.name) {
       this.game = new Game();
-      console.log("A", this.game.layers[0].length);
       this.startGameLoop();
     }
   }
@@ -54,7 +53,6 @@ export class CanzeltlyPlay extends LitElement {
     this.attachGameInputListeners();
     const loop = (): void => {
       if (this.canvas && this.game) {
-        console.log("B", this.game.layers[0].length);
         this.game.update();
         this.game.alignViewport(this.canvas.width / this.canvas.height);
         draw(this.game, this.canvas);

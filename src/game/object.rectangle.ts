@@ -5,6 +5,8 @@ import { GameObject, GameObjectCategory, GameObjectState } from "./game.object.j
 export const SquareState = GameObjectState.extend({
   category: z.literal(GameObjectCategory.enum.Square),
   color: z.string(),
+  width: z.number(),
+  height: z.number(),
   dx: z.number(),
   dy: z.number(),
 });

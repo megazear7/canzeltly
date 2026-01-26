@@ -49,6 +49,7 @@ export class Game {
   }
 
   alignViewport(targetAspectRatio: number): void {
+    console.log("Aligning viewport to aspect ratio:", targetAspectRatio);
     // Adjust viewport height to match the target aspect ratio while keeping width the same
     const newHeight = this.state.viewport.width / targetAspectRatio;
 
@@ -65,6 +66,7 @@ export class Game {
   }
 
   mapToViewport(obj: GameObjectState): GameObjectState {
+    // TODO: Fix this method
     const scaleX = this.state.viewport.width / this.state.world.width;
     const scaleY = this.state.viewport.height / this.state.world.height;
 
@@ -72,7 +74,9 @@ export class Game {
       ...obj,
       x: (obj.x - this.state.viewport.x) * scaleX,
       y: (obj.y - this.state.viewport.y) * scaleY,
-      size: obj.size * ((scaleX + scaleY) / 2),
+      // size: obj.size * ((scaleX + scaleY) / 2),
+      // width: ???
+      /// height: ???
     };
   }
 

@@ -1,13 +1,14 @@
 import z from "zod";
 import { Game } from "./game.js";
-import { isInWorld } from "./util.is-in-world.js";
 
 export const GameObjectCategory = z.enum(["Circle", "Square", "Unknown"]);
 export type GameObjectCategory = z.infer<typeof GameObjectCategory>;
 
 export const GameObjectState = z.object({
   category: GameObjectCategory,
-  size: z.number(),
+  size: z.number().optional(),
+  width: z.number().optional(),
+  height: z.number().optional(),
   x: z.number(),
   y: z.number(),
 });

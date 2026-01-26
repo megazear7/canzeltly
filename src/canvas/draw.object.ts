@@ -1,7 +1,7 @@
 import { Game } from "../game/game.js";
 import { GameObjectCategory, GameObjectState } from "../game/game.object.js";
 import { drawCircle } from "./draw.circle.js";
-import { drawSquare } from "./draw.square.js";
+import { drawSquare } from "./draw.rectangle.js";
 import { mapToCanvas } from "./util.map-to-canvas.js";
 
 export function drawObject(game: Game, obj: GameObjectState, ctx: CanvasRenderingContext2D): void {
