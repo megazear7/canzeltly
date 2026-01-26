@@ -70,9 +70,9 @@ export class Game {
 
     return {
       ...obj,
-      size: obj.size * ((scaleX + scaleY) / 2),
       x: (obj.x - this.state.viewport.x) * scaleX,
       y: (obj.y - this.state.viewport.y) * scaleY,
+      size: obj.size * ((scaleX + scaleY) / 2),
     };
   }
 

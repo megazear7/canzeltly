@@ -37,6 +37,7 @@ export class CanzeltlyPlay extends LitElement {
     super.connectedCallback();
     if (this.name) {
       this.game = new Game();
+      console.log("A", this.game.layers[0].length);
       this.startGameLoop();
     }
   }
@@ -53,6 +54,7 @@ export class CanzeltlyPlay extends LitElement {
     this.attachGameInputListeners();
     const loop = (): void => {
       if (this.canvas && this.game) {
+        console.log("B", this.game.layers[0].length);
         this.game.update();
         this.game.alignViewport(this.canvas.width / this.canvas.height);
         draw(this.game, this.canvas);
@@ -75,16 +77,16 @@ export class CanzeltlyPlay extends LitElement {
   private keyDown(event: KeyboardEvent): void {
     switch (event.key) {
       case "ArrowUp":
-        this.game?.input.moveViewport(0, -10);
+        this.game?.input.moveViewport(0, -100);
         break;
       case "ArrowDown":
-        this.game?.input.moveViewport(0, 10);
+        this.game?.input.moveViewport(0, 100);
         break;
       case "ArrowLeft":
-        this.game?.input.moveViewport(-10, 0);
+        this.game?.input.moveViewport(-100, 0);
         break;
       case "ArrowRight":
-        this.game?.input.moveViewport(10, 0);
+        this.game?.input.moveViewport(100, 0);
         break;
       case "+":
       case "=":

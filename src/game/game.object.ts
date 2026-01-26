@@ -28,9 +28,10 @@ export abstract class GameObject<T extends GameObjectState> {
   }
 
   checkForDestroy(): void {
-    if (!isInWorld(this)) {
-      this.game.removeObject(this);
-    }
+    // TODO: Fix this logic later
+    // if (!isInWorld(this)) {
+    //   this.game.removeObject(this);
+    // }
   }
 
   abstract updateState(): void;

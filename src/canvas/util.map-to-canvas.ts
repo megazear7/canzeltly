@@ -9,8 +9,8 @@ export function mapToCanvas(game: Game, canvas: HTMLCanvasElement, obj: GameObje
 
   return {
     ...obj,
-    x: (obj.x - game.state.viewport.x) * scaleX,
-    y: (obj.y - game.state.viewport.y) * scaleY,
+    x: obj.x * scaleX,
+    y: obj.y * scaleY,
     size: obj.size * ((scaleX + scaleY) / 2),
   };
 }
