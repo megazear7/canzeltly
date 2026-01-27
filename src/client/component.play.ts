@@ -88,11 +88,11 @@ export class CanzeltlyPlay extends LitElement {
         break;
       case "+":
       case "=":
-        this.game?.input.zoomIn(1.1);
+        this.game?.input.zoomIn(0.9);
         break;
       case "-":
       case "_":
-        this.game?.input.zoomOut(0.9);
+        this.game?.input.zoomOut(1.1);
         break;
       case "c":
         this.game?.input.addCircle();

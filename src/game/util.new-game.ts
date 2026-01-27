@@ -6,64 +6,27 @@ import { CircleState } from "./object.circle.js";
 const background: SquareState[] = [
   {
     category: GameObjectCategory.enum.Square,
-    width: 600,
-    height: 600,
+    width: 1000,
+    height: 1000,
     x: 0,
     y: 0,
-    color: "#194adc",
+    color: "#78530d",
     dx: 0,
     dy: 0,
   },
   {
     category: GameObjectCategory.enum.Square,
-    width: 580,
-    height: 580,
-    x: 10,
-    y: 10,
-    color: "#90ee90",
+    width: 990,
+    height: 990,
+    x: 5,
+    y: 5,
+    color: "#53744c",
     dx: 0,
     dy: 0,
   },
 ];
 
-const objects: CircleState[] = [
-  {
-    category: GameObjectCategory.enum.Circle,
-    size: 10,
-    x: 0,
-    y: 0,
-    color: "#ff0000",
-    dx: 0,
-    dy: 0,
-  },
-  {
-    category: GameObjectCategory.enum.Circle,
-    size: 10,
-    x: 600,
-    y: 0,
-    color: "#ff0000",
-    dx: 0,
-    dy: 0,
-  },
-  {
-    category: GameObjectCategory.enum.Circle,
-    size: 10,
-    x: 0,
-    y: 600,
-    color: "#ff0000",
-    dx: 0,
-    dy: 0,
-  },
-  {
-    category: GameObjectCategory.enum.Circle,
-    size: 10,
-    x: 600,
-    y: 600,
-    color: "#ff0000",
-    dx: 0,
-    dy: 0,
-  },
-];
+const objects: CircleState[] = [];
 
 export function newGame(): GameState {
   return {
@@ -73,10 +36,10 @@ export function newGame(): GameState {
       height: 600,
     },
     viewport: {
-      x: 100,
-      y: 100,
-      width: 800,
-      height: 800,
+      x: 0,
+      y: 0,
+      width: 1000,
+      height: 1000,
     },
     layers: [
       [...background], // Background environment layer
