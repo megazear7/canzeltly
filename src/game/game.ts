@@ -50,35 +50,10 @@ export class Game {
 
   alignViewport(targetAspectRatio: number): void {
     // Adjust viewport height to match the target aspect ratio while keeping width the same
-    const newHeight = this.state.viewport.width / targetAspectRatio;
-
-    // Keep viewport.x the same, but adjust viewport.y to center the viewport
-    // The y position should be adjusted so the viewport remains centered vertically
-    const heightDifference = newHeight - this.state.viewport.height;
-    this.state.viewport.y -= heightDifference / 2;
-
-    // Update the viewport height
-    this.state.viewport.height = newHeight;
+    this.state.viewport.height = this.state.viewport.width / targetAspectRatio;
 
     // Ensure viewport constraints are still respected after adjustment
     this.input.constrainViewport();
-  }
-
-  mapToViewport(obj: GameObjectState): GameObjectState {
-    const scaleX = this.state.viewport.width / this.state.world.width;
-    const scaleY = this.state.viewport.height / this.state.world.height;
-    const size = obj.size ? obj.size * ((scaleX + scaleY) / 2) : obj.size;
-    const width = obj.width ? obj.width * ((scaleX + scaleY) / 2) : obj.width;
-    const height = obj.height ? obj.height * ((scaleX + scaleY) / 2) : obj.height;
-
-    return {
-      ...obj,
-      x: (obj.x - this.state.viewport.x) * scaleX,
-      y: (obj.y - this.state.viewport.y) * scaleY,
-      size: size,
-      width: width,
-      height: height,
-    };
   }
 
   removeObject(obj: GameObject<GameObjectState>): void {

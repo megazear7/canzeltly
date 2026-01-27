@@ -4,16 +4,19 @@ import { GameObjectState } from "../game/game.object";
 export function mapToCanvas(game: Game, canvas: HTMLCanvasElement, obj: GameObjectState): GameObjectState {
   // The dimensions of obj are relative to the game.state.viewport.width and game.state.viewport.height
   // However, the canvas has dimensions canvas.width and canvas.height
-  const scaleX = canvas.width / game.state.viewport.width;
-  const scaleY = canvas.height / game.state.viewport.height;
-  const size = obj.size ? obj.size * ((scaleX + scaleY) / 2) : obj.size;
-  const width = obj.width ? obj.width * ((scaleX + scaleY) / 2) : obj.width;
-  const height = obj.height ? obj.height * ((scaleX + scaleY) / 2) : obj.height;
+  const scale = canvas.width / game.state.viewport.width;
+  const size = obj.size ? obj.size * scale : obj.size;
+  const width = obj.width ? obj.width * scale : obj.width;
+  const height = obj.height ? obj.height * scale : obj.height;
+  const viewportX = game.state.viewport.x * scale;
+  const viewportY = game.state.viewport.y * scale;
+  const x = obj.x * scale + viewportX;
+  const y = obj.y * scale + viewportY;
 
   return {
     ...obj,
-    x: obj.x * scaleX,
-    y: obj.y * scaleY,
+    x,
+    y,
     size,
     width,
     height,

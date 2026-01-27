@@ -5,10 +5,6 @@ import { drawSquare } from "./draw.rectangle.js";
 import { mapToCanvas } from "./util.map-to-canvas.js";
 
 export function drawObject(game: Game, obj: GameObjectState, ctx: CanvasRenderingContext2D): void {
-  // Map to viewport
-  obj = game.mapToViewport(obj);
-
-  // Map to canvas
   obj = mapToCanvas(game, ctx.canvas, obj);
 
   switch (obj.category) {

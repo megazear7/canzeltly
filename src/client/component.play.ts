@@ -75,16 +75,16 @@ export class CanzeltlyPlay extends LitElement {
   private keyDown(event: KeyboardEvent): void {
     switch (event.key) {
       case "ArrowUp":
-        this.game?.input.moveViewport(0, -100);
+        this.game?.input.moveViewport(0, -20);
         break;
       case "ArrowDown":
-        this.game?.input.moveViewport(0, 100);
+        this.game?.input.moveViewport(0, 20);
         break;
       case "ArrowLeft":
-        this.game?.input.moveViewport(-100, 0);
+        this.game?.input.moveViewport(-20, 0);
         break;
       case "ArrowRight":
-        this.game?.input.moveViewport(100, 0);
+        this.game?.input.moveViewport(20, 0);
         break;
       case "+":
       case "=":
