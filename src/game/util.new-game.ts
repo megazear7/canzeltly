@@ -32,8 +32,8 @@ export function newGame(): GameState {
   return {
     name: "DefaultGame",
     world: {
-      width: 600,
-      height: 600,
+      width: 1000,
+      height: 1000,
     },
     viewport: {
       x: 0,
