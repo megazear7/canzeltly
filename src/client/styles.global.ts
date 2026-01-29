@@ -33,4 +33,19 @@ export const globalStyles = css`
     max-width: var(--content-width);
     margin: var(--size-large) auto;
   }
+
+  button {
+    font-size: var(--font-medium);
+    padding: var(--size-small) var(--size-medium);
+    border: none;
+    border-radius: var(--radius-medium);
+    background-color: var(--color-primary);
+    color: var(--color-primary-text);
+    cursor: pointer;
+    transition: var(--transition-all);
+  }
+
+  button:hover {
+    background-color: var(--color-primary-hover);
+  }
 `;

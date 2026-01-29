@@ -9,6 +9,6 @@ description: 'Create new feature'
 
 `${input:instructions}`
 
-## Steps to follow
+# Steps to follow
 
 TODO...

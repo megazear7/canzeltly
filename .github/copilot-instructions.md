@@ -7,6 +7,11 @@
  - Write clear and concise comments for complex logic.
  - Use descriptive names for variables, functions, classes, and files.
  - Ensure code is modular and reusable where possible.
+ - Import with `.js` extensions for local files.
+ - Do NOT try to start the development server as I am already running it.
+ - You can try running `npm run fix` to fix linting and formatting issues.
+ - You can also try running `npm run build` to compile the TypeScript code and check for errors, but ONLY if you think your changes might have caused build errors and therfore there is a need to check for them.
+ - Styling for `<button>` elements, `<a>` elements, and other common HTML elements must be done in `src/client/styles.global.ts` rather than in individual components, unless there is a specific need for component-level overrides.
 
 ## Client
 

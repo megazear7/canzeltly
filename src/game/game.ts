@@ -77,4 +77,12 @@ export class Game {
       }
     }
   }
+
+  pause(): void {
+    throw new Error("Unimplemented");
+  }
+
+  resume(): void {
+    throw new Error("Unimplemented");
+  }
 }

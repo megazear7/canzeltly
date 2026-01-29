@@ -3,6 +3,7 @@ import { customElement, property, query } from "lit/decorators.js";
 import { Game } from "../game/game.js";
 import { globalStyles } from "./styles.global.js";
 import { draw } from "../canvas/draw.canvas.js";
+import "./component.heads-up-display.js";
 
 @customElement("canzeltly-play")
 export class CanzeltlyPlay extends LitElement {
@@ -32,6 +33,7 @@ export class CanzeltlyPlay extends LitElement {
   override render(): TemplateResult {
     return html`
       <canvas></canvas>
+      <canzeltly-heads-up-display .game=${this.game}></canzeltly-heads-up-display>
     `;
   }
 
