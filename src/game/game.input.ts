@@ -12,24 +12,24 @@ export class GameInput {
   handleKeys(pressedKeys: Set<string>): void {
     // Handle movement keys (can be pressed simultaneously)
     if (pressedKeys.has("ArrowUp")) {
-      this.moveViewport(0, -5);
+      this.moveViewport(0, -1 * this.game.state.controls.scrollSpeed);
     }
     if (pressedKeys.has("ArrowDown")) {
-      this.moveViewport(0, 5);
+      this.moveViewport(0, 1 * this.game.state.controls.scrollSpeed);
     }
     if (pressedKeys.has("ArrowLeft")) {
-      this.moveViewport(-5, 0);
+      this.moveViewport(-1 * this.game.state.controls.scrollSpeed, 0);
     }
     if (pressedKeys.has("ArrowRight")) {
-      this.moveViewport(5, 0);
+      this.moveViewport(1 * this.game.state.controls.scrollSpeed, 0);
     }
 
     // Handle zoom keys
     if (pressedKeys.has("+") || pressedKeys.has("=")) {
-      this.zoomIn(0.98);
+      this.zoomIn(0.95);
     }
     if (pressedKeys.has("-") || pressedKeys.has("_")) {
-      this.zoomOut(1.02);
+      this.zoomOut(1.05);
     }
 
     // Handle action keys (one-time actions)

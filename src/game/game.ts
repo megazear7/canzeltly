@@ -13,18 +13,30 @@ export type GameName = z.infer<typeof GameName>;
 export const GameObjectLayer = z.array(GameObjectState);
 export type GameObjectLayer = z.infer<typeof GameObjectLayer>;
 
+export const World = z.object({
+  width: z.number(),
+  height: z.number(),
+});
+export type World = z.infer<typeof World>;
+
+export const Viewport = z.object({
+  x: z.number(),
+  y: z.number(),
+  width: z.number(),
+  height: z.number(),
+});
+export type Viewport = z.infer<typeof Viewport>;
+
+export const Controls = z.object({
+  scrollSpeed: z.number().min(1).default(10),
+});
+export type Controls = z.infer<typeof Controls>;
+
 export const GameState = z.object({
   name: GameName,
-  world: z.object({
-    width: z.number(),
-    height: z.number(),
-  }),
-  viewport: z.object({
-    x: z.number(),
-    y: z.number(),
-    width: z.number(),
-    height: z.number(),
-  }),
+  world: World,
+  viewport: Viewport,
+  controls: Controls,
   layers: z.array(GameObjectLayer),
 });
 export type GameState = z.infer<typeof GameState>;

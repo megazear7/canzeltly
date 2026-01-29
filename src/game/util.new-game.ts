@@ -36,10 +36,13 @@ export function newGame(): GameState {
       height: 1000,
     },
     viewport: {
-      x: 0,
-      y: 0,
+      x: 500,
+      y: 500,
       width: 1000,
       height: 1000,
+    },
+    controls: {
+      scrollSpeed: 10,
     },
     layers: [
       [...background], // Background environment layer

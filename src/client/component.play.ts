@@ -25,6 +25,7 @@ export class CanzeltlyPlay extends LitElement {
   private game?: Game;
   private animationId?: number;
   private pressedKeys = new Set<string>();
+  private lastTime: number = 0;
 
   @query("canvas") private canvas?: HTMLCanvasElement;
 
@@ -52,16 +53,21 @@ export class CanzeltlyPlay extends LitElement {
 
   private startGameLoop(): void {
     this.attachGameInputListeners();
-    const loop = (): void => {
-      if (this.canvas && this.game) {
-        this.game.input.handleKeys(this.pressedKeys);
-        this.game.update();
-        this.game.alignViewport(this.canvas.width / this.canvas.height);
-        draw(this.game, this.canvas);
+    this.lastTime = performance.now();
+    const loop = (currentTime: number): void => {
+      const deltaTime = currentTime - this.lastTime;
+      if (deltaTime >= 1000 / 60) {
+        if (this.canvas && this.game) {
+          this.game.input.handleKeys(this.pressedKeys);
+          this.game.update();
+          this.game.alignViewport(this.canvas.width / this.canvas.height);
+          draw(this.game, this.canvas);
+        }
+        this.lastTime = currentTime;
       }
       this.animationId = requestAnimationFrame(loop);
     };
-    loop();
+    this.animationId = requestAnimationFrame(loop);
   }
 
   private attachGameInputListeners(): void {
