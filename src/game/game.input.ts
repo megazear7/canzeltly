@@ -56,16 +56,17 @@ export class GameInput {
   constrainViewport(): void {
     // Constrain viewport so it can only be moved maxScrollOut fraction outside the world
     const maxScrollOut = 1 / 3;
-    const inverseMaxScrollOut = 1 - maxScrollOut;
     const maxViewportWidthFactor = 1 + maxScrollOut * 2;
     const maxViewportWidth = this.game.state.world.width * maxViewportWidthFactor;
     const maxViewportHeight = this.game.state.world.height * maxViewportWidthFactor;
     const practicalWidth = Math.min(this.game.state.viewport.width, this.game.state.world.width);
     const practicalHeight = Math.min(this.game.state.viewport.height, this.game.state.world.height);
-    const minViewportX = -1 * practicalWidth * maxScrollOut;
-    const minViewportY = -1 * practicalHeight * maxScrollOut;
-    const maxViewportX = this.game.state.world.width - practicalWidth * inverseMaxScrollOut;
-    const maxViewportY = this.game.state.world.height - practicalHeight * inverseMaxScrollOut;
+    const minViewportX = -practicalWidth * maxScrollOut + this.game.state.viewport.width / 2;
+    const minViewportY = -practicalHeight * maxScrollOut + this.game.state.viewport.height / 2;
+    const maxViewportX =
+      this.game.state.world.width + practicalWidth * maxScrollOut - this.game.state.viewport.width / 2;
+    const maxViewportY =
+      this.game.state.world.height + practicalHeight * maxScrollOut - this.game.state.viewport.height / 2;
 
     if (this.game.state.viewport.x > maxViewportX) {
       this.game.state.viewport.x = maxViewportX;
