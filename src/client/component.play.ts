@@ -24,6 +24,7 @@ export class CanzeltlyPlay extends LitElement {
 
   private game?: Game;
   private animationId?: number;
+  private pressedKeys = new Set<string>();
 
   @query("canvas") private canvas?: HTMLCanvasElement;
 
@@ -53,6 +54,7 @@ export class CanzeltlyPlay extends LitElement {
     this.attachGameInputListeners();
     const loop = (): void => {
       if (this.canvas && this.game) {
+        this.game.input.handleKeys(this.pressedKeys);
         this.game.update();
         this.game.alignViewport(this.canvas.width / this.canvas.height);
         draw(this.game, this.canvas);
@@ -73,32 +75,10 @@ export class CanzeltlyPlay extends LitElement {
   }
 
   private keyDown(event: KeyboardEvent): void {
-    switch (event.key) {
-      case "ArrowUp":
-        this.game?.input.moveViewport(0, -20);
-        break;
-      case "ArrowDown":
-        this.game?.input.moveViewport(0, 20);
-        break;
-      case "ArrowLeft":
-        this.game?.input.moveViewport(-20, 0);
-        break;
-      case "ArrowRight":
-        this.game?.input.moveViewport(20, 0);
-        break;
-      case "+":
-      case "=":
-        this.game?.input.zoomIn(0.9);
-        break;
-      case "-":
-      case "_":
-        this.game?.input.zoomOut(1.1);
-        break;
-      case "c":
-        this.game?.input.addCircle();
-        break;
-    }
+    this.pressedKeys.add(event.key);
   }
 
-  private keyUp(): void {}
+  private keyUp(event: KeyboardEvent): void {
+    this.pressedKeys.delete(event.key);
+  }
 }

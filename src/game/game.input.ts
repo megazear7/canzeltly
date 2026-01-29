@@ -9,6 +9,36 @@ export class GameInput {
     this.game = game;
   }
 
+  handleKeys(pressedKeys: Set<string>): void {
+    // Handle movement keys (can be pressed simultaneously)
+    if (pressedKeys.has("ArrowUp")) {
+      this.moveViewport(0, -5);
+    }
+    if (pressedKeys.has("ArrowDown")) {
+      this.moveViewport(0, 5);
+    }
+    if (pressedKeys.has("ArrowLeft")) {
+      this.moveViewport(-5, 0);
+    }
+    if (pressedKeys.has("ArrowRight")) {
+      this.moveViewport(5, 0);
+    }
+
+    // Handle zoom keys
+    if (pressedKeys.has("+") || pressedKeys.has("=")) {
+      this.zoomIn(0.98);
+    }
+    if (pressedKeys.has("-") || pressedKeys.has("_")) {
+      this.zoomOut(1.02);
+    }
+
+    // Handle action keys (one-time actions)
+    if (pressedKeys.has("c")) {
+      this.addCircle();
+      pressedKeys.delete("c"); // Remove to prevent continuous spawning
+    }
+  }
+
   addCircle(): void {
     this.game.layers[MAIN_OBJECT_LAYER_INDEX].push(
       new Circle(this.game, {
@@ -21,12 +51,6 @@ export class GameInput {
         dy: 0,
       }),
     );
-  }
-
-  moveViewport(dx: number, dy: number): void {
-    this.game.state.viewport.x += dx;
-    this.game.state.viewport.y += dy;
-    this.constrainViewport();
   }
 
   constrainViewport(): void {
@@ -66,6 +90,12 @@ export class GameInput {
     if (this.game.state.viewport.height > maxViewportHeight) {
       this.game.state.viewport.height = maxViewportHeight;
     }
+  }
+
+  moveViewport(dx: number, dy: number): void {
+    this.game.state.viewport.x += dx;
+    this.game.state.viewport.y += dy;
+    this.constrainViewport();
   }
 
   zoomIn(factor: number = 0.9): void {
