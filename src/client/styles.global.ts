@@ -38,14 +38,15 @@ export const globalStyles = css`
     font-size: var(--font-medium);
     padding: var(--size-small) var(--size-medium);
     border: none;
-    border-radius: var(--radius-medium);
-    background-color: var(--color-primary);
+    border-radius: var(--border-radius-medium);
+    background-color: var(--color-1);
     color: var(--color-primary-text);
     cursor: pointer;
     transition: var(--transition-all);
+    box-shadow: var(--shadow-normal);
   }
 
   button:hover {
-    background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-hover);
   }
 `;

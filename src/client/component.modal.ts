@@ -44,7 +44,7 @@ export class CanzeltlyModal extends LitElement {
       }
 
       .modal-body {
-        padding: 0 var(--size-xxl) var(--size-xxl) var(--size-xxl);
+        padding: 0 var(--size-xl) var(--size-xl) var(--size-xl);
       }
 
       .modal-backdrop.visible .modal-content {

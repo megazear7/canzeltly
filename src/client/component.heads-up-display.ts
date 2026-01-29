@@ -23,11 +23,23 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: var(--size-medium);
-        background-color: var(--color-secondary-surface);
+        padding: var(--size-large) var(--size-medium) var(--size-medium) var(--size-medium);
+        background-image: url("/images/plank.png");
+        background-size: cover;
+        background-repeat: no-repeat;
         border-radius: var(--radius-medium) var(--radius-medium) 0 0;
         box-shadow: var(--shadow-normal);
         width: 600px;
+      }
+
+      .menu-options {
+        display: flex;
+        flex-direction: column;
+        gap: var(--size-medium);
+      }
+
+      h2 {
+        text-align: center;
       }
     `,
   ];
@@ -61,14 +73,16 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
   override render(): TemplateResult {
     return html`
       <div class="hud">
-        <button @click=${this.openModal()}>Pause</button>
+        <button @click=${this.openModal()}>Menu</button>
       </div>
       <canzeltly-modal @modal-opening=${this.handleModalOpening} @modal-closing=${this.handleModalClosing}>
         <div slot="body">
           <h2>Game Menu</h2>
-          <button @click=${this.saveGame}>Save Game</button>
-          <button @click=${this.saveAndExit}>Save and Exit</button>
-          <button @click=${this.exitWithoutSaving}>Exit without Saving</button>
+          <div class="menu-options">
+            <button @click=${this.saveGame}>Save Game</button>
+            <button @click=${this.saveAndExit}>Save and Exit</button>
+            <button @click=${this.exitWithoutSaving}>Exit without Saving</button>
+          </div>
         </div>
       </canzeltly-modal>
     `;

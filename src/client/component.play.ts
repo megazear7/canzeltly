@@ -39,6 +39,7 @@ export class CanzeltlyPlay extends LitElement {
 
   override async connectedCallback(): Promise<void> {
     super.connectedCallback();
+    document.body.style.overflow = "hidden";
     if (this.name) {
       this.game = new Game();
       this.startGameLoop();
@@ -47,6 +48,7 @@ export class CanzeltlyPlay extends LitElement {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
+    document.body.style.overflow = "";
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
     }
@@ -75,18 +77,27 @@ export class CanzeltlyPlay extends LitElement {
   private attachGameInputListeners(): void {
     window.addEventListener("keydown", this.keyDown.bind(this));
     window.addEventListener("keyup", this.keyUp.bind(this));
+    window.addEventListener("wheel", this.preventScroll.bind(this), { passive: false });
   }
 
   private detachGameInputListeners(): void {
     window.removeEventListener("keydown", this.keyDown.bind(this));
     window.removeEventListener("keyup", this.keyUp.bind(this));
+    window.removeEventListener("wheel", this.preventScroll.bind(this));
   }
 
   private keyDown(event: KeyboardEvent): void {
+    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "+", "=", "-", "_"].includes(event.key)) {
+      event.preventDefault();
+    }
     this.pressedKeys.add(event.key);
   }
 
   private keyUp(event: KeyboardEvent): void {
     this.pressedKeys.delete(event.key);
+  }
+
+  private preventScroll(event: WheelEvent): void {
+    event.preventDefault();
   }
 }

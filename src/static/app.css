@@ -1,7 +1,11 @@
 html {
   /* Colors */
   --color-1: #e7502c;
+  --color-1-light: #ff7f50;
+  --color-1-dark: #b23a1e;
   --color-2: #89d154;
+  --color-2-light: #a8e27e;
+  --color-2-dark: #5ea32c;
 
   /* Primary surface colors */
   --color-primary-surface: #2c2f33;
@@ -10,7 +14,7 @@ html {
   --color-primary-text-bold: #666;
 
   /* Secondary surface colors */
-  --color-secondary-surface: #2c2f33;
+  --color-secondary-surface: #4f545b;
   --color-secondary-text: #e0e6ed;
   --color-secondary-text-muted: #999;
   --color-secondary-text-bold: #666;
