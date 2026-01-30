@@ -3,6 +3,10 @@ import { customElement, property, query } from "lit/decorators.js";
 import { Game } from "../game/game.js";
 import { globalStyles } from "./styles.global.js";
 import { CanzeltlyModal } from "./component.modal.js";
+import { dispatch } from "./util.events.js";
+import { NavigationEvent } from "./event.navigation.js";
+import { SuccessEvent } from "./event.success.js";
+import { saveGameState } from "./util.storage.js";
 import "./component.modal.js";
 
 @customElement("canzeltly-heads-up-display")
@@ -71,15 +75,24 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
   }
 
   private saveGame(): void {
-    throw new Error("Unimplemented");
+    if (this.game) {
+      saveGameState(this.game.state);
+      dispatch(this, SuccessEvent("Game saved successfully"));
+      this.menuModal?.close();
+    }
   }
 
   private saveAndExit(): void {
-    throw new Error("Unimplemented");
+    if (this.game) {
+      saveGameState(this.game.state);
+      this.menuModal?.close();
+      dispatch(this, NavigationEvent({ path: "/home" }));
+    }
   }
 
   private exitWithoutSaving(): void {
-    throw new Error("Unimplemented");
+    this.menuModal?.close();
+    dispatch(this, NavigationEvent({ path: "/home" }));
   }
 
   private openModal(): () => void {

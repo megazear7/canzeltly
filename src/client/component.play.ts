@@ -4,6 +4,7 @@ import { Game } from "../game/game.js";
 import { globalStyles } from "./styles.global.js";
 import { draw } from "../canvas/draw.canvas.js";
 import "./component.heads-up-display.js";
+import { loadGameState } from "./util.storage.js";
 
 @customElement("canzeltly-play")
 export class CanzeltlyPlay extends LitElement {
@@ -40,8 +41,13 @@ export class CanzeltlyPlay extends LitElement {
   override async connectedCallback(): Promise<void> {
     super.connectedCallback();
     document.body.style.overflow = "hidden";
-    if (this.name) {
+    const gameState = loadGameState(this.name);
+    if (gameState) {
+      this.game = new Game(gameState);
+      this.startGameLoop();
+    } else if (this.name) {
       this.game = new Game();
+      this.game.state.name = this.name;
       this.startGameLoop();
     }
   }
