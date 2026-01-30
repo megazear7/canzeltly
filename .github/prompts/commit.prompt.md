@@ -14,3 +14,4 @@ description: 'Commit the current changes'
  - Ensure the commit message follows best practices (e.g., imperative mood, brief summary).
  - Run `git commit -m "<your commit message>"` to create the commit with the prepared message.
  - Run `git push` to push the committed changes to the remote repository.
+ - DO NOT try to use `git checkout` or `git reset` to undo any changes. If you want to make changes, such as removing debug code, ask me first and then just make new edits.
