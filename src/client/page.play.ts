@@ -9,7 +9,7 @@ export class CanzeltlyPlayPage extends CanzeltlyAppProvider {
 
   override render(): TemplateResult {
     return html`
-      <canzeltly-play .name="${this.params.id}"></canzeltly-play>
+      <canzeltly-play .gameId="${this.params.id}"></canzeltly-play>
     `;
   }
 }

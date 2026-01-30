@@ -3,7 +3,7 @@ import { GameObject } from "./game.object.js";
 import { hydrateObjects } from "./util.hydrate.js";
 import { GameInput } from "./game.input.js";
 import { newGame } from "./util.new-game.js";
-import { AnyGameObjectState, GameName, GameObjectLayer } from "./type.game.js";
+import { AnyGameObjectState, GameId, GameName, GameObjectLayer } from "./type.game.js";
 
 export const BACKGROUND_ENVIRONMENT_LAYER_INDEX = 0;
 export const MAIN_OBJECT_LAYER_INDEX = 1;
@@ -29,6 +29,7 @@ export type Controls = z.infer<typeof Controls>;
 
 export const GameState = z.object({
   name: GameName,
+  id: GameId,
   world: World,
   viewport: Viewport,
   controls: Controls,

@@ -3,13 +3,13 @@ import { customElement, property, query } from "lit/decorators.js";
 import { Game } from "../game/game.js";
 import { globalStyles } from "./styles.global.js";
 import { draw } from "../canvas/draw.canvas.js";
-import "./component.heads-up-display.js";
 import { loadGameState } from "./util.storage.js";
+import "./component.heads-up-display.js";
 
 @customElement("canzeltly-play")
 export class CanzeltlyPlay extends LitElement {
   @property({ type: String })
-  name: string = "";
+  gameId: string = "";
 
   static override styles = [
     globalStyles,
@@ -40,13 +40,13 @@ export class CanzeltlyPlay extends LitElement {
   override async connectedCallback(): Promise<void> {
     super.connectedCallback();
     document.body.style.overflow = "hidden";
-    const gameState = loadGameState(this.name);
+    const gameState = loadGameState(this.gameId);
     if (gameState) {
       this.game = new Game(gameState);
       this.startGameLoop();
-    } else if (this.name) {
+    } else if (this.gameId) {
       this.game = new Game();
-      this.game.state.name = this.name;
+      this.game.state.id = this.gameId;
       this.startGameLoop();
     }
   }

@@ -31,6 +31,7 @@ const objects: CircleState[] = [];
 export function newGame(): GameState {
   return {
     name: "DefaultGame",
+    id: "default-game",
     world: {
       width: 1000,
       height: 1000,

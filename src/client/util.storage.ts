@@ -1,10 +1,11 @@
 import { GameState } from "../game/game.js";
+import { GameId } from "../game/type.game.js";
 
 const STORAGE_KEY = "canzeltly_saved_games";
 
 export function saveGameState(gameState: GameState): void {
   const savedGames = getAllGameStates();
-  const existingIndex = savedGames.findIndex((g) => g.name === gameState.name);
+  const existingIndex = savedGames.findIndex((g) => g.id === gameState.id);
   if (existingIndex >= 0) {
     savedGames[existingIndex] = gameState;
   } else {
@@ -13,9 +14,9 @@ export function saveGameState(gameState: GameState): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(savedGames));
 }
 
-export function loadGameState(name: string): GameState | undefined {
+export function loadGameState(id: GameId): GameState | undefined {
   const savedGames = getAllGameStates();
-  return savedGames.find((g) => g.name === name);
+  return savedGames.find((g) => g.id === id);
 }
 
 export function getAllGameStates(): GameState[] {
