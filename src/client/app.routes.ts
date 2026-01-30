@@ -13,4 +13,8 @@ export const routes = [
     name: RouteName.enum.create_game,
     path: "/create-game",
   },
+  {
+    name: RouteName.enum.saved_games,
+    path: "/saved-games",
+  },
 ];

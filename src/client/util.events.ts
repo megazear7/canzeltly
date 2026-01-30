@@ -7,6 +7,8 @@ import { SuccessEventData } from "./event.success.js";
 import { SaveEventData } from "./event.save.js";
 import { ModelClosingEventData } from "./event.modal-closing.js";
 import { ModelOpeningEventData } from "./event.modal-opening.js";
+import { DeleteGamesEventData } from "./event.delete-games.js";
+import { RenameGameEventData } from "./event.rename-game.js";
 
 export const CanzeltlyEvent = z.union([
   ModelSubmitEventData,
@@ -17,6 +19,8 @@ export const CanzeltlyEvent = z.union([
   WarningEventData,
   SuccessEventData,
   SaveEventData,
+  DeleteGamesEventData,
+  RenameGameEventData,
 ]);
 export type CanzeltlyEvent = z.infer<typeof CanzeltlyEvent>;
 
