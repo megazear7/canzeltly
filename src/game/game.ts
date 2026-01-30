@@ -45,6 +45,7 @@ export class Game {
   state: GameState;
   layers: GameObject<GameObjectState>[][];
   input: GameInput;
+  paused: boolean = false;
 
   constructor(state?: GameState) {
     this.state = state || newGame();
@@ -53,6 +54,7 @@ export class Game {
   }
 
   update(): void {
+    if (this.paused) return;
     this.layers.forEach((layer) => {
       layer.forEach((obj) => {
         obj.update();
@@ -78,11 +80,15 @@ export class Game {
     }
   }
 
+  serializeState(): void {
+    this.state.layers = this.layers.map((layer) => layer.map((obj) => obj.state));
+  }
+
   pause(): void {
-    throw new Error("Unimplemented");
+    this.paused = true;
   }
 
   resume(): void {
-    throw new Error("Unimplemented");
+    this.paused = false;
   }
 }
