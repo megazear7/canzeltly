@@ -5,7 +5,10 @@ import { Rectangle, RectangleState } from "./object.rectangle.js";
 export const GameName = z.string().min(1);
 export type GameName = z.infer<typeof GameName>;
 
-export const GameId = z.string().regex(/^[a-z0-9-]+$/).default("default-game");
+export const GameId = z
+  .string()
+  .regex(/^[a-z0-9-]+$/)
+  .default("default-game");
 export type GameId = z.infer<typeof GameId>;
 
 export const AnyGameObjectState = CircleState.or(RectangleState);

@@ -13,6 +13,7 @@ import { WarningEventName } from "./event.warning.js";
 import "./page.home.js";
 import "./page.play.js";
 import "./page.not-found.js";
+import "./page.create-game.js";
 import "./component.toast.js";
 import "./component.save-indicator.js";
 import "./component.play.js";
@@ -68,6 +69,10 @@ export class CanzeltlyApp extends LitElement {
             case RouteName.enum.play:
               return html`
                 <canzeltly-play-page></canzeltly-play-page>
+              `;
+            case RouteName.enum.create_game:
+              return html`
+                <canzeltly-create-game-page></canzeltly-create-game-page>
               `;
             default:
               return html`

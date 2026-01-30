@@ -86,13 +86,13 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
     if (this.game) {
       saveGameState(this.game.state);
       this.menuModal?.close();
-      dispatch(this, NavigationEvent({ path: "/home" }));
+      dispatch(this, NavigationEvent({ path: "/" }));
     }
   }
 
   private exitWithoutSaving(): void {
     this.menuModal?.close();
-    dispatch(this, NavigationEvent({ path: "/home" }));
+    dispatch(this, NavigationEvent({ path: "/" }));
   }
 
   private openModal(): () => void {
