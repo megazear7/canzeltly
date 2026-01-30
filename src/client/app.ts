@@ -33,6 +33,8 @@ export class CanzeltlyApp extends LitElement {
   @query("canzeltly-toast") toast!: CanzeltlyToast;
   @query("canzeltly-save-indicator") saveIndicator!: CanzeltlySaveIndicator;
 
+  private boundHandlePopState: (() => void) | null = null;
+
   override connectedCallback(): void {
     super.connectedCallback();
     document.addEventListener("click", this.navigate.bind(this));
@@ -52,11 +54,18 @@ export class CanzeltlyApp extends LitElement {
     });
 
     this.addEventListener(SaveEventName.value, this.handleSaveEvent);
+
+    this.boundHandlePopState = this.handlePopState.bind(this);
+    window.addEventListener("popstate", this.boundHandlePopState);
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.removeEventListener(SaveEventName.value, this.handleSaveEvent);
+
+    if (this.boundHandlePopState) {
+      window.removeEventListener("popstate", this.boundHandlePopState);
+    }
   }
 
   override render(): TemplateResult {
@@ -161,5 +170,10 @@ export class CanzeltlyApp extends LitElement {
 
   private handleSaveEvent(): void {
     this.saveIndicator.show();
+  }
+
+  private handlePopState(): void {
+    this.currentRoute = this.determineRouteName();
+    this.requestUpdate();
   }
 }
