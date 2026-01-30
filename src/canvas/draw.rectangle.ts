@@ -1,8 +1,8 @@
-import { SquareState } from "../game/object.rectangle.js";
-import { GameObjectState } from "../game/game.object.js";
+import { RectangleState } from "../game/object.rectangle.js";
+import { AnyGameObjectState } from "../game/type.game.js";
 
-export function drawSquare(obj: GameObjectState, ctx: CanvasRenderingContext2D): void {
-  const square = SquareState.parse(obj);
+export function drawSquare(obj: AnyGameObjectState, ctx: CanvasRenderingContext2D): void {
+  const square = RectangleState.parse(obj);
   ctx.fillStyle = square.color;
   ctx.fillRect(square.x, square.y, square.width, square.height);
 }

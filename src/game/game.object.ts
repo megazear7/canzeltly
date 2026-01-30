@@ -1,14 +1,11 @@
 import z from "zod";
 import { Game } from "./game.js";
 
-export const GameObjectCategory = z.enum(["Circle", "Square", "Unknown"]);
+export const GameObjectCategory = z.enum(["Circle", "Rectangle", "Unknown"]);
 export type GameObjectCategory = z.infer<typeof GameObjectCategory>;
 
 export const GameObjectState = z.object({
   category: GameObjectCategory,
-  size: z.number().optional(),
-  width: z.number().optional(),
-  height: z.number().optional(),
   x: z.number(),
   y: z.number(),
 });
@@ -23,14 +20,15 @@ export abstract class GameObject<T extends GameObjectState> {
     this.state = state;
   }
 
+  abstract isInWorld(): boolean;
+
   update(): void {
     this.updateState();
     this.checkForDestroy();
   }
 
   checkForDestroy(): void {
-    // TODO: Fix this logic later
-    // if (!isInWorld(this)) {
+    // if (!this.isInWorld()) {
     //   this.game.removeObject(this);
     // }
   }

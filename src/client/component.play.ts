@@ -67,7 +67,6 @@ export class CanzeltlyPlay extends LitElement {
     const loop = (currentTime: number): void => {
       if (this.canvas && this.game) {
         if (currentTime - lastMajorUpdate >= 1000 && this.game) {
-          console.log("B");
           this.game.serializeState();
           lastMajorUpdate = currentTime;
         }

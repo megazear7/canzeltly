@@ -24,4 +24,13 @@ export class Circle extends GameObject<CircleState> {
     this.state.x += this.state.dx;
     this.state.y += this.state.dy;
   }
+
+  isInWorld(): boolean {
+    return (
+      this.state.x + this.state.size >= 0 &&
+      this.state.x - this.state.size <= this.game.state.world.width &&
+      this.state.y + this.state.size >= 0 &&
+      this.state.y - this.state.size <= this.game.state.world.height
+    );
+  }
 }

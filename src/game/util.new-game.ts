@@ -1,11 +1,11 @@
 import { GameState } from "./game.js";
 import { GameObjectCategory } from "./game.object.js";
-import { SquareState } from "./object.rectangle.js";
+import { RectangleState } from "./object.rectangle.js";
 import { CircleState } from "./object.circle.js";
 
-const background: SquareState[] = [
+const background: RectangleState[] = [
   {
-    category: GameObjectCategory.enum.Square,
+    category: GameObjectCategory.enum.Rectangle,
     width: 1000,
     height: 1000,
     x: 0,
@@ -15,7 +15,7 @@ const background: SquareState[] = [
     dy: 0,
   },
   {
-    category: GameObjectCategory.enum.Square,
+    category: GameObjectCategory.enum.Rectangle,
     width: 990,
     height: 990,
     x: 5,
