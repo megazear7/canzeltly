@@ -22,13 +22,19 @@ export class CanzeltlyInput extends LitElement {
         display: block;
         margin-bottom: var(--size-small);
       }
-      input,
-      select {
+      input, select, textarea {
         width: 100%;
-        padding: var(--size-small);
-        border: 1px solid var(--color-border);
-        border-radius: var(--size-small);
-        font-size: var(--font-size-base);
+        padding: var(--size-small) var(--size-medium);
+        font-size: var(--font-medium);
+        border-radius: var(--border-radius-medium);
+        border: var(--border-normal);
+        background-color: var(--color-secondary-surface);
+        color: var(--color-secondary-text);
+      }
+      input:focus, select:focus, textarea:focus {
+        border: var(--border-active);
+        box-shadow: var(--shadow-active);
+        outline: none;
       }
       input[type="range"] {
         width: 100%;

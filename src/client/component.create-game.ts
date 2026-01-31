@@ -23,10 +23,6 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         margin: 0 auto;
         padding: var(--size-large);
       }
-      form {
-        display: flex;
-        flex-direction: column;
-      }
     `,
   ];
 

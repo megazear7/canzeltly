@@ -69,4 +69,13 @@ export const globalStyles = css`
     color: var(--color-secondary-text-muted) !important;
     box-shadow: var(--shadow-normal) !important;
   }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    margin-top: var(--size-medium);
+  }
 `;
