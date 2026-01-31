@@ -8,7 +8,7 @@ export function newGame(width: number = 1000, height: number = 1000): GameState 
     {
       category: GameObjectCategory.enum.Rectangle,
       id: crypto.randomUUID(),
-      affectors: [],
+      affects: [],
       width: width,
       height: height,
       radius: (width + height) / 2,

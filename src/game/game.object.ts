@@ -1,9 +1,9 @@
 import { Game } from "./game.js";
 import { GameObjectState } from "./type.object.js";
-import { bounce } from "./affector.bounce.js";
-import { AffectorCategory } from "./game.affector.js";
-import { velocity } from "./affector.velocity.js";
-import { target } from "./affector.target.js";
+import { bounce } from "./affect.bounce.js";
+import { AffectCategory } from "./game.affect.js";
+import { velocity } from "./affect.velocity.js";
+import { target } from "./affect.target.js";
 
 export abstract class GameObject<T extends GameObjectState> {
   game: Game;
@@ -35,10 +35,10 @@ export abstract class GameObject<T extends GameObjectState> {
   }
 
   updateState(): void {
-    this.state.affectors.forEach((affector) => {
-      if (affector.category === AffectorCategory.enum.Velocity) velocity(this);
-      if (affector.category === AffectorCategory.enum.Bounce) bounce(this);
-      if (affector.category === AffectorCategory.enum.Target) target(this);
+    this.state.affects.forEach((affect) => {
+      if (affect.category === AffectCategory.enum.Velocity) velocity(this);
+      if (affect.category === AffectCategory.enum.Bounce) bounce(this);
+      if (affect.category === AffectCategory.enum.Target) target(this);
     });
   }
 }

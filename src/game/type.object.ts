@@ -1,5 +1,5 @@
 import z from "zod";
-import { AffectorCategory } from "./game.affector.js";
+import { AffectCategory } from "./game.affect.js";
 
 export const GameObjectCategory = z.enum(["Circle", "Rectangle", "Unknown"]);
 export type GameObjectCategory = z.infer<typeof GameObjectCategory>;
@@ -7,38 +7,38 @@ export type GameObjectCategory = z.infer<typeof GameObjectCategory>;
 export const GameObjectId = z.uuid();
 export type GameObjectId = z.infer<typeof GameObjectId>;
 
-export const AffectorState = z.object({
-  category: AffectorCategory.enum.Bounce,
+export const AffectState = z.object({
+  category: AffectCategory.enum.Bounce,
 });
-export type AffectorState = z.infer<typeof AffectorState>;
+export type AffectState = z.infer<typeof AffectState>;
 
-export const BounceState = AffectorState.extend({
-  category: z.literal(AffectorCategory.enum.Bounce),
+export const BounceState = AffectState.extend({
+  category: z.literal(AffectCategory.enum.Bounce),
 });
 export type BounceState = z.infer<typeof BounceState>;
 
-export const VelocityState = AffectorState.extend({
-  category: z.literal(AffectorCategory.enum.Velocity),
+export const VelocityState = AffectState.extend({
+  category: z.literal(AffectCategory.enum.Velocity),
   dx: z.number(),
   dy: z.number(),
 });
 export type VelocityState = z.infer<typeof VelocityState>;
 
-export const TargetState = AffectorState.extend({
-  category: z.literal(AffectorCategory.enum.Target),
+export const TargetState = AffectState.extend({
+  category: z.literal(AffectCategory.enum.Target),
   x: z.number(),
   y: z.number(),
   acceleration: z.number(),
 });
 export type TargetState = z.infer<typeof TargetState>;
 
-export const AnyAffectorState = z.union([BounceState, VelocityState, TargetState]);
-export type AnyAffectorState = z.infer<typeof AnyAffectorState>;
+export const AnyAffectState = z.union([BounceState, VelocityState, TargetState]);
+export type AnyAffectState = z.infer<typeof AnyAffectState>;
 
 export const GameObjectState = z.object({
   category: GameObjectCategory,
   id: GameObjectId,
-  affectors: AnyAffectorState.array(),
+  affects: AnyAffectState.array(),
   radius: z.number(),
   x: z.number(),
   y: z.number(),

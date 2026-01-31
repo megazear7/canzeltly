@@ -1,4 +1,4 @@
-import { AffectorCategory } from "./game.affector.js";
+import { AffectCategory } from "./game.affect.js";
 import { Game, GameState } from "./game.js";
 import { GameObject } from "./game.object.js";
 import { CircleState, GameObjectCategory } from "./type.object.js";
@@ -17,7 +17,7 @@ export function randomCircleState(game: Game): CircleState {
   return {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
-    affectors: [],
+    affects: [],
     x: Math.random() * game.state.world.width,
     y: Math.random() * game.state.world.height,
     radius: 10 + Math.random() * 20,
@@ -29,20 +29,20 @@ export function randomMovingCircleState(game: GameState): CircleState {
   return {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
-    affectors: [
+    affects: [
       {
-        category: AffectorCategory.enum.Velocity,
+        category: AffectCategory.enum.Velocity,
         dx: (Math.random() - 0.5) * 4,
         dy: (Math.random() - 0.5) * 4,
       },
       {
-        category: AffectorCategory.enum.Target,
+        category: AffectCategory.enum.Target,
         x: Math.random() * game.world.width,
         y: Math.random() * game.world.height,
         acceleration: 0.2 + Math.random() * 0.1,
       },
       {
-        category: AffectorCategory.enum.Bounce,
+        category: AffectCategory.enum.Bounce,
       },
     ],
     x: Math.random() * game.world.width,
@@ -56,14 +56,14 @@ export function randomBouncingCircleState(game: GameState): CircleState {
   return {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
-    affectors: [
+    affects: [
       {
-        category: AffectorCategory.enum.Velocity,
+        category: AffectCategory.enum.Velocity,
         dx: (Math.random() - 0.5) * 4,
         dy: (Math.random() - 0.5) * 4,
       },
       {
-        category: AffectorCategory.enum.Bounce,
+        category: AffectCategory.enum.Bounce,
       },
     ],
     x: Math.random() * game.world.width,
