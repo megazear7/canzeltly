@@ -1,5 +1,5 @@
 import z from "zod";
-import { GameObject } from "./game.object.js";
+import { GameObject, GameObjectId } from "./game.object.js";
 import { hydrateObjects } from "./util.hydrate.js";
 import { GameInput } from "./game.input.js";
 import { newGame } from "./util.new-game.js";
@@ -66,12 +66,14 @@ export class Game {
     this.input.constrainViewport();
   }
 
-  removeObject(obj: GameObject<AnyGameObjectState>): void {
-    for (const layer of this.layers) {
-      const index = layer.indexOf(obj);
-      if (index > -1) {
-        layer.splice(index, 1);
-        return;
+  removeObject(id: GameObjectId): void {
+    for (let layerIndex = 0; layerIndex < this.layers.length; layerIndex++) {
+      const layer = this.layers[layerIndex];
+      for (let objIndex = 0; objIndex < layer.length; objIndex++) {
+        if (layer[objIndex].state.id === id) {
+          layer.splice(objIndex, 1);
+          return;
+        }
       }
     }
   }
