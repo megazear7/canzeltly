@@ -13,12 +13,12 @@ export function mapToCanvas(game: Game, canvas: HTMLCanvasElement, obj: AnyGameO
 
   if (obj.category === GameObjectCategory.enum.Circle) {
     const circle = CircleState.parse(obj);
-    const size = circle.size ? circle.size * scale : circle.size;
+    const size = circle.radius ? circle.radius * scale : circle.radius;
     return {
       ...obj,
       x,
       y,
-      size,
+      radius: size,
     };
   } else if (obj.category === GameObjectCategory.enum.Rectangle) {
     const rectangle = RectangleState.parse(obj);

@@ -5,7 +5,7 @@ import { GameObject, GameObjectCategory, GameObjectState } from "./game.object.j
 export const CircleState = GameObjectState.extend({
   category: z.literal(GameObjectCategory.enum.Circle),
   color: z.string(),
-  size: z.number(),
+  radius: z.number(),
   dx: z.number(),
   dy: z.number(),
 });
@@ -27,10 +27,10 @@ export class Circle extends GameObject<CircleState> {
 
   isInWorld(): boolean {
     return (
-      this.state.x + this.state.size >= 0 &&
-      this.state.x - this.state.size <= this.game.state.world.width &&
-      this.state.y + this.state.size >= 0 &&
-      this.state.y - this.state.size <= this.game.state.world.height
+      this.state.x + this.state.radius >= 0 &&
+      this.state.x - this.state.radius <= this.game.state.world.width &&
+      this.state.y + this.state.radius >= 0 &&
+      this.state.y - this.state.radius <= this.game.state.world.height
     );
   }
 }
