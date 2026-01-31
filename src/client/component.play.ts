@@ -4,6 +4,7 @@ import { Game } from "../game/game.js";
 import { globalStyles } from "./styles.global.js";
 import { draw } from "../canvas/draw.canvas.js";
 import { loadGameState } from "./util.storage.js";
+import { CanzeltlyHeadsUpDisplay } from "./component.heads-up-display.js";
 import "./component.heads-up-display.js";
 
 @customElement("canzeltly-play")
@@ -27,8 +28,10 @@ export class CanzeltlyPlay extends LitElement {
   private game?: Game;
   private animationId?: number;
   private pressedKeys = new Set<string>();
+  private drawCount = 0;
 
   @query("canvas") private canvas?: HTMLCanvasElement;
+  @query("canzeltly-heads-up-display") private hud?: CanzeltlyHeadsUpDisplay;
 
   override render(): TemplateResult {
     return html`
@@ -68,6 +71,11 @@ export class CanzeltlyPlay extends LitElement {
       if (this.canvas && this.game) {
         if (currentTime - lastMajorUpdate >= 1000 && this.game) {
           this.game.serializeState();
+          const fps = this.drawCount;
+          if (this.hud) {
+            this.hud.fps = fps;
+          }
+          this.drawCount = 0;
           lastMajorUpdate = currentTime;
         }
         if (currentTime - lastDraw >= 1000 / 60) {
@@ -75,6 +83,7 @@ export class CanzeltlyPlay extends LitElement {
           this.game.update();
           this.game.alignViewport(this.canvas.width / this.canvas.height);
           draw(this.game, this.canvas);
+          this.drawCount++;
           lastDraw = currentTime;
         }
       }

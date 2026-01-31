@@ -14,6 +14,9 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
   @property({ attribute: false })
   game?: Game;
 
+  @property({ type: Number })
+  fps?: number;
+
   @query("canzeltly-modal") private menuModal?: CanzeltlyModal;
 
   static override styles = [
@@ -28,12 +31,23 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
         left: 50%;
         transform: translateX(-50%);
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
+        padding: 0 var(--size-medium);
         background-image: url("/images/plank-1800x250.png");
         background-size: contain;
         background-repeat: no-repeat;
         border-radius: var(--radius-medium) var(--radius-medium) 0 0;
+      }
+
+      .fps {
+        font-size: var(--font-size-large);
+        font-weight: bold;
+        color: var(--color-text);
+      }
+
+      .fps.low {
+        color: var(--color-error);
       }
 
       .menu-options {
@@ -52,6 +66,7 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
     return html`
       <div class="hud">
         <button @click=${this.openModal()}>Menu</button>
+        <div class="fps ${this.fps && this.fps < 60 ? "low" : ""}">${this.fps ? this.fps.toFixed(0) : ""} FPS</div>
       </div>
       <canzeltly-modal @modal-opening=${this.handleModalOpening} @modal-closing=${this.handleModalClosing}>
         <div slot="body">
