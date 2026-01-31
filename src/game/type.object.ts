@@ -17,7 +17,7 @@ export const BounceState = AffectorState.extend({
 });
 export type BounceState = z.infer<typeof BounceState>;
 
-export const VelocityState =  AffectorState.extend({
+export const VelocityState = AffectorState.extend({
   category: z.literal(AffectorCategory.enum.Velocity),
 });
 export type VelocityState = z.infer<typeof VelocityState>;
