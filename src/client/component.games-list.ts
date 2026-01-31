@@ -12,8 +12,8 @@ import { NavigationEvent } from "./event.navigation.js";
 import { LoadingStatus } from "../shared/type.loading.js";
 import "./component.game-preview.js";
 
-@customElement("canzeltly-saved-games-list")
-export class CanzeltlySavedGamesList extends LitElement {
+@customElement("canzeltly-games-list")
+export class CanzeltlyGamesList extends LitElement {
   @consume({ context: gamesContext })
   @state()
   gamesContext!: GamesContext;
@@ -185,6 +185,7 @@ export class CanzeltlySavedGamesList extends LitElement {
     const selectedIds = [...this.selectedIds];
     this.modal.close();
     dispatch(this, DeleteGamesEvent(selectedIds));
+    this.selectedIds = [];
   };
 
   private submitRename = (): void => {
@@ -206,6 +207,7 @@ export class CanzeltlySavedGamesList extends LitElement {
     } else {
       this.selectedIds = [...this.selectedIds, id];
     }
+    console.log("Selected IDs:", this.selectedIds);
     this.requestUpdate();
   }
 }

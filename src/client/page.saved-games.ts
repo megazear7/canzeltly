@@ -2,7 +2,7 @@ import { html, css, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { globalStyles } from "./styles.global.js";
 import { CanzeltlyGamesProvider } from "./provider.games.js";
-import "./component.saved-games-list.js";
+import "./component.games-list.js";
 
 @customElement("canzeltly-saved-games-page")
 export class CanzeltlySavedGamesPage extends CanzeltlyGamesProvider {
@@ -20,7 +20,7 @@ export class CanzeltlySavedGamesPage extends CanzeltlyGamesProvider {
   override render(): TemplateResult {
     return html`
       <main>
-        <canzeltly-saved-games-list></canzeltly-saved-games-list>
+        <canzeltly-games-list></canzeltly-games-list>
       </main>
     `;
   }
