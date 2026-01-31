@@ -13,7 +13,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   @state() gameName = "";
   @state() worldWidth = 1000;
   @state() worldHeight = 1000;
-  @state() numCircles = 0;
+  @state() numCircles = 10;
 
   static override styles = [
     globalStyles,
@@ -26,18 +26,6 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       form {
         display: flex;
         flex-direction: column;
-      }
-      button {
-        margin-top: var(--size-medium);
-        padding: var(--size-medium);
-        background: var(--color-primary);
-        color: white;
-        border: none;
-        border-radius: var(--size-small);
-        cursor: pointer;
-      }
-      button:hover {
-        background: var(--color-primary-dark);
       }
     `,
   ];
@@ -70,13 +58,14 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             @input-change="${(e: CustomEvent) =>
               (this.worldHeight = Number((e.detail as { value: number }).value))}"></canzeltly-input>
           <canzeltly-input
-            type="number"
-            label="Number of Circles"
+            type="slider"
+            label="Number of Circles (${this.numCircles})"
             .value="${this.numCircles}"
             .min="${0}"
+            .max="${1000}"
             @input-change="${(e: CustomEvent) =>
               (this.numCircles = Number((e.detail as { value: number }).value))}"></canzeltly-input>
-          <button type="submit">Create Game</button>
+          <button class="primary" type="submit">Create Game</button>
         </form>
       </main>
     `;

@@ -32,8 +32,8 @@ export class CanzeltlyModal extends LitElement {
 
       .modal-content {
         background: var(--color-secondary-surface);
-        border-radius: var(--radius-large);
-        box-shadow: var(--shadow-large);
+        border-radius: var(--border-radius-large);
+        box-shadow: var(--shadow-active);
         width: 40vw;
         max-height: 80vh;
         overflow-y: scroll;
@@ -59,11 +59,15 @@ export class CanzeltlyModal extends LitElement {
       }
 
       .close-button {
+        background: none;
+        box-shadow: none;
         color: var(--color-primary-text);
         transition: var(--transition-all);
       }
 
       .close-button:hover {
+        background: none;
+        box-shadow: none;
         color: var(--color-error);
       }
 

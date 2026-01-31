@@ -39,14 +39,34 @@ export const globalStyles = css`
     padding: var(--size-small) var(--size-medium);
     border: none;
     border-radius: var(--border-radius-medium);
-    background-color: var(--color-1);
+    background-color: var(--color-secondary-surface);
     color: var(--color-primary-text);
     cursor: pointer;
     transition: var(--transition-all);
     box-shadow: var(--shadow-normal);
   }
 
+  button.simple {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  button.primary {
+    background-color: var(--color-1);
+  }
+
+  button.warning {
+    background-color: var(--color-warning);
+  }
+
   button:hover {
+    background-color: var(--color-1);
     box-shadow: var(--shadow-hover);
+  }
+
+  button:disabled {
+    background-color: var(--color-secondary-surface) !important;
+    color: var(--color-secondary-text-muted) !important;
+    box-shadow: var(--shadow-normal) !important;
   }
 `;

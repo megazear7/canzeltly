@@ -39,18 +39,6 @@ export class CanzeltlyGamesList extends LitElement {
         align-items: center;
         margin-bottom: var(--size-large);
       }
-      .delete-button {
-        background: var(--color-error);
-        color: white;
-        border: none;
-        padding: var(--size-medium);
-        border-radius: var(--radius-small);
-        cursor: pointer;
-      }
-      .delete-button:disabled {
-        background: var(--color-disabled);
-        cursor: not-allowed;
-      }
       .games-list {
         display: flex;
         flex-direction: column;
@@ -94,7 +82,7 @@ export class CanzeltlyGamesList extends LitElement {
     return html`
       <div class="header">
         <h1>Saved Games</h1>
-        <button class="delete-button" ?disabled=${selectedCount === 0} @click=${this.handleDeleteSelected}>
+        <button class="warning" ?disabled=${selectedCount === 0} @click=${this.handleDeleteSelected}>
           Delete (${selectedCount})
         </button>
       </div>

@@ -21,13 +21,18 @@ export class CanzeltlyGamePreview extends LitElement {
         display: flex;
         align-items: center;
         padding: var(--size-medium);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-medium);
-        margin-bottom: var(--size-small);
-        background: var(--color-surface);
+        box-shadow: var(--shadow-normal);
+        border: var(--border-normal);
+        border-radius: var(--border-radius-medium);
+        margin-bottom: var(--size-large);
+        background: var(--color-secondary-surface);
+        transition: var(--transition-all);
+      }
+      .game-preview:hover {
+        box-shadow: var(--shadow-hover);
       }
       .game-preview.selected {
-        border-color: var(--color-1);
+        border: var(--border-active);
       }
       .checkbox {
         margin-right: var(--size-medium);
@@ -40,25 +45,6 @@ export class CanzeltlyGamePreview extends LitElement {
         display: flex;
         gap: var(--size-small);
       }
-      button {
-        padding: var(--size-small) var(--size-medium);
-        background: var(--color-primary);
-        color: white;
-        border: none;
-        border-radius: var(--radius-small);
-        cursor: pointer;
-      }
-      button:hover {
-        background: var(--color-primary-dark);
-      }
-      .kebab {
-        background: none;
-        color: var(--color-text);
-        padding: var(--size-small);
-      }
-      .kebab:hover {
-        background: var(--color-hover);
-      }
     `,
   ];
 
@@ -68,8 +54,8 @@ export class CanzeltlyGamePreview extends LitElement {
         <input type="checkbox" class="checkbox" .checked=${this.selected} @change=${this.handleCheckboxChange} />
         <span class="name">${this.gameState.name}</span>
         <div class="actions">
-          <button @click=${this.handlePlay}>Play Game</button>
-          <button class="kebab" @click=${this.handleKebab}>${kebabIcon}</button>
+          <button class="simple" @click=${this.handlePlay}>Play Game</button>
+          <button class="simple" @click=${this.handleKebab}>${kebabIcon}</button>
         </div>
       </div>
     `;

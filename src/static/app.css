@@ -22,8 +22,8 @@ html {
   /* Additional colors */
   --color-accent: #39a7e8;
   --color-error: #ff2121;
-  --color-danger: #ff311e;
-  --color-warning: #fdd848;
+  --color-danger: #ff2121;
+  --color-warning: #ff2121;
   --color-success: rgb(56, 173, 56);
 
   /* Sizes */

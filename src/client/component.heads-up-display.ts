@@ -57,9 +57,9 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
         <div slot="body">
           <h2>Game Menu</h2>
           <div class="menu-options">
-            <button @click=${this.saveGame}>Save Game</button>
-            <button @click=${this.saveAndExit}>Save and Exit</button>
-            <button @click=${this.exitWithoutSaving}>Exit without Saving</button>
+            <button class="simple" @click=${this.saveGame}>Save Game</button>
+            <button class="simple" @click=${this.saveAndExit}>Save and Exit</button>
+            <button class="simple" @click=${this.exitWithoutSaving}>Exit without Saving</button>
           </div>
         </div>
       </canzeltly-modal>
