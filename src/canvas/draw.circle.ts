@@ -1,5 +1,5 @@
-import { CircleState } from "../game/object.circle.js";
-import { AnyGameObjectState } from "../game/type.game.js";
+import { CircleState } from "../game/type.object.js";
+import { AnyGameObjectState } from "../game/type.object.js";
 
 export function drawCircle(obj: AnyGameObjectState, ctx: CanvasRenderingContext2D): void {
   const circle = CircleState.parse(obj);

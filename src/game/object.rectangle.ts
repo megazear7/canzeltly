@@ -1,14 +1,6 @@
-import z from "zod";
 import { Game } from "./game.js";
-import { GameObject, GameObjectCategory, GameObjectState } from "./game.object.js";
-
-export const RectangleState = GameObjectState.extend({
-  category: z.literal(GameObjectCategory.enum.Rectangle),
-  color: z.string(),
-  width: z.number(),
-  height: z.number(),
-});
-export type RectangleState = z.infer<typeof RectangleState>;
+import { GameObject } from "./game.object.js";
+import { RectangleState } from "./type.object.js";
 
 export class Rectangle extends GameObject<RectangleState> {
   override state: RectangleState;

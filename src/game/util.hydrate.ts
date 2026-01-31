@@ -1,8 +1,12 @@
-import { GameObject, GameObjectCategory } from "./game.object.js";
+import { GameObject } from "./game.object.js";
+import { GameObjectCategory } from "./type.object.js";
 import { Game } from "./game.js";
-import { Circle, CircleState } from "./object.circle.js";
-import { RectangleState, Rectangle } from "./object.rectangle.js";
-import { AnyGameObjectState, GameObjectLayer } from "./type.game.js";
+import { Circle } from "./object.circle.js";
+import { CircleState } from "./type.object.js";
+import { Rectangle } from "./object.rectangle.js";
+import { RectangleState } from "./type.object.js";
+import { AnyGameObjectState } from "./type.object.js";
+import { GameObjectLayer } from "./type.game.js";
 
 export function hydrateObjects(game: Game, layers: GameObjectLayer[]): GameObject<AnyGameObjectState>[][] {
   return layers.map((layer) => {

@@ -1,6 +1,6 @@
 import { Circle } from "./object.circle.js";
 import { Game, MAIN_OBJECT_LAYER_INDEX } from "./game.js";
-import { GameObjectCategory } from "./game.object.js";
+import { GameObjectCategory } from "./type.object.js";
 
 export class GameInput {
   game: Game;
@@ -44,6 +44,7 @@ export class GameInput {
       new Circle(this.game, {
         category: GameObjectCategory.enum.Circle,
         id: crypto.randomUUID(),
+        affectors: [],
         radius: 10,
         x: Math.random() * this.game.state.world.width,
         y: Math.random() * this.game.state.world.height,

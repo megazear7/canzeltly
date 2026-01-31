@@ -1,5 +1,5 @@
-import { RectangleState } from "../game/object.rectangle.js";
-import { AnyGameObjectState } from "../game/type.game.js";
+import { RectangleState } from "../game/type.object.js";
+import { AnyGameObjectState } from "../game/type.object.js";
 
 export function drawSquare(obj: AnyGameObjectState, ctx: CanvasRenderingContext2D): void {
   const square = RectangleState.parse(obj);

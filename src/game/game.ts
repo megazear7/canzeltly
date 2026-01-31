@@ -1,9 +1,11 @@
 import z from "zod";
-import { GameObject, GameObjectId } from "./game.object.js";
+import { GameObject } from "./game.object.js";
+import { GameObjectId } from "./type.object.js";
 import { hydrateObjects } from "./util.hydrate.js";
 import { GameInput } from "./game.input.js";
 import { newGame } from "./util.new-game.js";
-import { AnyGameObjectState, GameId, GameName, GameObjectLayer } from "./type.game.js";
+import { GameId, GameName, GameObjectLayer } from "./type.game.js";
+import { AnyGameObjectState } from "./type.object.js";
 
 export const BACKGROUND_ENVIRONMENT_LAYER_INDEX = 0;
 export const MAIN_OBJECT_LAYER_INDEX = 1;

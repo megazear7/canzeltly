@@ -1,8 +1,8 @@
 import { Game } from "../game/game.js";
-import { GameObjectCategory } from "../game/game.object";
-import { CircleState } from "../game/object.circle.js";
-import { RectangleState } from "../game/object.rectangle.js";
-import { AnyGameObjectState } from "../game/type.game.js";
+import { GameObjectCategory } from "../game/type.object.js";
+import { CircleState } from "../game/type.object.js";
+import { RectangleState } from "../game/type.object.js";
+import { AnyGameObjectState } from "../game/type.object.js";
 
 export function mapToCanvas(game: Game, canvas: HTMLCanvasElement, obj: AnyGameObjectState): AnyGameObjectState {
   const scale = canvas.width / game.state.viewport.width;

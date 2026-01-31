@@ -1,6 +1,6 @@
 import { Game } from "../game/game.js";
-import { GameObjectCategory } from "../game/game.object.js";
-import { AnyGameObjectState } from "../game/type.game.js";
+import { GameObjectCategory } from "../game/type.object.js";
+import { AnyGameObjectState } from "../game/type.object.js";
 import { drawCircle } from "./draw.circle.js";
 import { drawSquare } from "./draw.rectangle.js";
 import { mapToCanvas } from "./util.map-to-canvas.js";

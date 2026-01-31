@@ -1,6 +1,7 @@
 import z from "zod";
-import { Circle, CircleState } from "./object.circle.js";
-import { Rectangle, RectangleState } from "./object.rectangle.js";
+import { Circle } from "./object.circle.js";
+import { Rectangle } from "./object.rectangle.js";
+import { AnyGameObjectState } from "./type.object.js";
 
 export const GameName = z.string().min(1);
 export type GameName = z.infer<typeof GameName>;
@@ -10,9 +11,6 @@ export const GameId = z
   .regex(/^[a-z0-9-]+$/)
   .default("default-game");
 export type GameId = z.infer<typeof GameId>;
-
-export const AnyGameObjectState = CircleState.or(RectangleState);
-export type AnyGameObjectState = z.infer<typeof AnyGameObjectState>;
 
 export const AnyGameObject = z.union([z.instanceof(Circle), z.instanceof(Rectangle)]);
 export type AnyGameObject = z.infer<typeof AnyGameObject>;

@@ -4,8 +4,8 @@ import { globalStyles } from "./styles.global.js";
 import "./component.input.js";
 import { GameState } from "../game/game.js";
 import { saveGameState } from "./util.storage.js";
-import { CircleState } from "../game/object.circle.js";
-import { GameObjectCategory } from "../game/game.object.js";
+import { CircleState } from "../game/type.object.js";
+import { GameObjectCategory } from "../game/type.object.js";
 import { newGame } from "../game/util.new-game.js";
 
 @customElement("canzeltly-create-game")
@@ -86,6 +86,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
     const circles: CircleState[] = Array.from({ length: this.numCircles }, () => ({
       category: GameObjectCategory.enum.Circle,
       id: crypto.randomUUID(),
+      affectors: [],
       x: Math.random() * this.worldWidth,
       y: Math.random() * this.worldHeight,
       radius: 10 + Math.random() * 20,
@@ -111,8 +112,8 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       controls: {
         scrollSpeed: 10,
       },
-      layers: [circles],
     };
+    gameState.layers[1].push(...circles);
     // Save
     saveGameState(gameState);
     // Dispatch event

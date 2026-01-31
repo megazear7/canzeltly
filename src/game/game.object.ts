@@ -1,21 +1,8 @@
-import z from "zod";
 import { Game } from "./game.js";
-
-export const GameObjectCategory = z.enum(["Circle", "Rectangle", "Unknown"]);
-export type GameObjectCategory = z.infer<typeof GameObjectCategory>;
-
-export const GameObjectId = z.uuid();
-export type GameObjectId = z.infer<typeof GameObjectId>;
-
-export const GameObjectState = z.object({
-  category: GameObjectCategory,
-  id: GameObjectId,
-  x: z.number(),
-  y: z.number(),
-  dx: z.number(),
-  dy: z.number(),
-});
-export type GameObjectState = z.infer<typeof GameObjectState>;
+import { GameObjectState } from "./type.object.js";
+import { bounce } from "./affector.bounce.js";
+import { AffectorCategory } from "./game.affector.js";
+import { velocity } from "./affector.velocity.js";
 
 export abstract class GameObject<T extends GameObjectState> {
   game: Game;
@@ -40,7 +27,9 @@ export abstract class GameObject<T extends GameObjectState> {
   }
 
   updateState(): void {
-    this.state.x += this.state.dx;
-    this.state.y += this.state.dy;
+    this.state.affectors.forEach((affector) => {
+      if (affector.category === AffectorCategory.enum.Bounce) bounce(this);
+      if (affector.category === AffectorCategory.enum.Velocity) velocity(this);
+    });
   }
 }

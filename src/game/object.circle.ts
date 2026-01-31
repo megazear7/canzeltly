@@ -1,13 +1,6 @@
-import z from "zod";
 import { Game } from "./game.js";
-import { GameObject, GameObjectCategory, GameObjectState } from "./game.object.js";
-
-export const CircleState = GameObjectState.extend({
-  category: z.literal(GameObjectCategory.enum.Circle),
-  color: z.string(),
-  radius: z.number(),
-});
-export type CircleState = z.infer<typeof CircleState>;
+import { GameObject } from "./game.object.js";
+import { CircleState } from "./type.object.js";
 
 export class Circle extends GameObject<CircleState> {
   override state: CircleState;
