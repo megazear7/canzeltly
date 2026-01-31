@@ -24,13 +24,15 @@ export function newGame(width: number = 1000, height: number = 1000): GameState 
       width: width,
       height: height,
     },
-    viewport: {
-      x: width / 2,
-      y: height / 2,
-      // Start zoomed out to show the whole world and allow the zoom constraints to take effect
-      width: width * 100,
-      height: height * 100,
-    },
+    viewports: [
+      {
+        x: width / 2,
+        y: height / 2,
+        // Start zoomed out to show the whole world and allow the zoom constraints to take effect
+        width: width * 100,
+        height: height * 100,
+      },
+    ],
     controls: {
       scrollSpeed: 10,
     },

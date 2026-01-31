@@ -91,7 +91,7 @@ export class CanzeltlyPlay extends LitElement {
           this.game.alignViewport(this.canvas.width / this.canvas.height);
           this.game.input.handleKeys(this.pressedKeys);
           this.game.update();
-          draw(this.game, this.canvas);
+          draw(this.game, this.canvas, 0);
           this.drawCount++;
           lastDraw = currentTime;
         }

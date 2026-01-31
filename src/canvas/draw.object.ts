@@ -5,8 +5,13 @@ import { drawCircle } from "./draw.circle.js";
 import { drawSquare } from "./draw.rectangle.js";
 import { mapToCanvas } from "./util.map-to-canvas.js";
 
-export function drawObject(game: Game, obj: AnyGameObjectState, ctx: CanvasRenderingContext2D): void {
-  obj = mapToCanvas(game, ctx.canvas, obj);
+export function drawObject(
+  game: Game,
+  obj: AnyGameObjectState,
+  ctx: CanvasRenderingContext2D,
+  viewportIndex: number,
+): void {
+  obj = mapToCanvas(game.state.viewports[viewportIndex], ctx.canvas, obj);
 
   switch (obj.category) {
     case GameObjectCategory.enum.Circle:

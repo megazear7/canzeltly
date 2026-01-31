@@ -1,7 +1,7 @@
 import { Game } from "../game/game";
 import { drawObject } from "./draw.object";
 
-export function draw(game: Game, canvas: HTMLCanvasElement): void {
+export function draw(game: Game, canvas: HTMLCanvasElement, viewportIndex: number): void {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
@@ -18,6 +18,6 @@ export function draw(game: Game, canvas: HTMLCanvasElement): void {
 
   // Render objects
   game.layers.forEach((layer) => {
-    layer.forEach((obj) => drawObject(game, obj.state, ctx));
+    layer.forEach((obj) => drawObject(game, obj.state, ctx, viewportIndex));
   });
 }

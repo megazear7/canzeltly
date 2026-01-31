@@ -33,7 +33,7 @@ export const GameState = z.object({
   name: GameName,
   id: GameId,
   world: World,
-  viewport: Viewport,
+  viewports: z.array(Viewport),
   controls: Controls,
   layers: z.array(GameObjectLayer),
 });
@@ -62,7 +62,9 @@ export class Game {
 
   alignViewport(targetAspectRatio: number): void {
     // Adjust viewport height to match the target aspect ratio while keeping width the same
-    this.state.viewport.height = this.state.viewport.width / targetAspectRatio;
+    this.state.viewports.forEach((viewport) => {
+      viewport.height = viewport.width / targetAspectRatio;
+    });
 
     // Ensure viewport constraints are still respected after adjustment
     this.input.applyConstraints();
