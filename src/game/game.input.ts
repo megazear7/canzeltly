@@ -102,7 +102,7 @@ export class GameInput {
 
   applyZoomOutConstraints(): void {
     // Calculate the maximum viewport size to contain the entire world with a 10% margin
-    const margin = 1.1;
+    const margin = 1.5;
     const world = this.game.state.world;
     const aspectRatio = this.game.state.viewport.width / this.game.state.viewport.height;
     const maxWidth = Math.max(margin * world.width, margin * world.height * aspectRatio);

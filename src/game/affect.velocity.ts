@@ -6,7 +6,7 @@ export const velocity: affect = function (obj: GameObject<GameObjectState>): voi
   obj.state.affects
     .filter((affect) => affect.category === AffectCategory.enum.Velocity)
     .forEach((affect) => {
-      const vel = VelocityState.parse(affect);
+      const vel = affect as VelocityState;
       obj.state.x += vel.dx;
       obj.state.y += vel.dy;
     });

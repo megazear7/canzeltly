@@ -72,3 +72,28 @@ export function randomBouncingCircleState(game: GameState): CircleState {
     color: `hsl(${Math.random() * 360}, 70%, 50%)`,
   };
 }
+
+export function randomGravityCircles(game: GameState): CircleState {
+  return {
+    category: GameObjectCategory.enum.Circle,
+    id: crypto.randomUUID(),
+    affects: [
+      {
+        category: AffectCategory.enum.Gravity,
+        strength: 0.1 + Math.random() * 0.1,
+      },
+      {
+        category: AffectCategory.enum.Velocity,
+        dx: 0,
+        dy: 0,
+      },
+      {
+        category: AffectCategory.enum.Bounce,
+      },
+    ],
+    x: Math.random() * game.world.width,
+    y: Math.random() * game.world.height,
+    radius: 10 + Math.random() * 20,
+    color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+  };
+}

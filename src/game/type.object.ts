@@ -32,7 +32,13 @@ export const TargetState = AffectState.extend({
 });
 export type TargetState = z.infer<typeof TargetState>;
 
-export const AnyAffectState = z.union([BounceState, VelocityState, TargetState]);
+export const GravityState = AffectState.extend({
+  category: z.literal(AffectCategory.enum.Gravity),
+  strength: z.number(),
+});
+export type GravityState = z.infer<typeof GravityState>;
+
+export const AnyAffectState = z.union([BounceState, VelocityState, TargetState, GravityState]);
 export type AnyAffectState = z.infer<typeof AnyAffectState>;
 
 export const GameObjectState = z.object({
