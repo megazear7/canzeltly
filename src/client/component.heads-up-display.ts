@@ -66,7 +66,7 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
     return html`
       <div class="hud">
         <button @click=${this.openModal()}>Menu</button>
-        <div class="fps ${this.fps && this.fps < 55 ? "low" : ""}">${this.fps ? this.fps.toFixed(0) : ""} FPS</div>
+        <div class="fps ${this.fps && this.fps < 30 ? "low" : ""}">${this.fps ? this.fps.toFixed(0) : ""} FPS</div>
       </div>
       <canzeltly-modal @modal-opening=${this.handleModalOpening} @modal-closing=${this.handleModalClosing}>
         <div slot="body">

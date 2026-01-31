@@ -14,6 +14,7 @@ export type AffectState = z.infer<typeof AffectState>;
 
 export const BounceState = AffectState.extend({
   category: z.literal(AffectCategory.enum.Bounce),
+  loss: z.number(),
 });
 export type BounceState = z.infer<typeof BounceState>;
 
