@@ -1,7 +1,7 @@
 import { GameState } from "./game.js";
 import { GameObjectCategory } from "./type.object.js";
 import { RectangleState } from "./type.object.js";
-import { randomBouncingCircleState } from "./object.circle.js";
+import { randomMovingCircleState } from "./object.circle.js";
 
 export function newGame(width: number = 1000, height: number = 1000): GameState {
   const background: RectangleState[] = [
@@ -38,8 +38,8 @@ export function newGame(width: number = 1000, height: number = 1000): GameState 
       [], // Main objects layer
     ],
   };
-  for (let i = 0; i < 10; i++) {
-    game.layers[1].push(randomBouncingCircleState(game));
+  for (let i = 0; i < 5; i++) {
+    game.layers[1].push(randomMovingCircleState(game));
   }
   return game;
 }

@@ -24,7 +24,15 @@ export const VelocityState = AffectorState.extend({
 });
 export type VelocityState = z.infer<typeof VelocityState>;
 
-export const AnyAffectorState = z.union([BounceState, VelocityState]);
+export const TargetState = AffectorState.extend({
+  category: z.literal(AffectorCategory.enum.Target),
+  x: z.number(),
+  y: z.number(),
+  acceleration: z.number(),
+});
+export type TargetState = z.infer<typeof TargetState>;
+
+export const AnyAffectorState = z.union([BounceState, VelocityState, TargetState]);
 export type AnyAffectorState = z.infer<typeof AnyAffectorState>;
 
 export const GameObjectState = z.object({

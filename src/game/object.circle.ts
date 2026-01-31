@@ -11,15 +11,6 @@ export class Circle extends GameObject<CircleState> {
     this.game = game;
     this.state = state;
   }
-
-  isInWorld(): boolean {
-    return (
-      this.state.x + this.state.radius >= 0 &&
-      this.state.x - this.state.radius <= this.game.state.world.width &&
-      this.state.y + this.state.radius >= 0 &&
-      this.state.y - this.state.radius <= this.game.state.world.height
-    );
-  }
 }
 
 export function randomCircleState(game: Game): CircleState {
@@ -43,6 +34,15 @@ export function randomMovingCircleState(game: GameState): CircleState {
         category: AffectorCategory.enum.Velocity,
         dx: (Math.random() - 0.5) * 4,
         dy: (Math.random() - 0.5) * 4,
+      },
+      {
+        category: AffectorCategory.enum.Target,
+        x: Math.random() * game.world.width,
+        y: Math.random() * game.world.height,
+        acceleration: 0.2 + Math.random() * 0.1,
+      },
+      {
+        category: AffectorCategory.enum.Bounce,
       },
     ],
     x: Math.random() * game.world.width,

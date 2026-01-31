@@ -1,7 +1,7 @@
 ---
 agent: 'agent'
 model: Grok Code Fast 1
-tools: ['vscode', 'execute', 'read']
+tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'agent', 'todo']
 description: 'Begin planning new work'
 ---
 

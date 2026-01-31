@@ -11,7 +11,7 @@ export class Rectangle extends GameObject<RectangleState> {
     this.state = state;
   }
 
-  isInWorld(): boolean {
+  override isInWorld(): boolean {
     return (
       this.state.x + this.state.width >= 0 &&
       this.state.x <= this.game.state.world.width &&

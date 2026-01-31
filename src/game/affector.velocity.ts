@@ -2,7 +2,7 @@ import { GameObject } from "./game.object.js";
 import { GameObjectState, VelocityState } from "./type.object.js";
 import { affector, AffectorCategory } from "./game.affector.js";
 
-export const velocity: affector = function (obj: GameObject<GameObjectState>): void { 
+export const velocity: affector = function (obj: GameObject<GameObjectState>): void {
   obj.state.affectors
     .filter((affector) => affector.category === AffectorCategory.enum.Velocity)
     .forEach((affector) => {
