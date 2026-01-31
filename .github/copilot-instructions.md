@@ -80,3 +80,4 @@
  - Use the chrome-devtools extension for debugging client-side code and checking console errors, but only when absolutely necessary.
  - If the changes are large, first come up with a development plan and save it in `.github/prompts/work-plan.md` before starting.
  - When work plans are needed, first ask me to review it before starting the implementation.
+ - Always check `src/static/app.css` for css variable names. Do not refer to non-existent css variables.

@@ -22,7 +22,9 @@ export class CanzeltlyInput extends LitElement {
         display: block;
         margin-bottom: var(--size-small);
       }
-      input, select, textarea {
+      input,
+      select,
+      textarea {
         width: 100%;
         padding: var(--size-small) var(--size-medium);
         font-size: var(--font-medium);
@@ -31,7 +33,9 @@ export class CanzeltlyInput extends LitElement {
         background-color: var(--color-secondary-surface);
         color: var(--color-secondary-text);
       }
-      input:focus, select:focus, textarea:focus {
+      input:focus,
+      select:focus,
+      textarea:focus {
         border: var(--border-active);
         box-shadow: var(--shadow-active);
         outline: none;

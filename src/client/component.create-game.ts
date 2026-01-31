@@ -5,8 +5,8 @@ import "./component.input.js";
 import { GameState } from "../game/game.js";
 import { saveGameState } from "./util.storage.js";
 import { CircleState } from "../game/object.circle.js";
-import { RectangleState } from "../game/object.rectangle.js";
 import { GameObjectCategory } from "../game/game.object.js";
+import { newGame } from "../game/util.new-game.js";
 
 @customElement("canzeltly-create-game")
 export class CanzeltlyCreateGameComponent extends LitElement {
@@ -82,19 +82,6 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       alert("Invalid game name");
       return;
     }
-    const background: RectangleState[] = [
-      {
-        category: GameObjectCategory.enum.Rectangle,
-        id: crypto.randomUUID(),
-        x: 0,
-        y: 0,
-        width: this.worldWidth,
-        height: this.worldHeight,
-        color: "#53744c",
-        dx: 0,
-        dy: 0,
-      },
-    ];
     // Create circles
     const circles: CircleState[] = Array.from({ length: this.numCircles }, () => ({
       category: GameObjectCategory.enum.Circle,
@@ -108,6 +95,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
     }));
     // Create game state
     const gameState: GameState = {
+      ...newGame(),
       name: this.gameName,
       id,
       world: {
@@ -123,7 +111,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       controls: {
         scrollSpeed: 10,
       },
-      layers: [background, circles],
+      layers: [circles],
     };
     // Save
     saveGameState(gameState);
