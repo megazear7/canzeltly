@@ -3,6 +3,7 @@ import { GameId } from "../game/type.game.js";
 import { slugify } from "../shared/util.slug.js";
 
 const STORAGE_KEY = "canzeltly_saved_games";
+const PLAYER_ASSIGNMENTS_KEY = "canzeltly_player_assignments";
 
 export function saveGameState(gameState: GameState): void {
   const savedGames = getAllGameStates();
@@ -50,4 +51,27 @@ export function renameGameState(oldId: GameId, newName: string): void {
   const newId = slugify(newName);
   const newGame = { ...game, name: newName, id: newId };
   saveGameState(newGame);
+}
+
+export function getPlayerAssignment(gameId: GameId): string | undefined {
+  const assignments = getAllPlayerAssignments();
+  return assignments[gameId];
+}
+
+export function setPlayerAssignment(gameId: GameId, playerId: string): void {
+  const assignments = getAllPlayerAssignments();
+  assignments[gameId] = playerId;
+  localStorage.setItem(PLAYER_ASSIGNMENTS_KEY, JSON.stringify(assignments));
+}
+
+export function getAllPlayerAssignments(): Record<string, string> {
+  const stored = localStorage.getItem(PLAYER_ASSIGNMENTS_KEY);
+  if (!stored) return {};
+  try {
+    const parsed = JSON.parse(stored);
+    return parsed;
+  } catch (error) {
+    console.error("Error parsing player assignments:", error);
+    return {};
+  }
 }

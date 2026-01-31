@@ -9,15 +9,16 @@ export function mapToCanvas(
   canvas: HTMLCanvasElement,
   obj: AnyGameObjectState,
 ): AnyGameObjectState {
-  const scale = canvas.width / viewport.width;
-  const viewportCenterX = (viewport.x - viewport.width / 2) * scale;
-  const viewportCenterY = (viewport.y - viewport.height / 2) * scale;
-  const x = obj.x * scale - viewportCenterX;
-  const y = obj.y * scale - viewportCenterY;
+  const scaleX = canvas.width / viewport.width;
+  const scaleY = canvas.height / viewport.height;
+  const viewportCenterX = (viewport.x - viewport.width / 2) * scaleX;
+  const viewportCenterY = (viewport.y - viewport.height / 2) * scaleY;
+  const x = obj.x * scaleX - viewportCenterX;
+  const y = obj.y * scaleY - viewportCenterY;
 
   if (obj.category === GameObjectCategory.enum.Circle) {
     const circle = obj as CircleState;
-    const size = circle.radius ? circle.radius * scale : circle.radius;
+    const size = circle.radius * scaleX; // Use scaleX for radius
     return {
       ...obj,
       x,
@@ -26,8 +27,8 @@ export function mapToCanvas(
     };
   } else if (obj.category === GameObjectCategory.enum.Rectangle) {
     const rectangle = obj as RectangleState;
-    const width = rectangle.width ? rectangle.width * scale : rectangle.width;
-    const height = rectangle.height ? rectangle.height * scale : rectangle.height;
+    const width = rectangle.width * scaleX;
+    const height = rectangle.height * scaleY;
     return {
       ...obj,
       x,
@@ -38,4 +39,19 @@ export function mapToCanvas(
   } else {
     throw new Error(`Unknown object category`);
   }
+}
+
+export function mapFromCanvas(
+  viewport: Viewport,
+  canvas: HTMLCanvasElement,
+  canvasX: number,
+  canvasY: number,
+): { x: number; y: number } {
+  const scaleX = canvas.width / viewport.width;
+  const scaleY = canvas.height / viewport.height;
+  const viewportCenterX = viewport.x - viewport.width / 2;
+  const viewportCenterY = viewport.y - viewport.height / 2;
+  const worldX = (canvasX + viewportCenterX * scaleX) / scaleX;
+  const worldY = (canvasY + viewportCenterY * scaleY) / scaleY;
+  return { x: worldX, y: worldY };
 }

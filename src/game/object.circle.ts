@@ -65,7 +65,7 @@ export function randomBouncingCircleState(game: GameState): CircleState {
       },
       {
         category: AffectCategory.enum.Bounce,
-        loss: 2,
+        loss: 1,
       },
     ],
     x: Math.random() * game.world.width,
@@ -91,7 +91,7 @@ export function randomGravityCircles(game: GameState): CircleState {
       },
       {
         category: AffectCategory.enum.Bounce,
-        loss: 2,
+        loss: 1,
       },
     ],
     x: Math.random() * game.world.width,

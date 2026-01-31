@@ -5,11 +5,11 @@ import { CanzeltlyAppProvider } from "./provider.app.js";
 
 @customElement("canzeltly-play-page")
 export class CanzeltlyPlayPage extends CanzeltlyAppProvider {
-  params = parseRouteParams("/play/:id", window.location.pathname);
+  params = parseRouteParams("/play/game/:gameId/player/:playerId", window.location.pathname);
 
   override render(): TemplateResult {
     return html`
-      <canzeltly-play .gameId="${this.params.id}"></canzeltly-play>
+      <canzeltly-play .gameId="${this.params.gameId}" .playerId="${this.params.playerId}"></canzeltly-play>
     `;
   }
 }

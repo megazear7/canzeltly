@@ -3,9 +3,9 @@ import { GameObject } from "./game.object.js";
 import { GameObjectId } from "./type.object.js";
 import { hydrateObjects } from "./util.hydrate.js";
 import { GameInput } from "./game.input.js";
-import { newGame } from "./util.new-game.js";
 import { GameId, GameName, GameObjectLayer } from "./type.game.js";
 import { AnyGameObjectState } from "./type.object.js";
+import { Player } from "../shared/type.player.js";
 
 export const BACKGROUND_ENVIRONMENT_LAYER_INDEX = 0;
 export const MAIN_OBJECT_LAYER_INDEX = 1;
@@ -36,6 +36,7 @@ export const GameState = z.object({
   viewports: z.array(Viewport),
   controls: Controls,
   layers: z.array(GameObjectLayer),
+  players: z.array(Player),
 });
 export type GameState = z.infer<typeof GameState>;
 
@@ -45,8 +46,8 @@ export class Game {
   input: GameInput;
   paused: boolean = false;
 
-  constructor(state?: GameState) {
-    this.state = state || newGame();
+  constructor(state: GameState) {
+    this.state = state;
     this.layers = hydrateObjects(this, this.state.layers);
     this.input = new GameInput(this);
   }

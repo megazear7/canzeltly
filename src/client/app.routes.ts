@@ -7,7 +7,7 @@ export const routes = [
   },
   {
     name: RouteName.enum.play,
-    path: "/play/:id",
+    path: "/play/game/:gameId/player/:playerId",
   },
   {
     name: RouteName.enum.create_game,

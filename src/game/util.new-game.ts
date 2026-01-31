@@ -2,8 +2,19 @@ import { GameState } from "./game.js";
 import { GameObjectCategory } from "./type.object.js";
 import { RectangleState } from "./type.object.js";
 import { randomBouncingCircleState } from "./object.circle.js";
+import { Player } from "../shared/type.player.js";
 
-export function newGame(width: number = 1000, height: number = 1000): GameState {
+export function newGame({
+  width = 1000,
+  height = 1000,
+  playerId = crypto.randomUUID(),
+}: {
+  width?: number,
+  height?: number,
+  playerId?: string,
+} = {}): GameState {
+  const circleId = crypto.randomUUID();
+
   const background: RectangleState[] = [
     {
       category: GameObjectCategory.enum.Rectangle,
@@ -17,6 +28,16 @@ export function newGame(width: number = 1000, height: number = 1000): GameState 
       color: "#53744c",
     },
   ];
+
+  const players: Player[] = [
+    {
+      viewportIndex: 0,
+      playerId,
+      name: undefined,
+      selectedObjects: [circleId],
+    },
+  ];
+
   const game: GameState = {
     name: "DefaultGame",
     id: "default-game",
@@ -40,9 +61,19 @@ export function newGame(width: number = 1000, height: number = 1000): GameState 
       [...background], // Background environment layer
       [], // Main objects layer
     ],
+    players,
   };
-  for (let i = 0; i < 5; i++) {
-    game.layers[1].push(randomBouncingCircleState(game));
+
+  // Create a circle for the player
+  const circle = randomBouncingCircleState(game);
+  circle.id = circleId;
+  circle.color = "#00FF00"; // Green for player circle
+  game.layers[1].push(circle);
+
+  for (let i = 0; i < 4; i++) {
+    const extraCircle = randomBouncingCircleState(game);
+    extraCircle.color = "#FF0000"; // Red for other circles
+    game.layers[1].push(extraCircle);
   }
   return game;
 }

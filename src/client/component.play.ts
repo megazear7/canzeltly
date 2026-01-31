@@ -6,11 +6,18 @@ import { draw } from "../canvas/draw.canvas.js";
 import { loadGameState } from "./util.storage.js";
 import { CanzeltlyHeadsUpDisplay } from "./component.heads-up-display.js";
 import "./component.heads-up-display.js";
+import { mapFromCanvas } from "../canvas/util.map-to-canvas.js";
+import { AffectCategory } from "../game/game.affect.js";
+import { TargetState } from "../game/type.object.js";
+import { newGame } from "../game/util.new-game.js";
 
 @customElement("canzeltly-play")
 export class CanzeltlyPlay extends LitElement {
   @property({ type: String })
   gameId: string = "";
+
+  @property({ type: String })
+  playerId: string = "";
 
   static override styles = [
     globalStyles,
@@ -46,8 +53,8 @@ export class CanzeltlyPlay extends LitElement {
     const gameState = loadGameState(this.gameId);
     if (gameState) {
       this.game = new Game(gameState);
-    } else if (this.gameId) {
-      this.game = new Game();
+    } else if (this.gameId && this.playerId) {
+      this.game = new Game(newGame({ playerId: this.playerId }));
       this.game.state.id = this.gameId;
     }
 
@@ -66,7 +73,6 @@ export class CanzeltlyPlay extends LitElement {
   }
 
   private startGameLoop(): void {
-    this.attachGameInputListeners();
     let lastDraw = performance.now();
     let lastMajorUpdate = performance.now();
     let once = true;
@@ -76,6 +82,7 @@ export class CanzeltlyPlay extends LitElement {
         this.canvas.width = this.canvas.clientWidth;
         this.canvas.height = this.canvas.clientHeight;
         this.game.alignViewport(this.canvas.width / this.canvas.height);
+        this.attachGameInputListeners();
       }
       if (this.canvas && this.game) {
         if (currentTime - lastMajorUpdate >= 1000 && this.game) {
@@ -91,7 +98,10 @@ export class CanzeltlyPlay extends LitElement {
           this.game.alignViewport(this.canvas.width / this.canvas.height);
           this.game.input.handleKeys(this.pressedKeys);
           this.game.update();
-          draw(this.game, this.canvas, 0);
+          // Get viewPortIndex from the "currentPlayer" .
+          const currentPlayer = this.game.state.players.find(p => p.playerId === this.playerId);
+          const viewPortIndex = currentPlayer ? currentPlayer.viewportIndex : 0;
+          draw(this.game, this.canvas, viewPortIndex);
           this.drawCount++;
           lastDraw = currentTime;
         }
@@ -105,12 +115,18 @@ export class CanzeltlyPlay extends LitElement {
     window.addEventListener("keydown", this.keyDown.bind(this));
     window.addEventListener("keyup", this.keyUp.bind(this));
     window.addEventListener("wheel", this.preventScroll.bind(this), { passive: false });
+    if (this.canvas) {
+      window.addEventListener("click", this.handleCanvasClick.bind(this));
+    }
   }
 
   private detachGameInputListeners(): void {
     window.removeEventListener("keydown", this.keyDown.bind(this));
     window.removeEventListener("keyup", this.keyUp.bind(this));
     window.removeEventListener("wheel", this.preventScroll.bind(this));
+    if (this.canvas) {
+      window.removeEventListener("click", this.handleCanvasClick.bind(this));
+    }
   }
 
   private keyDown(event: KeyboardEvent): void {
@@ -126,5 +142,34 @@ export class CanzeltlyPlay extends LitElement {
 
   private preventScroll(event: WheelEvent): void {
     event.preventDefault();
+  }
+
+  private handleCanvasClick(event: MouseEvent): void {
+    if (!this.canvas || !this.game) return;
+    const rect = this.canvas.getBoundingClientRect();
+    const canvasX = event.clientX - rect.left;
+    const canvasY = event.clientY - rect.top;
+    const currentPlayer = this.game.state.players.find(p => p.playerId === this.playerId);
+    const viewportIndex = currentPlayer ? currentPlayer.viewportIndex : 0;
+    const viewport = this.game.state.viewports[viewportIndex];
+    const worldPos = mapFromCanvas(viewport, this.canvas, canvasX, canvasY);
+    if (!currentPlayer) return;
+    currentPlayer.selectedObjects.forEach(objId => {
+      const obj = this.game!.layers.flat().find(o => o.state.id === objId);
+      if (obj) {
+        const targetAffect = obj.state.affects.find(a => a.category === AffectCategory.enum.Target)
+        if (targetAffect) {
+          (targetAffect as TargetState).x = worldPos.x;
+          (targetAffect as TargetState).y = worldPos.y;
+        } else {          
+          obj.state.affects.push({
+            category: AffectCategory.enum.Target,
+            x: worldPos.x,
+            y: worldPos.y,
+            acceleration: 0.1,
+          } as TargetState);
+        }
+      }
+    });
   }
 }

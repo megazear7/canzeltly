@@ -2,6 +2,7 @@ import { html, css, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { globalStyles } from "./styles.global.js";
 import { GameState } from "../game/game.js";
+import { getPlayerAssignment } from "./util.storage.js";
 import { NavigationEvent } from "./event.navigation.js";
 import { dispatch } from "./util.events.js";
 import { kebabIcon } from "./icons.js";
@@ -73,7 +74,15 @@ export class CanzeltlyGamePreview extends LitElement {
   }
 
   private handlePlay(): void {
-    dispatch(this, NavigationEvent({ path: `/play/${this.gameState.id}` }));
+    const playerId = getPlayerAssignment(this.gameState.id);
+    if (playerId) {
+      dispatch(this, NavigationEvent({ path: `/play/game/${this.gameState.id}/player/${playerId}` }));
+    } else if (this.gameState.players.length > 0) {
+      const playerId = this.gameState.players[0].playerId;
+      dispatch(this, NavigationEvent({ path: `/play/game/${this.gameState.id}/player/${playerId}` }));
+    } else {
+      alert("No player assigned to this game and no players exist within the game.");
+    }
   }
 
   private handleKebab(): void {

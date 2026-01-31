@@ -12,7 +12,7 @@ export class CanzeltlyCreateGamePage extends CanzeltlyAppProvider {
   }
 
   private handleGameCreated(e: CustomEvent): void {
-    const { id } = e.detail as { id: string };
-    window.location.assign(`/play/${id}`);
+    const { id, playerId } = e.detail as { id: string; playerId: string };
+    window.location.assign(`/play/game/${id}/player/${playerId}`);
   }
 }

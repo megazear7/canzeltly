@@ -2,7 +2,7 @@ import { html, css, TemplateResult, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { globalStyles } from "./styles.global.js";
 import { GameState } from "../game/game.js";
-import { saveGameState } from "./util.storage.js";
+import { saveGameState, setPlayerAssignment } from "./util.storage.js";
 import { CircleState } from "../game/type.object.js";
 import { newGame } from "../game/util.new-game.js";
 import { randomBouncingCircleState } from "../game/object.circle.js";
@@ -83,8 +83,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       return;
     }
     // Create game state
+    const baseGameState = newGame({ width: this.worldWidth, height: this.worldHeight, playerId: crypto.randomUUID() });
     const gameState: GameState = {
-      ...newGame(this.worldWidth, this.worldHeight),
+      ...baseGameState,
       name: this.gameName,
       id,
       world: {
@@ -95,12 +96,19 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         scrollSpeed: 10,
       },
     };
-    gameState.layers[1] = [];
+    // Keep the player's circle and add extra circles
+    const playerCircle = gameState.layers[1][0];
+    playerCircle.color = "#00FF00"; // Green for player circle
+    gameState.layers[1] = [playerCircle];
     for (let i = 0; i < this.numCircles; i++) {
       const circleState: CircleState = randomBouncingCircleState(gameState);
+      circleState.color = "#FF0000"; // Red for other circles
       gameState.layers[1].push(circleState);
     }
     saveGameState(gameState);
-    this.dispatchEvent(new CustomEvent("game-created", { detail: { id } }));
+    // Set player assignment
+    const playerId = gameState.players[0].playerId;
+    setPlayerAssignment(id, playerId);
+    this.dispatchEvent(new CustomEvent("game-created", { detail: { id, playerId } }));
   }
 }
