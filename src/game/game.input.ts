@@ -43,6 +43,7 @@ export class GameInput {
     this.game.layers[MAIN_OBJECT_LAYER_INDEX].push(
       new Circle(this.game, {
         category: GameObjectCategory.enum.Circle,
+        id: crypto.randomUUID(),
         radius: 10,
         x: Math.random() * this.game.state.world.width,
         y: Math.random() * this.game.state.world.height,

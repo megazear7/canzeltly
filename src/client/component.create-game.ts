@@ -6,6 +6,7 @@ import { GameState } from "../game/game.js";
 import { saveGameState } from "./util.storage.js";
 import { CircleState } from "../game/object.circle.js";
 import { RectangleState } from "../game/object.rectangle.js";
+import { GameObjectCategory } from "../game/game.object.js";
 
 @customElement("canzeltly-create-game")
 export class CanzeltlyCreateGameComponent extends LitElement {
@@ -98,9 +99,10 @@ export class CanzeltlyCreateGameComponent extends LitElement {
     }
     const background: RectangleState[] = [
       {
+        category: GameObjectCategory.enum.Rectangle,
+        id: crypto.randomUUID(),
         x: 0,
         y: 0,
-        category: "Rectangle",
         width: this.worldWidth,
         height: this.worldHeight,
         color: "#53744c",
@@ -110,10 +112,11 @@ export class CanzeltlyCreateGameComponent extends LitElement {
     ];
     // Create circles
     const circles: CircleState[] = Array.from({ length: this.numCircles }, () => ({
+      category: GameObjectCategory.enum.Circle,
+      id: crypto.randomUUID(),
       x: Math.random() * this.worldWidth,
       y: Math.random() * this.worldHeight,
-      category: "Circle" as const,
-      size: 10 + Math.random() * 20,
+      radius: 10 + Math.random() * 20,
       color: `hsl(${Math.random() * 360}, 70%, 50%)`,
       dx: 0,
       dy: 0,

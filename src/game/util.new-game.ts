@@ -6,6 +6,7 @@ import { CircleState } from "./object.circle.js";
 const background: RectangleState[] = [
   {
     category: GameObjectCategory.enum.Rectangle,
+    id: crypto.randomUUID(),
     width: 1000,
     height: 1000,
     x: 0,

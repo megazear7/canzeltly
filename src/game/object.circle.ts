@@ -6,8 +6,6 @@ export const CircleState = GameObjectState.extend({
   category: z.literal(GameObjectCategory.enum.Circle),
   color: z.string(),
   radius: z.number(),
-  dx: z.number(),
-  dy: z.number(),
 });
 export type CircleState = z.infer<typeof CircleState>;
 
@@ -18,11 +16,6 @@ export class Circle extends GameObject<CircleState> {
     super(game, state);
     this.game = game;
     this.state = state;
-  }
-
-  updateState(): void {
-    this.state.x += this.state.dx;
-    this.state.y += this.state.dy;
   }
 
   isInWorld(): boolean {

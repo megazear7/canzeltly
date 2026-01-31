@@ -7,8 +7,6 @@ export const RectangleState = GameObjectState.extend({
   color: z.string(),
   width: z.number(),
   height: z.number(),
-  dx: z.number(),
-  dy: z.number(),
 });
 export type RectangleState = z.infer<typeof RectangleState>;
 
@@ -19,11 +17,6 @@ export class Rectangle extends GameObject<RectangleState> {
     super(game, state);
     this.game = game;
     this.state = state;
-  }
-
-  updateState(): void {
-    this.state.x += this.state.dx;
-    this.state.y += this.state.dy;
   }
 
   isInWorld(): boolean {
