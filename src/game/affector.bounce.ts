@@ -1,12 +1,17 @@
 import { GameObject } from "./game.object.js";
-import { GameObjectState } from "./type.object.js";
-import { affector } from "./game.affector.js";
+import { GameObjectState, VelocityState } from "./type.object.js";
+import { affector, AffectorCategory } from "./game.affector.js";
 
 export const bounce: affector = function (obj: GameObject<GameObjectState>): void {
-  if (obj.state.x <= 0 || obj.state.x >= obj.game.state.world.width) {
-    obj.state.dx = -obj.state.dx;
-  }
-  if (obj.state.y <= 0 || obj.state.y >= obj.game.state.world.height) {
-    obj.state.dy = -obj.state.dy;
-  }
+  obj.state.affectors
+    .filter((affector) => affector.category === AffectorCategory.enum.Velocity)
+    .forEach((affector) => {
+      const vel = affector as VelocityState;
+      if (obj.state.x - obj.state.radius <= 0 || obj.state.x + obj.state.radius >= obj.game.state.world.width) {
+        vel.dx = -vel.dx;
+      }
+      if (obj.state.y - obj.state.radius <= 0 || obj.state.y + obj.state.radius >= obj.game.state.world.height) {
+        vel.dy = -vel.dy;
+      }
+    });
 };

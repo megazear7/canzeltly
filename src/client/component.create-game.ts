@@ -1,12 +1,12 @@
 import { html, css, TemplateResult, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { globalStyles } from "./styles.global.js";
-import "./component.input.js";
 import { GameState } from "../game/game.js";
 import { saveGameState } from "./util.storage.js";
 import { CircleState } from "../game/type.object.js";
-import { GameObjectCategory } from "../game/type.object.js";
 import { newGame } from "../game/util.new-game.js";
+import { randomBouncingCircleState } from "../game/object.circle.js";
+import "./component.input.js";
 
 @customElement("canzeltly-create-game")
 export class CanzeltlyCreateGameComponent extends LitElement {
@@ -82,21 +82,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       alert("Invalid game name");
       return;
     }
-    // Create circles
-    const circles: CircleState[] = Array.from({ length: this.numCircles }, () => ({
-      category: GameObjectCategory.enum.Circle,
-      id: crypto.randomUUID(),
-      affectors: [],
-      x: Math.random() * this.worldWidth,
-      y: Math.random() * this.worldHeight,
-      radius: 10 + Math.random() * 20,
-      color: `hsl(${Math.random() * 360}, 70%, 50%)`,
-      dx: 0,
-      dy: 0,
-    }));
     // Create game state
     const gameState: GameState = {
-      ...newGame(),
+      ...newGame(this.worldWidth, this.worldHeight),
       name: this.gameName,
       id,
       world: {
@@ -113,10 +101,12 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         scrollSpeed: 10,
       },
     };
-    gameState.layers[1].push(...circles);
-    // Save
+    gameState.layers[1] = [];
+    for (let i = 0; i < this.numCircles; i++) {
+      const circleState: CircleState = randomBouncingCircleState(gameState);
+      gameState.layers[1].push(circleState);
+    }
     saveGameState(gameState);
-    // Dispatch event
     this.dispatchEvent(new CustomEvent("game-created", { detail: { id } }));
   }
 }

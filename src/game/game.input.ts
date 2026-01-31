@@ -49,8 +49,6 @@ export class GameInput {
         x: Math.random() * this.game.state.world.width,
         y: Math.random() * this.game.state.world.height,
         color: "#d7ad2f",
-        dx: 0,
-        dy: 0,
       }),
     );
   }

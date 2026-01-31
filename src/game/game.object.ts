@@ -28,8 +28,8 @@ export abstract class GameObject<T extends GameObjectState> {
 
   updateState(): void {
     this.state.affectors.forEach((affector) => {
-      if (affector.category === AffectorCategory.enum.Bounce) bounce(this);
       if (affector.category === AffectorCategory.enum.Velocity) velocity(this);
+      if (affector.category === AffectorCategory.enum.Bounce) bounce(this);
     });
   }
 }

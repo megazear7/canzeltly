@@ -19,6 +19,8 @@ export type BounceState = z.infer<typeof BounceState>;
 
 export const VelocityState = AffectorState.extend({
   category: z.literal(AffectorCategory.enum.Velocity),
+  dx: z.number(),
+  dy: z.number(),
 });
 export type VelocityState = z.infer<typeof VelocityState>;
 
@@ -29,17 +31,15 @@ export const GameObjectState = z.object({
   category: GameObjectCategory,
   id: GameObjectId,
   affectors: AnyAffectorState.array(),
+  radius: z.number(),
   x: z.number(),
   y: z.number(),
-  dx: z.number(),
-  dy: z.number(),
 });
 export type GameObjectState = z.infer<typeof GameObjectState>;
 
 export const CircleState = GameObjectState.extend({
   category: z.literal(GameObjectCategory.enum.Circle),
   color: z.string(),
-  radius: z.number(),
 });
 export type CircleState = z.infer<typeof CircleState>;
 
