@@ -9,9 +9,9 @@ export function newGame({
   height = 1000,
   playerId = crypto.randomUUID(),
 }: {
-  width?: number,
-  height?: number,
-  playerId?: string,
+  width?: number;
+  height?: number;
+  playerId?: string;
 } = {}): GameState {
   const circleId = crypto.randomUUID();
 

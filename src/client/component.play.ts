@@ -99,7 +99,7 @@ export class CanzeltlyPlay extends LitElement {
           this.game.input.handleKeys(this.pressedKeys);
           this.game.update();
           // Get viewPortIndex from the "currentPlayer" .
-          const currentPlayer = this.game.state.players.find(p => p.playerId === this.playerId);
+          const currentPlayer = this.game.state.players.find((p) => p.playerId === this.playerId);
           const viewPortIndex = currentPlayer ? currentPlayer.viewportIndex : 0;
           draw(this.game, this.canvas, viewPortIndex);
           this.drawCount++;
@@ -145,23 +145,24 @@ export class CanzeltlyPlay extends LitElement {
   }
 
   private handleCanvasClick(event: MouseEvent): void {
+    // TODO Move this into GameInput class, and require a player id to be passed in
     if (!this.canvas || !this.game) return;
     const rect = this.canvas.getBoundingClientRect();
     const canvasX = event.clientX - rect.left;
     const canvasY = event.clientY - rect.top;
-    const currentPlayer = this.game.state.players.find(p => p.playerId === this.playerId);
+    const currentPlayer = this.game.state.players.find((p) => p.playerId === this.playerId);
     const viewportIndex = currentPlayer ? currentPlayer.viewportIndex : 0;
     const viewport = this.game.state.viewports[viewportIndex];
     const worldPos = mapFromCanvas(viewport, this.canvas, canvasX, canvasY);
     if (!currentPlayer) return;
-    currentPlayer.selectedObjects.forEach(objId => {
-      const obj = this.game!.layers.flat().find(o => o.state.id === objId);
+    currentPlayer.selectedObjects.forEach((objId) => {
+      const obj = this.game!.layers.flat().find((o) => o.state.id === objId);
       if (obj) {
-        const targetAffect = obj.state.affects.find(a => a.category === AffectCategory.enum.Target)
+        const targetAffect = obj.state.affects.find((a) => a.category === AffectCategory.enum.Target);
         if (targetAffect) {
           (targetAffect as TargetState).x = worldPos.x;
           (targetAffect as TargetState).y = worldPos.y;
-        } else {          
+        } else {
           obj.state.affects.push({
             category: AffectCategory.enum.Target,
             x: worldPos.x,
