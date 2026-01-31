@@ -46,10 +46,12 @@ export class CanzeltlyPlay extends LitElement {
     const gameState = loadGameState(this.gameId);
     if (gameState) {
       this.game = new Game(gameState);
-      this.startGameLoop();
     } else if (this.gameId) {
       this.game = new Game();
       this.game.state.id = this.gameId;
+    }
+
+    if (this.game) {
       this.startGameLoop();
     }
   }
@@ -67,7 +69,14 @@ export class CanzeltlyPlay extends LitElement {
     this.attachGameInputListeners();
     let lastDraw = performance.now();
     let lastMajorUpdate = performance.now();
+    let once = true;
     const loop = (currentTime: number): void => {
+      if (once && this.canvas && this.game) {
+        once = false;
+        this.canvas.width = this.canvas.clientWidth;
+        this.canvas.height = this.canvas.clientHeight;
+        this.game.alignViewport(this.canvas.width / this.canvas.height);
+      }
       if (this.canvas && this.game) {
         if (currentTime - lastMajorUpdate >= 1000 && this.game) {
           this.game.serializeState();
@@ -79,9 +88,9 @@ export class CanzeltlyPlay extends LitElement {
           lastMajorUpdate = currentTime;
         }
         if (currentTime - lastDraw >= 1000 / 60) {
+          this.game.alignViewport(this.canvas.width / this.canvas.height);
           this.game.input.handleKeys(this.pressedKeys);
           this.game.update();
-          this.game.alignViewport(this.canvas.width / this.canvas.height);
           draw(this.game, this.canvas);
           this.drawCount++;
           lastDraw = currentTime;

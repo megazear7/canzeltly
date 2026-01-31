@@ -65,7 +65,7 @@ export class Game {
     this.state.viewport.height = this.state.viewport.width / targetAspectRatio;
 
     // Ensure viewport constraints are still respected after adjustment
-    // this.input.constrainViewport();
+    this.input.applyConstraints();
   }
 
   removeObject(id: GameObjectId): void {

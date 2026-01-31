@@ -91,12 +91,6 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         width: this.worldWidth,
         height: this.worldHeight,
       },
-      viewport: {
-        x: 0,
-        y: 0,
-        width: this.worldWidth,
-        height: this.worldHeight,
-      },
       controls: {
         scrollSpeed: 10,
       },

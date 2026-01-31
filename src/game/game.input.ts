@@ -53,77 +53,88 @@ export class GameInput {
     );
   }
 
-  constrainViewport(): void {
-    // Constrain viewport so it can only be moved maxScrollOut fraction outside the world
-    const maxScrollOut = 1 / 3;
-    const maxViewportWidthFactor = 1 + maxScrollOut * 2;
-    const maxViewportWidth = this.game.state.world.width * maxViewportWidthFactor;
-    const maxViewportHeight = this.game.state.world.height * maxViewportWidthFactor;
-    const practicalWidth = Math.min(this.game.state.viewport.width, this.game.state.world.width);
-    const practicalHeight = Math.min(this.game.state.viewport.height, this.game.state.world.height);
-    const minViewportX = -practicalWidth * maxScrollOut + this.game.state.viewport.width / 2;
-    const minViewportY = -practicalHeight * maxScrollOut + this.game.state.viewport.height / 2;
-    const maxViewportX =
-      this.game.state.world.width + practicalWidth * maxScrollOut - this.game.state.viewport.width / 2;
-    const maxViewportY =
-      this.game.state.world.height + practicalHeight * maxScrollOut - this.game.state.viewport.height / 2;
+  applyConstraints(): void {
+    this.applyMoveConstraints();
+    this.applyZoomInConstraints();
+    this.applyZoomOutConstraints();
+  }
 
-    if (this.game.state.viewport.x > maxViewportX) {
-      this.game.state.viewport.x = maxViewportX;
+  applyMoveConstraints(): void {
+    // TODO Apply constraints when world smaller than viewport
+
+    if (this.game.state.world.width <= this.game.state.viewport.width) {
+      // TODO This logic is flawed - needs to center viewport on world
+      const minViewportX = 0;
+      const maxViewportX = this.game.state.world.width / 2;
+
+      if (this.game.state.viewport.x > maxViewportX) {
+        this.game.state.viewport.x = maxViewportX;
+      }
+
+      if (this.game.state.viewport.x < minViewportX) {
+        this.game.state.viewport.x = minViewportX;
+      }
     }
 
-    if (this.game.state.viewport.y > maxViewportY) {
-      this.game.state.viewport.y = maxViewportY;
-    }
+    if (this.game.state.world.height <= this.game.state.viewport.height) {
+      // TODO This logic is flawed - needs to center viewport on world
+      const minViewportY = 0;
+      const maxViewportY = this.game.state.world.height / 2;
 
-    if (this.game.state.viewport.x < minViewportX) {
-      this.game.state.viewport.x = minViewportX;
-    }
+      if (this.game.state.viewport.y > maxViewportY) {
+        this.game.state.viewport.y = maxViewportY;
+      }
 
-    if (this.game.state.viewport.y < minViewportY) {
-      this.game.state.viewport.y = minViewportY;
+      if (this.game.state.viewport.y < minViewportY) {
+        this.game.state.viewport.y = minViewportY;
+      }
     }
+  }
 
-    if (this.game.state.viewport.width > maxViewportWidth) {
-      this.game.state.viewport.width = maxViewportWidth;
-    }
+  applyZoomInConstraints(): void {
+    // Prevent zooming in too much (viewport smaller than 10% of world)
+    const minWidth = this.game.state.world.width * 0.1;
+    const minHeight = this.game.state.world.height * 0.1;
 
-    if (this.game.state.viewport.height > maxViewportHeight) {
-      this.game.state.viewport.height = maxViewportHeight;
-    }
+    this.game.state.viewport.width = Math.max(this.game.state.viewport.width, minWidth);
+    this.game.state.viewport.height = Math.max(this.game.state.viewport.height, minHeight);
+  }
+
+  applyZoomOutConstraints(): void {
+    // Calculate the maximum viewport size to contain the entire world with a 10% margin
+    const margin = 1.1;
+    const world = this.game.state.world;
+    const aspectRatio = this.game.state.viewport.width / this.game.state.viewport.height;
+    const maxWidth = Math.max(margin * world.width, margin * world.height * aspectRatio);
+    const maxHeight = Math.max(margin * world.height, (margin * world.width) / aspectRatio);
+
+    this.game.state.viewport.width = Math.min(this.game.state.viewport.width, maxWidth);
+    this.game.state.viewport.height = Math.min(this.game.state.viewport.height, maxHeight);
   }
 
   moveViewport(dx: number, dy: number): void {
     this.game.state.viewport.x += dx;
     this.game.state.viewport.y += dy;
-    // this.constrainViewport();
+    this.applyMoveConstraints();
   }
 
   zoomIn(factor: number = 0.9): void {
     const newWidth = this.game.state.viewport.width * factor;
     const newHeight = this.game.state.viewport.height * factor;
 
-    // Prevent zooming in too much (viewport smaller than 10% of world)
-    const minWidth = this.game.state.world.width * 0.1;
-    const minHeight = this.game.state.world.height * 0.1;
+    this.game.state.viewport.width = newWidth;
+    this.game.state.viewport.height = newHeight;
 
-    this.game.state.viewport.width = Math.max(newWidth, minWidth);
-    this.game.state.viewport.height = Math.max(newHeight, minHeight);
-
-    // this.constrainViewport();
+    this.applyZoomInConstraints();
   }
 
   zoomOut(factor: number = 1.1): void {
     const newWidth = this.game.state.viewport.width * factor;
     const newHeight = this.game.state.viewport.height * factor;
 
-    // Prevent zooming out too much (viewport larger than 2x world)
-    const maxWidth = this.game.state.world.width * 2;
-    const maxHeight = this.game.state.world.height * 2;
+    this.game.state.viewport.width = newWidth;
+    this.game.state.viewport.height = newHeight;
 
-    this.game.state.viewport.width = Math.min(newWidth, maxWidth);
-    this.game.state.viewport.height = Math.min(newHeight, maxHeight);
-
-    //this.constrainViewport();
+    this.applyZoomOutConstraints();
   }
 }
