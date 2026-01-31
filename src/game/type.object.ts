@@ -7,12 +7,17 @@ export type GameObjectCategory = z.infer<typeof GameObjectCategory>;
 export const GameObjectId = z.uuid();
 export type GameObjectId = z.infer<typeof GameObjectId>;
 
-export const BounceState = z.object({
+export const AffectorState = z.object({
+  category: AffectorCategory.enum.Bounce,
+});
+export type AffectorState = z.infer<typeof AffectorState>;
+
+export const BounceState = AffectorState.extend({
   category: z.literal(AffectorCategory.enum.Bounce),
 });
 export type BounceState = z.infer<typeof BounceState>;
 
-export const VelocityState = z.object({
+export const VelocityState =  AffectorState.extend({
   category: z.literal(AffectorCategory.enum.Velocity),
 });
 export type VelocityState = z.infer<typeof VelocityState>;
