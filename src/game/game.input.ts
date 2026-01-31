@@ -96,7 +96,7 @@ export class GameInput {
   moveViewport(dx: number, dy: number): void {
     this.game.state.viewport.x += dx;
     this.game.state.viewport.y += dy;
-    this.constrainViewport();
+    // this.constrainViewport();
   }
 
   zoomIn(factor: number = 0.9): void {
@@ -110,7 +110,7 @@ export class GameInput {
     this.game.state.viewport.width = Math.max(newWidth, minWidth);
     this.game.state.viewport.height = Math.max(newHeight, minHeight);
 
-    this.constrainViewport();
+    // this.constrainViewport();
   }
 
   zoomOut(factor: number = 1.1): void {
@@ -124,6 +124,6 @@ export class GameInput {
     this.game.state.viewport.width = Math.min(newWidth, maxWidth);
     this.game.state.viewport.height = Math.min(newHeight, maxHeight);
 
-    this.constrainViewport();
+    //this.constrainViewport();
   }
 }

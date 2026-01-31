@@ -5,12 +5,16 @@ export function draw(game: Game, canvas: HTMLCanvasElement): void {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  // Clear canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Set canvas size
-  canvas.width = canvas.clientWidth;
-  canvas.height = canvas.clientHeight;
+  // Only resize if necessary
+  const newWidth = canvas.clientWidth;
+  const newHeight = canvas.clientHeight;
+  if (canvas.width !== newWidth || canvas.height !== newHeight) {
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+  } else {
+    // Clear canvas only if not resized
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
 
   // Render objects
   game.layers.forEach((layer) => {

@@ -12,7 +12,7 @@ export function mapToCanvas(game: Game, canvas: HTMLCanvasElement, obj: AnyGameO
   const y = obj.y * scale - viewportCenterY;
 
   if (obj.category === GameObjectCategory.enum.Circle) {
-    const circle = CircleState.parse(obj);
+    const circle = obj as CircleState;
     const size = circle.radius ? circle.radius * scale : circle.radius;
     return {
       ...obj,
@@ -21,7 +21,7 @@ export function mapToCanvas(game: Game, canvas: HTMLCanvasElement, obj: AnyGameO
       radius: size,
     };
   } else if (obj.category === GameObjectCategory.enum.Rectangle) {
-    const rectangle = RectangleState.parse(obj);
+    const rectangle = obj as RectangleState;
     const width = rectangle.width ? rectangle.width * scale : rectangle.width;
     const height = rectangle.height ? rectangle.height * scale : rectangle.height;
     return {

@@ -31,7 +31,7 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
         left: 50%;
         transform: translateX(-50%);
         display: flex;
-        justify-content: space-between;
+        gap: var(--size-large);
         align-items: center;
         padding: 0 var(--size-medium);
         background-image: url("/images/plank-1800x250.png");
@@ -66,7 +66,7 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
     return html`
       <div class="hud">
         <button @click=${this.openModal()}>Menu</button>
-        <div class="fps ${this.fps && this.fps < 60 ? "low" : ""}">${this.fps ? this.fps.toFixed(0) : ""} FPS</div>
+        <div class="fps ${this.fps && this.fps < 55 ? "low" : ""}">${this.fps ? this.fps.toFixed(0) : ""} FPS</div>
       </div>
       <canzeltly-modal @modal-opening=${this.handleModalOpening} @modal-closing=${this.handleModalClosing}>
         <div slot="body">

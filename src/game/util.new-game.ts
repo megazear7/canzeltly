@@ -25,10 +25,10 @@ export function newGame(width: number = 1000, height: number = 1000): GameState 
       height: height,
     },
     viewport: {
-      x: 0,
-      y: 0,
+      x: width / 2,
+      y: height / 2,
       width: width,
-      height: height,
+      height: height / 2,
     },
     controls: {
       scrollSpeed: 10,
