@@ -62,34 +62,29 @@ export class GameInput {
   }
 
   applyMoveConstraints(): void {
-    // TODO Apply constraints when world smaller than viewport
     this.game.state.viewports.forEach((viewport) => {
-      if (this.game.state.world.width <= viewport.width) {
-        // TODO This logic is flawed - needs to center viewport on world
-        const minViewportX = 0;
-        const maxViewportX = this.game.state.world.width / 2;
+      const world = this.game.state.world;
 
-        if (viewport.x > maxViewportX) {
-          viewport.x = maxViewportX;
-        }
-
-        if (viewport.x < minViewportX) {
-          viewport.x = minViewportX;
-        }
+      // Handle X-axis constraints
+      if (viewport.width >= world.width) {
+        // Viewport is larger than world: center on world
+        viewport.x = world.width / 2;
+      } else {
+        // Viewport is smaller than world: allow 1/3 outside scrolling (2/3 remains over world)
+        const minX = viewport.width / 6;
+        const maxX = world.width - viewport.width / 6;
+        viewport.x = Math.max(minX, Math.min(maxX, viewport.x));
       }
 
-      if (this.game.state.world.height <= viewport.height) {
-        // TODO This logic is flawed - needs to center viewport on world
-        const minViewportY = 0;
-        const maxViewportY = this.game.state.world.height / 2;
-
-        if (viewport.y > maxViewportY) {
-          viewport.y = maxViewportY;
-        }
-
-        if (viewport.y < minViewportY) {
-          viewport.y = minViewportY;
-        }
+      // Handle Y-axis constraints
+      if (viewport.height >= world.height) {
+        // Viewport is larger than world: center on world
+        viewport.y = world.height / 2;
+      } else {
+        // Viewport is smaller than world: allow 1/3 outside scrolling (2/3 remains over world)
+        const minY = viewport.height / 6;
+        const maxY = world.height - viewport.height / 6;
+        viewport.y = Math.max(minY, Math.min(maxY, viewport.y));
       }
     });
   }
