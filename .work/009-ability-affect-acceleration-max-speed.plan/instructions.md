@@ -1,0 +1,1 @@
+Ability affect that sets acceleration of target affect and sets max speed of velocity affect.

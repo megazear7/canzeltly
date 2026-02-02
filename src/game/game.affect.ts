@@ -2,7 +2,7 @@ import z from "zod";
 import { GameObject } from "./game.object.js";
 import { GameObjectState } from "./type.object.js";
 
-export const AffectCategory = z.enum(["Bounce", "Velocity", "Target", "Gravity"]);
+export const AffectCategory = z.enum(["Bounce", "Velocity", "Target", "Gravity", "Ability"]);
 export type AffectCategory = z.infer<typeof AffectCategory>;
 
 export const AffectState = z.object({
