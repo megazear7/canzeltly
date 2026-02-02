@@ -2,7 +2,7 @@
 agent: 'agent'
 model: Grok Code Fast 1
 tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'agent', 'todo']
-description: 'Commit the current changes'
+description: 'Plan the work'
 ---
 
 # User Instructions

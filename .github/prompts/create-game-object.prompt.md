@@ -11,20 +11,7 @@ description: 'Create new game object'
 
 # Steps to follow
 
-- Review the circle game object as an example:
-    - Definition: `src/game/object.circle.ts`
-    - Draw: `src/canvas/draw.circle.ts`
-- Choose a name for the game object based on the user instructions
-- Add the name to the `GameObjectCategory` enum in `src/game/game.object.ts`
-- Define the game object state by creating a new file at `src/game/object.example.ts` with a new Zod type
-    - Example: `export const ExampleState = GameObjectState.extend({...})`
-- Add to the `src/game/object.example.ts` file the game object class that extends `GameObject<ExampleState>`
-- Update the `hydrateObjects` method in the `src/game/util.hydrate.ts` file to include the new game object
-- Add a `drawExample` method to a file at `src/canvas/draw.circle.ts`
-- Update the switch statement in the `drawObject` method in the `src/canvas/draw.object.ts` file
-
-# Notes
-
-- `Example` in the above steps is only an example name. The actual name should be based on the user instructions.
-- All of the abstract methods of `GameObject` need implemented and should be functional based on the users instructions.
-- The draw method should be based on the user instructions.
+- Review the instructions in `.github/skills/create-game-object/SKILL.md` for creating a new game object.
+- Follow the steps outlined in the skill file to implement the new game object as per the user instructions.
+- The name and behavior of the game object should align with what the user has specified.
+- Run `npm run fix` and `npm run build` to ensure code quality and correctness.

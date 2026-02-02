@@ -2,7 +2,7 @@
 agent: 'agent'
 model: Grok Code Fast 1
 tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'agent', 'chrome-devtools/*', 'todo']
-description: 'Create new feature'
+description: 'Create new page'
 ---
 
 # User instructions

@@ -12,7 +12,7 @@ This skill covers the process of adding a new page to the Canzeltly application.
 Pages are organized as follows:
 - **Page Components**: Located in `src/client/page.<page-name>.ts`
 - **Providers**: Located in `src/client/provider.<provider-name>.ts` (provide context to pages)
-- **Routes**: Defined in `src/shared/service.client.ts` and `src/shared/type.routes.ts`
+- **Routes**: Defined in `src/client/app.routes.ts` and `src/shared/type.routes.ts`
 - **App Integration**: Handled in `src/client/app.ts`
 
 ## Step-by-Step Process
@@ -113,7 +113,7 @@ export const RouteName = z.enum(["home", "example", "my_page", "not_found"]);
 ```
 
 #### Add Route Config
-Add your route to the `routes` array in `src/shared/service.client.ts`:
+Add your route to the `routes` array in `src/client/app.routes.ts`:
 
 ```typescript
 export const routes = [
@@ -148,22 +148,18 @@ Add a case for your page in the `render()` method's switch statement:
 switch (this.currentRoute!.name) {
   case RouteName.enum.home:
     return html`
-      <div class="app-bar"></div>
       <canzeltly-home-page></canzeltly-home-page>
     `;
   case RouteName.enum.example:
     return html`
-      <div class="app-bar"></div>
       <canzeltly-example-page></canzeltly-example-page>
     `;
   case RouteName.enum.my_page:
     return html`
-      <div class="app-bar"></div>
       <canzeltly-my-page></canzeltly-my-page>
     `;
   default:
     return html`
-      <div class="app-bar"></div>
       <canzeltly-not-found-page></canzeltly-not-found-page>
     `;
 }
@@ -236,7 +232,6 @@ import "./page.about.js";
 // In render method:
 case RouteName.enum.about:
   return html`
-    <div class="app-bar"></div>
     <canzeltly-about-page></canzeltly-about-page>
   `;
 ```
