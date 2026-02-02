@@ -2,7 +2,7 @@ import { Circle } from "./object.circle.js";
 import { Game, MAIN_OBJECT_LAYER_INDEX } from "./game.js";
 import { GameObjectCategory } from "./type.object.js";
 import { AffectCategory } from "./game.affect.js";
-import { TargetState } from "./type.object.js";
+import { TargetState, AbilityState, VelocityState } from "./type.object.js";
 
 export class GameInput {
   game: Game;
@@ -11,7 +11,7 @@ export class GameInput {
     this.game = game;
   }
 
-  handleKeys(pressedKeys: Set<string>): void {
+  handleKeys(pressedKeys: Set<string>, playerId: string): void {
     // Handle movement keys (can be pressed simultaneously)
     if (pressedKeys.has("ArrowUp")) {
       this.moveViewport(0, -1 * this.game.state.controls.scrollSpeed);
@@ -38,6 +38,11 @@ export class GameInput {
     if (pressedKeys.has("c")) {
       this.addCircle();
       pressedKeys.delete("c"); // Remove to prevent continuous spawning
+    }
+
+    // Handle braking
+    if (pressedKeys.has(" ")) {
+      this.applyBraking(playerId);
     }
   }
 
@@ -164,6 +169,52 @@ export class GameInput {
             y: worldY,
             acceleration: 0.1,
           } as TargetState);
+        }
+      }
+    });
+  }
+
+  applyBraking(playerId: string): void {
+    const currentPlayer = this.game.state.players.find((p) => p.playerId === playerId);
+    if (!currentPlayer) return;
+    currentPlayer.selectedObjects.forEach((objId) => {
+      const obj = this.game.layers.flat().find((o) => o.state.id === objId);
+      if (obj) {
+        // Disable target by setting coordinates to null
+        const targetAffect = obj.state.affects.find((a) => a.category === AffectCategory.enum.Target) as
+          | TargetState
+          | undefined;
+        if (targetAffect) {
+          targetAffect.x = null;
+          targetAffect.y = null;
+        }
+        const abilityAffect = obj.state.affects.find((a) => a.category === AffectCategory.enum.Ability) as
+          | AbilityState
+          | undefined;
+        if (abilityAffect) {
+          const velocityAffect = obj.state.affects.find((a) => a.category === AffectCategory.enum.Velocity) as
+            | VelocityState
+            | undefined;
+          if (velocityAffect) {
+            const speed = Math.sqrt(velocityAffect.dx * velocityAffect.dx + velocityAffect.dy * velocityAffect.dy);
+            if (speed > 0) {
+              const deceleration = abilityAffect.brakingAcceleration;
+              // Reduce speed by deceleration amount
+              const newSpeed = Math.max(0, speed - deceleration);
+              // Scale velocity to new speed
+              const scale = newSpeed / speed;
+              velocityAffect.dx *= scale;
+              velocityAffect.dy *= scale;
+              // If speed is very low, set to zero to prevent jitter
+              const finalSpeed = Math.sqrt(
+                velocityAffect.dx * velocityAffect.dx + velocityAffect.dy * velocityAffect.dy,
+              );
+              if (finalSpeed < 0.01) {
+                velocityAffect.dx = 0;
+                velocityAffect.dy = 0;
+              }
+            }
+          }
         }
       }
     });

@@ -71,6 +71,7 @@ export function randomBouncingCircleState(game: GameState): CircleState {
         category: AffectCategory.enum.Ability,
         acceleration: 0.25,
         maxSpeed: 5.0,
+        brakingAcceleration: 0.075,
       },
     ],
     x: Math.random() * game.world.width,

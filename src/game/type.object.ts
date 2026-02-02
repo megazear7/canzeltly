@@ -27,8 +27,8 @@ export type VelocityState = z.infer<typeof VelocityState>;
 
 export const TargetState = AffectState.extend({
   category: z.literal(AffectCategory.enum.Target),
-  x: z.number(),
-  y: z.number(),
+  x: z.number().nullable(),
+  y: z.number().nullable(),
   acceleration: z.number(),
 });
 export type TargetState = z.infer<typeof TargetState>;
@@ -43,6 +43,7 @@ export const AbilityState = AffectState.extend({
   category: z.literal(AffectCategory.enum.Ability),
   acceleration: z.number(),
   maxSpeed: z.number(),
+  brakingAcceleration: z.number(),
 });
 export type AbilityState = z.infer<typeof AbilityState>;
 

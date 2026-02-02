@@ -7,6 +7,10 @@ export const target: affect = function (obj: GameObject<GameObjectState>): void 
     .filter((affect) => affect.category === AffectCategory.enum.Target)
     .forEach((affect) => {
       const targ = affect as TargetState;
+      // Check if target coordinates are null (disabled)
+      if (targ.x === null || targ.y === null) {
+        return;
+      }
       // Find the velocity affect
       const velAffect = obj.state.affects.find((a) => a.category === AffectCategory.enum.Velocity);
       if (velAffect) {

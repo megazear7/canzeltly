@@ -20,9 +20,11 @@ export const ability: affect = function (obj: GameObject<GameObjectState>): void
         | undefined;
       if (velocityAffect) {
         const speed = Math.sqrt(velocityAffect.dx * velocityAffect.dx + velocityAffect.dy * velocityAffect.dy);
-        const scale = abilityState.maxSpeed / speed;
-        velocityAffect.dx *= scale;
-        velocityAffect.dy *= scale;
+        if (speed > abilityState.maxSpeed) {
+          const scale = abilityState.maxSpeed / speed;
+          velocityAffect.dx *= scale;
+          velocityAffect.dy *= scale;
+        }
       }
     });
 };

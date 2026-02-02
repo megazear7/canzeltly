@@ -94,7 +94,7 @@ export class CanzeltlyPlay extends LitElement {
         }
         if (currentTime - lastDraw >= 1000 / 60) {
           this.game.alignViewport(this.canvas.width / this.canvas.height);
-          this.game.input.handleKeys(this.pressedKeys);
+          this.game.input.handleKeys(this.pressedKeys, this.playerId);
           this.game.update();
           // Get viewPortIndex from the "currentPlayer" .
           const currentPlayer = this.game.state.players.find((p) => p.playerId === this.playerId);
@@ -128,7 +128,7 @@ export class CanzeltlyPlay extends LitElement {
   }
 
   private keyDown(event: KeyboardEvent): void {
-    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "+", "=", "-", "_"].includes(event.key)) {
+    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "+", "=", "-", "_", " "].includes(event.key)) {
       event.preventDefault();
     }
     this.pressedKeys.add(event.key);
