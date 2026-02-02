@@ -1,19 +1,15 @@
 ---
-name: create-game-object
-description: How to create a new type of affect
+name: create-new-affector
+description: How to create a new type of affector
 ---
 
-# Background information
+# Creating a new affector
 
-Affects are functions that update an objects state. Examples include velocity, which causes an object to move in a particular direction, and bounce, which causes the object to bounce off of the edges of the game world.
-
-# Creating a new affect
-
-- Choose a name for the affect.
-- A new category should be defined in the `AffectCategory` enum for this new affect.
-- The affect should define a state object in `src/game/type.object.ts` which extends `AffectState` and sets the `category` property to the `z.literal` of the newly defined category.
-- The state for the new affect can include other values, such as strength of gravity, xy coordinates, dx dy velocity, or whatever is needed for that affect.
-- Create the file `src/game/affect.some-new-affect.ts` with an exported function that implements the `affect` interface as defined in `src/game/game.affect.ts`
+- Choose a name for the affector.
+- A new category should be defined in the `AffectCategory` enum for this new affector.
+- The affector should define a state object in `src/game/type.object.ts` which extends `AffectState` and sets the `category` property to the `z.literal` of the newly defined category.
+- The state for the new affector can include other values, such as strength of gravity, xy coordinates, dx dy velocity, or whatever is needed for that affector.
+- Create the file `src/game/affect.some-new-affector.ts` with an exported function that implements the `affect` interface as defined in `src/game/game.affect.ts`
 
 ```ts
 export const BounceState = AffectState.extend({
@@ -21,3 +17,14 @@ export const BounceState = AffectState.extend({
 });
 export type BounceState = z.infer<typeof BounceState>;
 ```
+
+- Add the name to the `AffectCategory` enum in `src/game/game.affect.ts`
+- The affector function should be implemented based on the needed behavior.
+- Update the `updateState` method in the `src/game/game.object.ts` to apply the new affector.
+
+# Notes
+
+- Some affectors update other affectors. Review the target affect for an example of this.
+- Some affectors interact with game object properties directly. Review the velocity affector for an example of this.
+- Some affectors use game world properties. Review the bounce affector for an example of this.
+- The state for the new affector can include other values, such as strength of gravity, xy coordinates, dx dy velocity, or whatever is needed for that affector.

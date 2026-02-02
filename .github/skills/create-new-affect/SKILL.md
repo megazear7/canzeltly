@@ -1,5 +1,5 @@
 ---
-name: create-game-object
+name: create-new-affect
 description: How to create a new type of affect
 ---
 
