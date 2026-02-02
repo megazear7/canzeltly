@@ -82,3 +82,4 @@
  - When work plans are needed, first ask me to review it before starting the implementation.
  - Always check `src/static/app.css` for css variable names. Do not refer to non-existent css variables.
  - Always use Zod enums such as `Example.enum.Value` instead of hardcoded strings such as `"Value"`.
+ - We create `.work/` markdown files for development plans and tasks. These should be committed to the repository alongside code changes.

@@ -1,6 +1,8 @@
 import { Circle } from "./object.circle.js";
 import { Game, MAIN_OBJECT_LAYER_INDEX } from "./game.js";
 import { GameObjectCategory } from "./type.object.js";
+import { AffectCategory } from "./game.affect.js";
+import { TargetState } from "./type.object.js";
 
 export class GameInput {
   game: Game;
@@ -148,5 +150,27 @@ export class GameInput {
     });
 
     this.applyZoomOutConstraints();
+  }
+
+  handleCanvasClick(playerId: string, worldX: number, worldY: number): void {
+    const currentPlayer = this.game.state.players.find((p) => p.playerId === playerId);
+    if (!currentPlayer) return;
+    currentPlayer.selectedObjects.forEach((objId) => {
+      const obj = this.game.layers.flat().find((o) => o.state.id === objId);
+      if (obj) {
+        const targetAffect = obj.state.affects.find((a) => a.category === AffectCategory.enum.Target);
+        if (targetAffect) {
+          (targetAffect as TargetState).x = worldX;
+          (targetAffect as TargetState).y = worldY;
+        } else {
+          obj.state.affects.push({
+            category: AffectCategory.enum.Target,
+            x: worldX,
+            y: worldY,
+            acceleration: 0.1,
+          } as TargetState);
+        }
+      }
+    });
   }
 }

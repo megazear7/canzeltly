@@ -7,8 +7,6 @@ import { loadGameState } from "./util.storage.js";
 import { CanzeltlyHeadsUpDisplay } from "./component.heads-up-display.js";
 import "./component.heads-up-display.js";
 import { mapFromCanvas } from "../canvas/util.map-to-canvas.js";
-import { AffectCategory } from "../game/game.affect.js";
-import { TargetState } from "../game/type.object.js";
 import { newGame } from "../game/util.new-game.js";
 
 @customElement("canzeltly-play")
@@ -145,7 +143,6 @@ export class CanzeltlyPlay extends LitElement {
   }
 
   private handleCanvasClick(event: MouseEvent): void {
-    // TODO Move this into GameInput class, and require a player id to be passed in
     if (!this.canvas || !this.game) return;
     const rect = this.canvas.getBoundingClientRect();
     const canvasX = event.clientX - rect.left;
@@ -154,23 +151,6 @@ export class CanzeltlyPlay extends LitElement {
     const viewportIndex = currentPlayer ? currentPlayer.viewportIndex : 0;
     const viewport = this.game.state.viewports[viewportIndex];
     const worldPos = mapFromCanvas(viewport, this.canvas, canvasX, canvasY);
-    if (!currentPlayer) return;
-    currentPlayer.selectedObjects.forEach((objId) => {
-      const obj = this.game!.layers.flat().find((o) => o.state.id === objId);
-      if (obj) {
-        const targetAffect = obj.state.affects.find((a) => a.category === AffectCategory.enum.Target);
-        if (targetAffect) {
-          (targetAffect as TargetState).x = worldPos.x;
-          (targetAffect as TargetState).y = worldPos.y;
-        } else {
-          obj.state.affects.push({
-            category: AffectCategory.enum.Target,
-            x: worldPos.x,
-            y: worldPos.y,
-            acceleration: 0.1,
-          } as TargetState);
-        }
-      }
-    });
+    this.game.input.handleCanvasClick(this.playerId, worldPos.x, worldPos.y);
   }
 }
