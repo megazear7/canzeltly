@@ -12,7 +12,8 @@ description: 'Work on the next TODO item in the codebase.'
  - Come up with a plan to complete the TODO item, including any necessary code changes.
  - You may need to read related files to understand the context.
  - You may want to read relevant skills in the `.github/skills/` directory for guidance.
- - Add this plan in a `.work/` markdown file named with a zero-padded incremental number and a short description of the task, e.g., `001-complte-some-todo.md`.
+ - Add this plan in a `.work/` markdown directory named with a zero-padded incremental number and a short description of the task, e.g., `001-complete-some-todo`.
+ - Create a `plan.md` file in that directory with the details of the plan.
  - Give me a summary of the plan and ask for my approval before proceeding.
  - I may ask for changes to the plan. In which case, update the plan file accordingly and ask me to review again.
  - Once I approve, implement the code changes to complete the TODO item.
