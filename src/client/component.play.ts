@@ -1,13 +1,15 @@
 import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { Game } from "../game/game.js";
+import { Game, GameStatus } from "../game/game.js";
 import { globalStyles } from "./styles.global.js";
 import { draw } from "../canvas/draw.canvas.js";
-import { loadGameState } from "./util.storage.js";
+import { loadGameState, saveGameState } from "./util.storage.js";
 import { CanzeltlyHeadsUpDisplay } from "./component.heads-up-display.js";
-import "./component.heads-up-display.js";
 import { mapFromCanvas } from "../canvas/util.map-to-canvas.js";
 import { newGame } from "../game/util.new-game.js";
+import { CanzeltlyGameOverModal } from "./component.game-over-modal.js";
+import "./component.heads-up-display.js";
+import "./component.game-over-modal.js";
 
 @customElement("canzeltly-play")
 export class CanzeltlyPlay extends LitElement {
@@ -34,14 +36,17 @@ export class CanzeltlyPlay extends LitElement {
   private animationId?: number;
   private pressedKeys = new Set<string>();
   private drawCount = 0;
+  private gameOverModalShown = false;
 
   @query("canvas") private canvas?: HTMLCanvasElement;
   @query("canzeltly-heads-up-display") private hud?: CanzeltlyHeadsUpDisplay;
+  @query("canzeltly-game-over-modal") private gameOverModal?: CanzeltlyGameOverModal;
 
   override render(): TemplateResult {
     return html`
       <canvas></canvas>
       <canzeltly-heads-up-display .game=${this.game}></canzeltly-heads-up-display>
+      <canzeltly-game-over-modal .game=${this.game} .playerId=${this.playerId}></canzeltly-game-over-modal>
     `;
   }
 
@@ -81,9 +86,31 @@ export class CanzeltlyPlay extends LitElement {
         this.canvas.height = this.canvas.clientHeight;
         this.game.alignViewport(this.canvas.width / this.canvas.height);
         this.attachGameInputListeners();
+        // Set started timestamp on first loop iteration
+        if (!this.game.state.started) {
+          this.game.state.started = Date.now();
+          // Set game status to Playing when the game starts
+          this.game.state.status = "Playing";
+        }
       }
       if (this.canvas && this.game) {
+        // Check game status
+        if (this.game.state.status === GameStatus.enum.GameOver && !this.gameOverModalShown) {
+          this.gameOverModalShown = true;
+          this.game.state.ended = Date.now();
+          // Stop animation loop
+          if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = undefined;
+          }
+          this.requestUpdate();
+          saveGameState(this.game.state);
+          this.gameOverModal?.open();
+          return;
+        }
+
         if (currentTime - lastMajorUpdate >= 1000 && this.game) {
+          this.game.state.duration += currentTime - lastMajorUpdate;
           this.game.serializeState();
           const fps = this.drawCount;
           if (this.hud) {

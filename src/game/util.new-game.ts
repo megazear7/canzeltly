@@ -1,7 +1,7 @@
 import { GameState } from "./game.js";
 import { GameObjectCategory } from "./type.object.js";
 import { RectangleState } from "./type.object.js";
-import { randomBouncingCircleState } from "./object.circle.js";
+import { randomBouncingCircleState, heroCircle } from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
 
 export function newGame({
@@ -62,10 +62,12 @@ export function newGame({
       [], // Main objects layer
     ],
     players,
+    status: "NotStarted",
+    duration: 0,
   };
 
   // Create a circle for the player
-  const circle = randomBouncingCircleState(game);
+  const circle = heroCircle(game, playerId);
   circle.id = circleId;
   circle.color = "#00FF00"; // Green for player circle
   game.layers[1].push(circle);

@@ -2,7 +2,7 @@
 agent: 'agent'
 model: Grok Code Fast 1
 tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'agent', 'todo']
-description: 'Plan the work'
+description: 'Describe the new work you want to plan'
 ---
 
 # User Instructions
@@ -20,7 +20,7 @@ description: 'Plan the work'
  - Once I confirm that I have added my plan, read the contents of the `plan.md` file.
  - Based on the contents of the `plan.md` file, create a detailed work plan in the `details.md` file.
  - You will need to review relevant files in the codebase to create a comprehensive work plan.
- - You may need to review relevant skills in the `.github/skills/` directory for guidance.
+ - You will need to review relevant skills in the `.github/skills/` directory for guidance.
  - Once the `details.md` file is complete, ask me to review it.
  - After I confirm that the work plan is approved, inform me that I can begin the implementation
  - Do not proceed with any implementation until I confirm that the work plan is approved.

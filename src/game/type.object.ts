@@ -47,7 +47,21 @@ export const AbilityState = AffectState.extend({
 });
 export type AbilityState = z.infer<typeof AbilityState>;
 
-export const AnyAffectState = z.union([BounceState, VelocityState, TargetState, GravityState, AbilityState]);
+export const GameOverState = AffectState.extend({
+  category: z.literal(AffectCategory.enum.GameOver),
+  layers: z.array(z.number()),
+  playerId: z.uuid(),
+});
+export type GameOverState = z.infer<typeof GameOverState>;
+
+export const AnyAffectState = z.union([
+  BounceState,
+  VelocityState,
+  TargetState,
+  GravityState,
+  AbilityState,
+  GameOverState,
+]);
 export type AnyAffectState = z.infer<typeof AnyAffectState>;
 
 export const GameObjectState = z.object({

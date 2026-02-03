@@ -64,18 +64,42 @@ export class CanzeltlyGamesList extends LitElement {
         <p>No saved games found.</p>
       `;
     } else {
+      const activeGames = games.filter((game) => game.status !== "GameOver");
+      const completedGames = games.filter((game) => game.status === "GameOver");
+
       content = html`
-        <div class="games-list">
-          ${games.map(
-            (game) => html`
-              <canzeltly-game-preview
-                .gameState=${game}
-                .selected=${this.selectedIds.includes(game.id)}
-                @toggle-selection=${this.handleToggleSelection}
-                @open-game-options=${this.handleOpenGameOptions}></canzeltly-game-preview>
-            `,
-          )}
-        </div>
+        ${activeGames.length > 0
+          ? html`
+              <h2>Active Games</h2>
+              <div class="games-list">
+                ${activeGames.map(
+                  (game) => html`
+                    <canzeltly-game-preview
+                      .gameState=${game}
+                      .selected=${this.selectedIds.includes(game.id)}
+                      @toggle-selection=${this.handleToggleSelection}
+                      @open-game-options=${this.handleOpenGameOptions}></canzeltly-game-preview>
+                  `,
+                )}
+              </div>
+            `
+          : ""}
+        ${completedGames.length > 0
+          ? html`
+              <h2>Completed Games</h2>
+              <div class="games-list">
+                ${completedGames.map(
+                  (game) => html`
+                    <canzeltly-game-preview
+                      .gameState=${game}
+                      .selected=${this.selectedIds.includes(game.id)}
+                      @toggle-selection=${this.handleToggleSelection}
+                      @open-game-options=${this.handleOpenGameOptions}></canzeltly-game-preview>
+                  `,
+                )}
+              </div>
+            `
+          : ""}
       `;
     }
 
@@ -119,18 +143,33 @@ export class CanzeltlyGamesList extends LitElement {
     this.currentGameId = gameId;
     const game = this.gamesContext.games.find((g) => g.id === gameId);
     if (!game) return;
+
+    const isCompleted = game.status === "GameOver";
+    const playButtonText = isCompleted ? "View Summary" : "Play Game";
+
     this.modalContent = html`
       <h2>Options for ${game.name}</h2>
-      <button @click=${() => this.handlePlayGame(gameId)}>Play Game</button>
+      <button @click=${() => this.handlePlayGame(gameId, isCompleted)}>${playButtonText}</button>
       <button @click=${() => this.handleDeleteGame(gameId)}>Delete Game</button>
       <button @click=${() => this.handleRenameGame(gameId)}>Rename Game</button>
     `;
     this.modal.open();
   };
 
-  private handlePlayGame(gameId: string): void {
+  private handlePlayGame(gameId: string, isCompleted: boolean = false): void {
     this.modal.close();
-    dispatch(this, NavigationEvent({ path: `/play/${gameId}` }));
+    const game = this.gamesContext.games.find((g) => g.id === gameId);
+    if (!game) return;
+
+    if (isCompleted) {
+      // For completed games, navigate to summary page
+      const playerId = game.players[0]?.playerId || "unknown";
+      dispatch(this, NavigationEvent({ path: `/summary/game/${gameId}/player/${playerId}` }));
+    } else {
+      // For active games, navigate to play page
+      const playerId = game.players[0]?.playerId || "unknown";
+      dispatch(this, NavigationEvent({ path: `/play/game/${gameId}/player/${playerId}` }));
+    }
   }
 
   private handleDeleteGame(gameId: string): void {

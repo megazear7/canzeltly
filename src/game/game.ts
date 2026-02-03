@@ -10,6 +10,12 @@ import { Player } from "../shared/type.player.js";
 export const BACKGROUND_ENVIRONMENT_LAYER_INDEX = 0;
 export const MAIN_OBJECT_LAYER_INDEX = 1;
 
+export const GameStatus = z.enum(["NotStarted", "Playing", "Paused", "GameOver"]);
+export type GameStatus = z.infer<typeof GameStatus>;
+
+export const Victory = z.enum(["Win", "Lose"]);
+export type Victory = z.infer<typeof Victory>;
+
 export const World = z.object({
   width: z.number(),
   height: z.number(),
@@ -37,6 +43,10 @@ export const GameState = z.object({
   controls: Controls,
   layers: z.array(GameObjectLayer),
   players: z.array(Player),
+  status: GameStatus.default("NotStarted"),
+  started: z.number().optional(),
+  ended: z.number().optional(),
+  duration: z.number().default(0),
 });
 export type GameState = z.infer<typeof GameState>;
 
@@ -44,7 +54,6 @@ export class Game {
   state: GameState;
   layers: GameObject<AnyGameObjectState>[][];
   input: GameInput;
-  paused: boolean = false;
 
   constructor(state: GameState) {
     this.state = state;
@@ -53,7 +62,7 @@ export class Game {
   }
 
   update(): void {
-    if (this.paused) return;
+    if (this.state.status === GameStatus.enum.Paused || this.state.status === GameStatus.enum.GameOver) return;
     this.layers.forEach((layer) => {
       layer.forEach((obj) => {
         obj.update();
@@ -88,10 +97,31 @@ export class Game {
   }
 
   pause(): void {
-    this.paused = true;
+    if (this.state.status === GameStatus.enum.Playing) {
+      this.state.status = GameStatus.enum.Paused;
+    }
   }
 
   resume(): void {
-    this.paused = false;
+    if (this.state.status === GameStatus.enum.Paused) {
+      this.state.status = GameStatus.enum.Playing;
+    }
+  }
+
+  start(): void {
+    if (this.state.status === GameStatus.enum.NotStarted) {
+      this.state.status = GameStatus.enum.Playing;
+      this.state.started = Date.now();
+    }
+  }
+
+  end(): void {
+    if (this.state.status === GameStatus.enum.Playing || this.state.status === GameStatus.enum.Paused) {
+      this.state.status = GameStatus.enum.GameOver;
+      this.state.ended = Date.now();
+      if (this.state.started) {
+        this.state.duration = this.state.ended - this.state.started;
+      }
+    }
   }
 }

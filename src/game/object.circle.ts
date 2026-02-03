@@ -19,7 +19,7 @@ export function randomCircleState(game: Game): CircleState {
     id: crypto.randomUUID(),
     affects: [],
     x: Math.random() * game.state.world.width,
-    y: Math.random() * game.state.world.height,
+    y: Math.random() * (game.state.world.height / 2),
     radius: 10 + Math.random() * 20,
     color: `hsl(${Math.random() * 360}, 70%, 50%)`,
   };
@@ -47,7 +47,7 @@ export function randomMovingCircleState(game: GameState): CircleState {
       },
     ],
     x: Math.random() * game.world.width,
-    y: Math.random() * game.world.height,
+    y: Math.random() * (game.world.height / 2),
     radius: 10 + Math.random() * 20,
     color: `hsl(${Math.random() * 360}, 70%, 50%)`,
   };
@@ -75,7 +75,7 @@ export function randomBouncingCircleState(game: GameState): CircleState {
       },
     ],
     x: Math.random() * game.world.width,
-    y: Math.random() * game.world.height,
+    y: Math.random() * (game.world.height / 2),
     radius: 10 + Math.random() * 20,
     color: `hsl(${Math.random() * 360}, 70%, 50%)`,
   };
@@ -101,8 +101,41 @@ export function randomGravityCircles(game: GameState): CircleState {
       },
     ],
     x: Math.random() * game.world.width,
-    y: Math.random() * game.world.height,
+    y: Math.random() * (game.world.height / 2),
     radius: 10 + Math.random() * 20,
     color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+  };
+}
+
+export function heroCircle(game: GameState, playerId: string): CircleState {
+  return {
+    category: GameObjectCategory.enum.Circle,
+    id: crypto.randomUUID(),
+    affects: [
+      {
+        category: AffectCategory.enum.GameOver,
+        layers: [1],
+        playerId: playerId,
+      },
+      {
+        category: AffectCategory.enum.Velocity,
+        dx: 0,
+        dy: 0,
+      },
+      {
+        category: AffectCategory.enum.Bounce,
+        loss: 0,
+      },
+      {
+        category: AffectCategory.enum.Ability,
+        acceleration: 0.25,
+        maxSpeed: 5.0,
+        brakingAcceleration: 0.075,
+      },
+    ],
+    x: Math.random() * game.world.width,
+    y: (0.5 + Math.random() * 0.5) * game.world.height,
+    radius: 15,
+    color: `hsl(${Math.random() * 360}, 70%, 60%)`,
   };
 }

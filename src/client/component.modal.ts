@@ -123,13 +123,20 @@ export class CanzeltlyModal extends LitElement {
   @property({ type: Boolean })
   closing = false;
 
+  @property({ type: Boolean })
+  closeable = true;
+
   override render(): TemplateResult {
     return html`
       <slot name="open-button" @click=${this.openHandler()}></slot>
-      <div class="${this.backdropClasses()}" @click=${this.closeHandler()}>
+      <div class="${this.backdropClasses()}" @click=${this.closeable ? this.closeHandler() : undefined}>
         <div class="modal-content" @click=${stopProp}>
           <div class="modal-header">
-            <button class="close-button" @click=${this.closeHandler()}>${xIcon}</button>
+            ${this.closeable
+              ? html`
+                  <button class="close-button" @click=${this.closeHandler()}>${xIcon}</button>
+                `
+              : ""}
           </div>
           <div class="modal-body">
             <slot name="body"></slot>
@@ -160,7 +167,7 @@ export class CanzeltlyModal extends LitElement {
   }
 
   private handleKeyDown = (event: KeyboardEvent): void => {
-    if (event.key === "Escape") {
+    if (event.key === "Escape" && this.closeable) {
       this.close();
     }
   };

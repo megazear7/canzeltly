@@ -18,3 +18,6 @@ description: 'Work on the next TODO item in the codebase.'
  - I may ask for changes to the plan. In which case, update the plan file accordingly and ask me to review again.
  - Once I approve, implement the code changes to complete the TODO item.
  - Run `npm run fix` and `npm run build` to ensure the code is properly formatted and compiles without errors.
+
+# Notes
+ - If the change is very small you may implement it directly after my approval without creating a plan file.
