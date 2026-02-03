@@ -72,10 +72,8 @@ export function newGame({
   circle.color = "#00FF00"; // Green for player circle
   game.layers[1].push(circle);
 
-  for (let i = 0; i < 4; i++) {
-    const extraCircle = randomBouncingCircleState(game);
-    extraCircle.color = "#FF0000"; // Red for other circles
-    game.layers[1].push(extraCircle);
+  for (let i = 0; i < 6; i++) {
+    game.layers[1].push(randomBouncingCircleState(game));
   }
   return game;
 }

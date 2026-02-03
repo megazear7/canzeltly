@@ -60,8 +60,8 @@ export function randomBouncingCircleState(game: GameState): CircleState {
     affects: [
       {
         category: AffectCategory.enum.Velocity,
-        dx: (Math.random() - 0.5) * 10,
-        dy: (Math.random() - 0.5) * 10,
+        dx: (Math.random() - 0.5) * 25,
+        dy: (Math.random() - 0.5) * 25,
       },
       {
         category: AffectCategory.enum.Bounce,
@@ -76,8 +76,8 @@ export function randomBouncingCircleState(game: GameState): CircleState {
     ],
     x: Math.random() * game.world.width,
     y: Math.random() * (game.world.height / 2),
-    radius: 10 + Math.random() * 20,
-    color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+    radius: 30 + Math.random() * 10,
+    color: `#FF0000`,
   };
 }
 
@@ -128,9 +128,9 @@ export function heroCircle(game: GameState, playerId: string): CircleState {
       },
       {
         category: AffectCategory.enum.Ability,
-        acceleration: 0.25,
+        acceleration: 0.15,
         maxSpeed: 5.0,
-        brakingAcceleration: 0.075,
+        brakingAcceleration: 0.1,
       },
     ],
     x: Math.random() * game.world.width,
