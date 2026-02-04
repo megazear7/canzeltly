@@ -3,9 +3,8 @@ import { customElement, state } from "lit/decorators.js";
 import { globalStyles } from "./styles.global.js";
 import { GameState } from "../game/game.js";
 import { saveGameState, setPlayerAssignment } from "./util.storage.js";
-import { CircleState } from "../game/type.object.js";
-import { newGame } from "../game/util.new-game.js";
-import { randomBouncingCircleState } from "../game/object.circle.js";
+import { createSurvivalGame } from "../game/mode.survival.js";
+import { createAdventureGame } from "../game/mode.adventure.js";
 import "./component.input.js";
 
 @customElement("canzeltly-create-game")
@@ -14,6 +13,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   @state() worldWidth = 1000;
   @state() worldHeight = 1000;
   @state() numCircles = 10;
+  @state() mode = "Survival";
 
   static override styles = [
     globalStyles,
@@ -37,6 +37,23 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             .value="${this.gameName}"
             @input-change="${(e: CustomEvent) =>
               (this.gameName = (e.detail as { value: string }).value)}"></canzeltly-input>
+          <div>
+            <label>Mode:</label>
+            <input
+              type="radio"
+              name="mode"
+              value="Survival"
+              .checked="${this.mode === "Survival"}"
+              @change="${(e: Event) => (this.mode = (e.target as HTMLInputElement).value)}" />
+            Survival
+            <input
+              type="radio"
+              name="mode"
+              value="Adventure"
+              .checked="${this.mode === "Adventure"}"
+              @change="${(e: Event) => (this.mode = (e.target as HTMLInputElement).value)}" />
+            Adventure
+          </div>
           <canzeltly-input
             type="slider"
             label="World Width (${this.worldWidth})"
@@ -53,14 +70,18 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             .max="${10000}"
             @input-change="${(e: CustomEvent) =>
               (this.worldHeight = Number((e.detail as { value: number }).value))}"></canzeltly-input>
-          <canzeltly-input
-            type="slider"
-            label="Number of Circles (${this.numCircles})"
-            .value="${this.numCircles}"
-            .min="${0}"
-            .max="${1000}"
-            @input-change="${(e: CustomEvent) =>
-              (this.numCircles = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+          ${this.mode === "Adventure"
+            ? html`
+                <canzeltly-input
+                  type="slider"
+                  label="Number of Circles (${this.numCircles})"
+                  .value="${this.numCircles}"
+                  .min="${0}"
+                  .max="${1000}"
+                  @input-change="${(e: CustomEvent) =>
+                    (this.numCircles = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+              `
+            : ""}
           <button class="primary" type="submit">Create Game</button>
         </form>
       </main>
@@ -83,27 +104,24 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       return;
     }
     // Create game state
-    const baseGameState = newGame({ width: this.worldWidth, height: this.worldHeight, playerId: crypto.randomUUID() });
-    const gameState: GameState = {
-      ...baseGameState,
-      name: this.gameName,
-      id,
-      world: {
+    let gameState: GameState;
+    if (this.mode === "Survival") {
+      gameState = createSurvivalGame({
         width: this.worldWidth,
         height: this.worldHeight,
-      },
-      controls: {
-        scrollSpeed: 10,
-      },
-    };
-    // Keep the player's circle and add extra circles
-    const playerCircle = gameState.layers[1][0];
-    playerCircle.color = "#00FF00"; // Green for player circle
-    gameState.layers[1] = [playerCircle];
-    for (let i = 0; i < this.numCircles; i++) {
-      const circleState: CircleState = randomBouncingCircleState(gameState);
-      circleState.color = "#FF0000"; // Red for other circles
-      gameState.layers[1].push(circleState);
+        playerId: crypto.randomUUID(),
+      });
+      gameState.name = this.gameName;
+      gameState.id = id;
+    } else {
+      gameState = createAdventureGame({
+        width: this.worldWidth,
+        height: this.worldHeight,
+        playerId: crypto.randomUUID(),
+        numCircles: this.numCircles,
+        gameName: this.gameName,
+        gameId: id,
+      });
     }
     saveGameState(gameState);
     // Set player assignment

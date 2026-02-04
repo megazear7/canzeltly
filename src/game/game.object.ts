@@ -7,6 +7,7 @@ import { target } from "./affect.target.js";
 import { gravity } from "./affect.gravity.js";
 import { ability } from "./affect.ability.js";
 import { gameOver } from "./affect.game-over.js";
+import { collection } from "./affect.collection.js";
 
 export abstract class GameObject<T extends GameObjectState> {
   game: Game;
@@ -45,6 +46,7 @@ export abstract class GameObject<T extends GameObjectState> {
       if (affect.category === AffectCategory.enum.Gravity) gravity(this);
       if (affect.category === AffectCategory.enum.Ability) ability(this);
       if (affect.category === AffectCategory.enum.GameOver) gameOver(this);
+      if (affect.category === AffectCategory.enum.Collection) collection(this);
       this.checkBounds();
     });
   }

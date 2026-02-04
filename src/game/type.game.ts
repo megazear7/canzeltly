@@ -12,6 +12,9 @@ export const GameId = z
   .default("default-game");
 export type GameId = z.infer<typeof GameId>;
 
+export const GameMode = z.enum(["Survival", "Adventure"]);
+export type GameMode = z.infer<typeof GameMode>;
+
 export const AnyGameObject = z.union([z.instanceof(Circle), z.instanceof(Rectangle)]);
 export type AnyGameObject = z.infer<typeof AnyGameObject>;
 

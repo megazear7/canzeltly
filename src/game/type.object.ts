@@ -54,6 +54,11 @@ export const GameOverState = AffectState.extend({
 });
 export type GameOverState = z.infer<typeof GameOverState>;
 
+export const CollectionState = AffectState.extend({
+  category: z.literal(AffectCategory.enum.Collection),
+});
+export type CollectionState = z.infer<typeof CollectionState>;
+
 export const AnyAffectState = z.union([
   BounceState,
   VelocityState,
@@ -61,6 +66,7 @@ export const AnyAffectState = z.union([
   GravityState,
   AbilityState,
   GameOverState,
+  CollectionState,
 ]);
 export type AnyAffectState = z.infer<typeof AnyAffectState>;
 

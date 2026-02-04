@@ -6,7 +6,7 @@ import { draw } from "../canvas/draw.canvas.js";
 import { loadGameState, saveGameState } from "./util.storage.js";
 import { CanzeltlyHeadsUpDisplay } from "./component.heads-up-display.js";
 import { mapFromCanvas } from "../canvas/util.map-to-canvas.js";
-import { newGame } from "../game/util.new-game.js";
+import { createSurvivalGame } from "../game/mode.survival.js";
 import { CanzeltlyGameOverModal } from "./component.game-over-modal.js";
 import "./component.heads-up-display.js";
 import "./component.game-over-modal.js";
@@ -57,7 +57,7 @@ export class CanzeltlyPlay extends LitElement {
     if (gameState) {
       this.game = new Game(gameState);
     } else if (this.gameId && this.playerId) {
-      this.game = new Game(newGame({ playerId: this.playerId }));
+      this.game = new Game(createSurvivalGame({ playerId: this.playerId }));
       this.game.state.id = this.gameId;
     }
 

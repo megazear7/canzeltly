@@ -1,17 +1,23 @@
 import { GameState } from "./game.js";
 import { GameObjectCategory } from "./type.object.js";
-import { RectangleState } from "./type.object.js";
-import { randomBouncingCircleState, heroCircle } from "./object.circle.js";
+import { RectangleState, CircleState } from "./type.object.js";
+import { heroCircle } from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
 
-export function newGame({
+export function createAdventureGame({
   width = 1000,
   height = 1000,
   playerId = crypto.randomUUID(),
+  numCircles = 10,
+  gameName = "Adventure Game",
+  gameId = "adventure-game",
 }: {
   width?: number;
   height?: number;
   playerId?: string;
+  numCircles?: number;
+  gameName?: string;
+  gameId?: string;
 } = {}): GameState {
   const circleId = crypto.randomUUID();
 
@@ -39,8 +45,8 @@ export function newGame({
   ];
 
   const game: GameState = {
-    name: "DefaultGame",
-    id: "default-game",
+    name: gameName,
+    id: gameId,
     world: {
       width: width,
       height: height,
@@ -64,19 +70,30 @@ export function newGame({
     players,
     status: "NotStarted",
     duration: 0,
-    mode: "Survival",
+    mode: "Adventure",
     collected: 0,
-    totalCollectibles: undefined,
+    totalCollectibles: numCircles,
   };
 
   // Create a circle for the player
   const circle = heroCircle(game, playerId);
   circle.id = circleId;
-  circle.color = "#00FF00"; // Green for player circle
+  circle.color = "#0000FF"; // Blue for player circle
   game.layers[1].push(circle);
 
-  for (let i = 0; i < 6; i++) {
-    game.layers[1].push(randomBouncingCircleState(game));
+  // Add green collectible circles
+  for (let i = 0; i < numCircles; i++) {
+    const collectible: CircleState = {
+      category: GameObjectCategory.enum.Circle,
+      id: crypto.randomUUID(),
+      affects: [],
+      radius: 10,
+      x: Math.random() * width,
+      y: Math.random() * height,
+      color: "#00FF00", // Green for collectibles
+    };
+    game.layers[1].push(collectible);
   }
+
   return game;
 }

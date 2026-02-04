@@ -3,7 +3,7 @@ import { GameObject } from "./game.object.js";
 import { GameObjectId } from "./type.object.js";
 import { hydrateObjects } from "./util.hydrate.js";
 import { GameInput } from "./game.input.js";
-import { GameId, GameName, GameObjectLayer } from "./type.game.js";
+import { GameId, GameName, GameObjectLayer, GameMode } from "./type.game.js";
 import { AnyGameObjectState } from "./type.object.js";
 import { Player } from "../shared/type.player.js";
 
@@ -47,6 +47,9 @@ export const GameState = z.object({
   started: z.number().optional(),
   ended: z.number().optional(),
   duration: z.number().default(0),
+  mode: GameMode,
+  collected: z.number().default(0),
+  totalCollectibles: z.number().optional(),
 });
 export type GameState = z.infer<typeof GameState>;
 

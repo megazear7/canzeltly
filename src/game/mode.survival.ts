@@ -4,7 +4,7 @@ import { RectangleState } from "./type.object.js";
 import { randomBouncingCircleState, heroCircle } from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
 
-export function newGame({
+export function createSurvivalGame({
   width = 1000,
   height = 1000,
   playerId = crypto.randomUUID(),
@@ -39,8 +39,8 @@ export function newGame({
   ];
 
   const game: GameState = {
-    name: "DefaultGame",
-    id: "default-game",
+    name: "Survival Game",
+    id: "survival-game",
     world: {
       width: width,
       height: height,
@@ -75,8 +75,12 @@ export function newGame({
   circle.color = "#00FF00"; // Green for player circle
   game.layers[1].push(circle);
 
+  // Add initial red bouncing obstacles
   for (let i = 0; i < 6; i++) {
     game.layers[1].push(randomBouncingCircleState(game));
   }
+
+  // TODO: Add spawner for green collectible circles
+
   return game;
 }

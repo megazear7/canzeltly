@@ -118,6 +118,9 @@ export function heroCircle(game: GameState, playerId: string): CircleState {
         playerId: playerId,
       },
       {
+        category: AffectCategory.enum.Collection,
+      },
+      {
         category: AffectCategory.enum.Velocity,
         dx: 0,
         dy: 0,

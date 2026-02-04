@@ -21,6 +21,7 @@ description: 'Describe the new work you want to plan'
  - Based on the contents of the `plan.md` file, create a detailed work plan in the `details.md` file.
  - You will need to review relevant files in the codebase to create a comprehensive work plan.
  - You will need to review relevant skills in the `.github/skills/` directory for guidance.
+ - Update the `details.md` file as you go. Do not wait until the end to update it.
  - Once the `details.md` file is complete, ask me to review it.
  - After I confirm that the work plan is approved, inform me that I can begin the implementation
  - Do not proceed with any implementation until I confirm that the work plan is approved.

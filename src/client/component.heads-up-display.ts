@@ -50,6 +50,12 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
         color: var(--color-error);
       }
 
+      .collected {
+        font-size: var(--font-size-large);
+        font-weight: bold;
+        color: var(--color-text);
+      }
+
       .menu-options {
         display: flex;
         flex-direction: column;
@@ -67,6 +73,7 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
       <div class="hud">
         <button @click=${this.openModal()}>Menu</button>
         <div class="fps ${this.fps && this.fps < 30 ? "low" : ""}">${this.fps ? this.fps.toFixed(0) : ""} FPS</div>
+        <div class="collected">${this.game ? this.getCollectedText() : ""}</div>
       </div>
       <canzeltly-modal @modal-opening=${this.handleModalOpening} @modal-closing=${this.handleModalClosing}>
         <div slot="body">
@@ -108,6 +115,18 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
   private exitWithoutSaving(): void {
     this.menuModal?.close();
     dispatch(this, NavigationEvent({ path: "/" }));
+  }
+
+  private getCollectedText(): string {
+    if (!this.game) return "";
+    const collected = this.game.state.collected;
+    if (this.game.state.mode === "Survival") {
+      return `Collected: ${collected}`;
+    } else if (this.game.state.mode === "Adventure") {
+      const total = this.game.state.totalCollectibles || 0;
+      return `Collected: ${collected}/${total}`;
+    }
+    return "";
   }
 
   private openModal(): () => void {
