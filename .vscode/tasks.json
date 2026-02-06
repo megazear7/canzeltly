@@ -1,0 +1,15 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "cd /Users/alexlockhart/src/canzeltly && npm run build"
+		},
+		{
+			"label": "fix",
+			"type": "shell",
+			"command": "cd /Users/alexlockhart/src/canzeltly && npm run fix"
+		}
+	]
+}

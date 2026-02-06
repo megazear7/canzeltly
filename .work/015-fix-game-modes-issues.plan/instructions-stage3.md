@@ -8,9 +8,8 @@
 ### Detailed Plan
 1. **Create Hunter circle type:**
    - Add `randomHunterCircleState` function in `object.circle.ts`.
-   - Hunter circles should have affects: Velocity, Target (towards player), Bounce.
-   - The Target affect should target the player's position dynamically.
-   - Modify `affect.target.ts` if needed to target the player circle.
+   - Create a Target Object affect that is has an object ID in its state, and updates itself to target that objects position.
+   - Hunter circles should have affects: Velocity, Target Object (towards player), Bounce.
 
 2. **Update game modes to accept enemy circle counts:**
    - Modify `createAdventureGame`, `createSurvivalGame`, `createRaceGame` to accept parameters: numBouncy, numGravity, numHunter.
