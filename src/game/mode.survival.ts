@@ -1,17 +1,28 @@
 import { GameState } from "./game.js";
 import { GameObjectCategory } from "./type.object.js";
 import { RectangleState } from "./type.object.js";
-import { randomBouncingCircleState, heroCircle } from "./object.circle.js";
+import {
+  randomBouncingCircleState,
+  heroCircle,
+  randomGravityCircles,
+  randomHunterCircleState,
+} from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
 
 export function createSurvivalGame({
   width = 1000,
   height = 1000,
   playerId = crypto.randomUUID(),
+  numBouncy = 6,
+  numGravity = 0,
+  numHunter = 0,
 }: {
   width?: number;
   height?: number;
   playerId?: string;
+  numBouncy?: number;
+  numGravity?: number;
+  numHunter?: number;
 } = {}): GameState {
   const circleId = crypto.randomUUID();
 
@@ -75,9 +86,15 @@ export function createSurvivalGame({
   circle.color = "#00FF00"; // Green for player circle
   game.layers[1].push(circle);
 
-  // Add initial red bouncing obstacles
-  for (let i = 0; i < 6; i++) {
+  // Add initial enemy circles
+  for (let i = 0; i < numBouncy; i++) {
     game.layers[1].push(randomBouncingCircleState(game));
+  }
+  for (let i = 0; i < numGravity; i++) {
+    game.layers[1].push(randomGravityCircles(game));
+  }
+  for (let i = 0; i < numHunter; i++) {
+    game.layers[1].push(randomHunterCircleState(game, playerId));
   }
 
   // TODO: Add spawner for green collectible circles

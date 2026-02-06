@@ -1,21 +1,32 @@
 import { GameState } from "./game.js";
 import { GameObjectCategory } from "./type.object.js";
 import { RectangleState, CircleState } from "./type.object.js";
-import { heroCircle, randomBouncingCircleState } from "./object.circle.js";
+import {
+  heroCircle,
+  randomBouncingCircleState,
+  randomGravityCircles,
+  randomHunterCircleState,
+} from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
 
 export function createAdventureGame({
   width = 1000,
   height = 1000,
   playerId = crypto.randomUUID(),
-  numCircles = 10,
+  numGreenCircles = 10,
+  numBouncy = 5,
+  numGravity = 0,
+  numHunter = 0,
   gameName = "Adventure Game",
   gameId = "adventure-game",
 }: {
   width?: number;
   height?: number;
   playerId?: string;
-  numCircles?: number;
+  numGreenCircles?: number;
+  numBouncy?: number;
+  numGravity?: number;
+  numHunter?: number;
   gameName?: string;
   gameId?: string;
 } = {}): GameState {
@@ -72,7 +83,7 @@ export function createAdventureGame({
     duration: 0,
     mode: "Adventure",
     collected: 0,
-    totalCollectibles: numCircles,
+    totalCollectibles: numGreenCircles,
   };
 
   // Create a circle for the player
@@ -82,7 +93,7 @@ export function createAdventureGame({
   game.layers[1].push(circle);
 
   // Add green collectible circles
-  for (let i = 0; i < numCircles; i++) {
+  for (let i = 0; i < numGreenCircles; i++) {
     const collectible: CircleState = {
       category: GameObjectCategory.enum.Circle,
       id: crypto.randomUUID(),
@@ -95,9 +106,15 @@ export function createAdventureGame({
     game.layers[1].push(collectible);
   }
 
-  // Add red bouncing circles
-  for (let i = 0; i < 5; i++) {
+  // Add enemy circles
+  for (let i = 0; i < numBouncy; i++) {
     game.layers[1].push(randomBouncingCircleState(game));
+  }
+  for (let i = 0; i < numGravity; i++) {
+    game.layers[1].push(randomGravityCircles(game));
+  }
+  for (let i = 0; i < numHunter; i++) {
+    game.layers[1].push(randomHunterCircleState(game, playerId));
   }
 
   return game;

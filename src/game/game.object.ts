@@ -4,6 +4,7 @@ import { bounce } from "./affect.bounce.js";
 import { AffectCategory } from "./game.affect.js";
 import { velocity } from "./affect.velocity.js";
 import { target } from "./affect.target.js";
+import { targetObject } from "./affect.target-object.js";
 import { gravity } from "./affect.gravity.js";
 import { ability } from "./affect.ability.js";
 import { gameOver } from "./affect.game-over.js";
@@ -43,6 +44,7 @@ export abstract class GameObject<T extends GameObjectState> {
       if (affect.category === AffectCategory.enum.Velocity) velocity(this);
       if (affect.category === AffectCategory.enum.Bounce) bounce(this);
       if (affect.category === AffectCategory.enum.Target) target(this);
+      if (affect.category === AffectCategory.enum.TargetObject) targetObject(this);
       if (affect.category === AffectCategory.enum.Gravity) gravity(this);
       if (affect.category === AffectCategory.enum.Ability) ability(this);
       if (affect.category === AffectCategory.enum.GameOver) gameOver(this);

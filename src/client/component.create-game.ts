@@ -1,12 +1,12 @@
 import { html, css, TemplateResult, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { globalStyles } from "./styles.global.js";
-import { GameState } from "../game/game.js";
 import { saveGameState, setPlayerAssignment } from "./util.storage.js";
 import { createSurvivalGame } from "../game/mode.survival.js";
 import { createAdventureGame } from "../game/mode.adventure.js";
 import { createRaceGame } from "../game/mode.race.js";
 import "./component.input.js";
+import { GameState } from "../game/game.js";
 
 @customElement("canzeltly-create-game")
 export class CanzeltlyCreateGameComponent extends LitElement {
@@ -17,6 +17,14 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   @state() mode = "Survival";
   @state() timeLimit = 60;
   @state() numGreenCircles = 5;
+  @state() numBouncy = 6;
+  @state() numGravity = 0;
+  @state() numHunter = 0;
+
+  constructor() {
+    super();
+    this.setDefaultsForMode();
+  }
 
   private adjectives = [
     "Epic",
@@ -64,10 +72,21 @@ export class CanzeltlyCreateGameComponent extends LitElement {
     "Beast",
   ];
 
-  constructor() {
-    super();
-    if (!this.gameName) {
-      this.gameName = this.generateRandomName();
+  private setDefaultsForMode(): void {
+    if (this.mode === "Adventure") {
+      this.numGreenCircles = 10;
+      this.numBouncy = 5;
+      this.numGravity = 0;
+      this.numHunter = 0;
+    } else if (this.mode === "Survival") {
+      this.numBouncy = 6;
+      this.numGravity = 0;
+      this.numHunter = 0;
+    } else if (this.mode === "Race") {
+      this.numGreenCircles = 5;
+      this.numBouncy = 1;
+      this.numGravity = 0;
+      this.numHunter = 0;
     }
   }
 
@@ -106,21 +125,30 @@ export class CanzeltlyCreateGameComponent extends LitElement {
               name="mode"
               value="Survival"
               .checked="${this.mode === "Survival"}"
-              @change="${(e: Event) => (this.mode = (e.target as HTMLInputElement).value)}" />
+              @change="${(e: Event) => {
+                this.mode = (e.target as HTMLInputElement).value;
+                this.setDefaultsForMode();
+              }}"></canzeltly-input>
             Survival
             <input
               type="radio"
               name="mode"
               value="Adventure"
               .checked="${this.mode === "Adventure"}"
-              @change="${(e: Event) => (this.mode = (e.target as HTMLInputElement).value)}" />
+              @change="${(e: Event) => {
+                this.mode = (e.target as HTMLInputElement).value;
+                this.setDefaultsForMode();
+              }}"></canzeltly-input>
             Adventure
             <input
               type="radio"
               name="mode"
               value="Race"
               .checked="${this.mode === "Race"}"
-              @change="${(e: Event) => (this.mode = (e.target as HTMLInputElement).value)}" />
+              @change="${(e: Event) => {
+                this.mode = (e.target as HTMLInputElement).value;
+                this.setDefaultsForMode();
+              }}"></canzeltly-input>
             Race
           </div>
           <canzeltly-input
@@ -139,38 +167,120 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             .max="${10000}"
             @input-change="${(e: CustomEvent) =>
               (this.worldHeight = Number((e.detail as { value: number }).value))}"></canzeltly-input>
-          ${this.mode === "Adventure"
-            ? html`
-                <canzeltly-input
-                  type="slider"
-                  label="Number of Circles (${this.numCircles})"
-                  .value="${this.numCircles}"
-                  .min="${1}"
-                  .max="${1000}"
-                  @input-change="${(e: CustomEvent) =>
-                    (this.numCircles = Number((e.detail as { value: number }).value))}"></canzeltly-input>
-              `
-            : ""}
-          ${this.mode === "Race"
-            ? html`
-                <canzeltly-input
-                  type="slider"
-                  label="Time Limit (${this.timeLimit} seconds)"
-                  .value="${this.timeLimit}"
-                  .min="${1}"
-                  .max="${300}"
-                  @input-change="${(e: CustomEvent) =>
-                    (this.timeLimit = Number((e.detail as { value: number }).value))}"></canzeltly-input>
-                <canzeltly-input
-                  type="slider"
-                  label="Number of Green Circles (${this.numGreenCircles})"
-                  .value="${this.numGreenCircles}"
-                  .min="${1}"
-                  .max="${100}"
-                  @input-change="${(e: CustomEvent) =>
-                    (this.numGreenCircles = Number((e.detail as { value: number }).value))}"></canzeltly-input>
-              `
-            : ""}
+          ${
+            this.mode === "Adventure"
+              ? html`
+                  <canzeltly-input
+                    type="slider"
+                    label="Number of Green Circles (${this.numGreenCircles})"
+                    .value="${this.numGreenCircles}"
+                    .min="${1}"
+                    .max="${1000}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.numGreenCircles = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                  <canzeltly-input
+                    type="slider"
+                    label="Number of Bouncy Circles (${this.numBouncy})"
+                    .value="${this.numBouncy}"
+                    .min="${0}"
+                    .max="${100}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.numBouncy = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                  <canzeltly-input
+                    type="slider"
+                    label="Number of Gravity Circles (${this.numGravity})"
+                    .value="${this.numGravity}"
+                    .min="${0}"
+                    .max="${100}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.numGravity = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                  <canzeltly-input
+                    type="slider"
+                    label="Number of Hunter Circles (${this.numHunter})"
+                    .value="${this.numHunter}"
+                    .min="${0}"
+                    .max="${100}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.numHunter = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                `
+              : ""
+          }
+          ${
+            this.mode === "Race"
+              ? html`
+                  <canzeltly-input
+                    type="slider"
+                    label="Time Limit (${this.timeLimit} seconds)"
+                    .value="${this.timeLimit}"
+                    .min="${1}"
+                    .max="${300}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.timeLimit = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                  <canzeltly-input
+                    type="slider"
+                    label="Number of Green Circles (${this.numGreenCircles})"
+                    .value="${this.numGreenCircles}"
+                    .min="${1}"
+                    .max="${100}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.numGreenCircles = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                  <canzeltly-input
+                    type="slider"
+                    label="Number of Bouncy Circles (${this.numBouncy})"
+                    .value="${this.numBouncy}"
+                    .min="${0}"
+                    .max="${100}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.numBouncy = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                  <canzeltly-input
+                    type="slider"
+                    label="Number of Gravity Circles (${this.numGravity})"
+                    .value="${this.numGravity}"
+                    .min="${0}"
+                    .max="${100}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.numGravity = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                  <canzeltly-input
+                    type="slider"
+                    label="Number of Hunter Circles (${this.numHunter})"
+                    .value="${this.numHunter}"
+                    .min="${0}"
+                    .max="${100}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.numHunter = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                `
+              : ""
+          }
+          ${
+            this.mode === "Survival"
+              ? html`
+                  <canzeltly-input
+                    type="slider"
+                    label="Number of Bouncy Circles (${this.numBouncy})"
+                    .value="${this.numBouncy}"
+                    .min="${0}"
+                    .max="${100}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.numBouncy = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                  <canzeltly-input
+                    type="slider"
+                    label="Number of Gravity Circles (${this.numGravity})"
+                    .value="${this.numGravity}"
+                    .min="${0}"
+                    .max="${100}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.numGravity = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                  <canzeltly-input
+                    type="slider"
+                    label="Number of Hunter Circles (${this.numHunter})"
+                    .value="${this.numHunter}"
+                    .min="${0}"
+                    .max="${100}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.numHunter = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                `
+              : ""
+          }
           <button class="primary" type="submit">Create Game</button>
         </form>
       </main>
@@ -198,6 +308,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         width: this.worldWidth,
         height: this.worldHeight,
         playerId: crypto.randomUUID(),
+        numBouncy: this.numBouncy,
+        numGravity: this.numGravity,
+        numHunter: this.numHunter,
       });
       gameState.name = this.gameName;
       gameState.id = id;
@@ -206,7 +319,10 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         width: this.worldWidth,
         height: this.worldHeight,
         playerId: crypto.randomUUID(),
-        numCircles: this.numCircles,
+        numGreenCircles: this.numGreenCircles,
+        numBouncy: this.numBouncy,
+        numGravity: this.numGravity,
+        numHunter: this.numHunter,
         gameName: this.gameName,
         gameId: id,
       });
@@ -217,6 +333,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         playerId: crypto.randomUUID(),
         timeLimit: this.timeLimit,
         numGreenCircles: this.numGreenCircles,
+        numBouncy: this.numBouncy,
+        numGravity: this.numGravity,
+        numHunter: this.numHunter,
         gameName: this.gameName,
         gameId: id,
       });

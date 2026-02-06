@@ -81,6 +81,33 @@ export function randomBouncingCircleState(game: GameState): CircleState {
   };
 }
 
+export function randomHunterCircleState(game: GameState, playerId: string): CircleState {
+  return {
+    category: GameObjectCategory.enum.Circle,
+    id: crypto.randomUUID(),
+    affects: [
+      {
+        category: AffectCategory.enum.Velocity,
+        dx: 0,
+        dy: 0,
+      },
+      {
+        category: AffectCategory.enum.TargetObject,
+        objectId: playerId,
+        acceleration: 0.1,
+      },
+      {
+        category: AffectCategory.enum.Bounce,
+        loss: 0,
+      },
+    ],
+    x: Math.random() * game.world.width,
+    y: Math.random() * (game.world.height / 2),
+    radius: 15 + Math.random() * 10,
+    color: `#800080`, // Purple for hunters
+  };
+}
+
 export function randomGravityCircles(game: GameState): CircleState {
   return {
     category: GameObjectCategory.enum.Circle,

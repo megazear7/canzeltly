@@ -1,7 +1,12 @@
 import { GameState } from "./game.js";
 import { GameObjectCategory } from "./type.object.js";
 import { RectangleState, CircleState } from "./type.object.js";
-import { heroCircle, randomBouncingCircleState } from "./object.circle.js";
+import {
+  heroCircle,
+  randomBouncingCircleState,
+  randomGravityCircles,
+  randomHunterCircleState,
+} from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
 
 export function createRaceGame({
@@ -10,6 +15,9 @@ export function createRaceGame({
   playerId = crypto.randomUUID(),
   timeLimit = 60,
   numGreenCircles = 5,
+  numBouncy = 1,
+  numGravity = 0,
+  numHunter = 0,
   gameName = "Race Game",
   gameId = "race-game",
 }: {
@@ -18,6 +26,9 @@ export function createRaceGame({
   playerId?: string;
   timeLimit?: number;
   numGreenCircles?: number;
+  numBouncy?: number;
+  numGravity?: number;
+  numHunter?: number;
   gameName?: string;
   gameId?: string;
 } = {}): GameState {
@@ -98,8 +109,16 @@ export function createRaceGame({
     game.layers[1].push(collectible);
   }
 
-  // Add 1 red bouncing circle
-  game.layers[1].push(randomBouncingCircleState(game));
+  // Add enemy circles
+  for (let i = 0; i < numBouncy; i++) {
+    game.layers[1].push(randomBouncingCircleState(game));
+  }
+  for (let i = 0; i < numGravity; i++) {
+    game.layers[1].push(randomGravityCircles(game));
+  }
+  for (let i = 0; i < numHunter; i++) {
+    game.layers[1].push(randomHunterCircleState(game, playerId));
+  }
 
   return game;
 }
