@@ -125,6 +125,15 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
     } else if (this.game.state.mode === "Adventure") {
       const total = this.game.state.totalCollectibles || 0;
       return `Collected: ${collected}/${total}`;
+    } else if (this.game.state.mode === "Race") {
+      const total = this.game.state.totalCollectibles || 0;
+      let timeText = "";
+      if (this.game.state.startTime && this.game.state.timeLimit) {
+        const elapsed = (Date.now() - this.game.state.startTime) / 1000;
+        const remaining = Math.max(0, this.game.state.timeLimit - elapsed);
+        timeText = ` | Time: ${remaining.toFixed(0)}s`;
+      }
+      return `Collected: ${collected}/${total}${timeText}`;
     }
     return "";
   }

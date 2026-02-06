@@ -12,28 +12,44 @@ export const gameOver: affect = function (obj: GameObject<GameObjectState>): voi
       const playerId = gameOverState.playerId;
 
       // Check collision with objects in specified layers
-      if (obj.game.state.mode === "Survival" || obj.game.state.mode === "Adventure") {
-        gameOverState.layers.forEach((layerIndex) => {
-          const layer = obj.game.layers[layerIndex];
-          if (layer) {
-            layer.forEach((otherObj) => {
-              // Don't check collision with self
-              if (otherObj.state.id !== obj.state.id) {
-                if (checkForCollision(obj.state, otherObj.state)) {
-                  // Collision detected - game over
-                  obj.game.state.status = GameStatus.enum.GameOver;
-                  obj.game.state.ended = Date.now();
+      gameOverState.layers.forEach((layerIndex) => {
+        const layer = obj.game.layers[layerIndex];
+        if (layer) {
+          layer.forEach((otherObj) => {
+            // Don't check collision with self
+            if (otherObj.state.id !== obj.state.id) {
+              if (checkForCollision(obj.state, otherObj.state)) {
+                // Collision detected - game over
+                obj.game.state.status = GameStatus.enum.GameOver;
+                obj.game.state.ended = Date.now();
 
-                  // Find the player and set victory to Lose
-                  const player = obj.game.state.players.find((p) => p.playerId === playerId);
-                  if (player && player.victory !== "Win") {
-                    player.victory = "Lose";
-                  }
+                // Find the player and set victory to Lose
+                const player = obj.game.state.players.find((p) => p.playerId === playerId);
+                if (player && player.victory !== "Win") {
+                  player.victory = "Lose";
                 }
               }
-            });
+            }
+          });
+        }
+      });
+      if (obj.game.state.mode === "Race") {
+        // Also check time limit
+        if (obj.game.state.startTime && obj.game.state.timeLimit) {
+          const currentTime = Date.now();
+          const elapsed = (currentTime - obj.game.state.startTime) / 1000; // in seconds
+          if (elapsed >= obj.game.state.timeLimit) {
+            // Time's up - game over lose
+            obj.game.state.status = GameStatus.enum.GameOver;
+            obj.game.state.ended = currentTime;
+
+            // Find the player and set victory to Lose
+            const player = obj.game.state.players.find((p) => p.playerId === playerId);
+            if (player && player.victory !== "Win") {
+              player.victory = "Lose";
+            }
           }
-        });
+        }
       }
     });
 };

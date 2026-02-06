@@ -50,6 +50,8 @@ export const GameState = z.object({
   mode: GameMode,
   collected: z.number().default(0),
   totalCollectibles: z.number().optional(),
+  timeLimit: z.number().optional(),
+  startTime: z.number().optional(),
 });
 export type GameState = z.infer<typeof GameState>;
 

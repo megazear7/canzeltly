@@ -5,6 +5,7 @@ import { GameState } from "../game/game.js";
 import { saveGameState, setPlayerAssignment } from "./util.storage.js";
 import { createSurvivalGame } from "../game/mode.survival.js";
 import { createAdventureGame } from "../game/mode.adventure.js";
+import { createRaceGame } from "../game/mode.race.js";
 import "./component.input.js";
 
 @customElement("canzeltly-create-game")
@@ -14,6 +15,8 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   @state() worldHeight = 1000;
   @state() numCircles = 10;
   @state() mode = "Survival";
+  @state() timeLimit = 60;
+  @state() numGreenCircles = 5;
 
   private adjectives = [
     "Epic",
@@ -112,6 +115,13 @@ export class CanzeltlyCreateGameComponent extends LitElement {
               .checked="${this.mode === "Adventure"}"
               @change="${(e: Event) => (this.mode = (e.target as HTMLInputElement).value)}" />
             Adventure
+            <input
+              type="radio"
+              name="mode"
+              value="Race"
+              .checked="${this.mode === "Race"}"
+              @change="${(e: Event) => (this.mode = (e.target as HTMLInputElement).value)}" />
+            Race
           </div>
           <canzeltly-input
             type="slider"
@@ -139,6 +149,26 @@ export class CanzeltlyCreateGameComponent extends LitElement {
                   .max="${1000}"
                   @input-change="${(e: CustomEvent) =>
                     (this.numCircles = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+              `
+            : ""}
+          ${this.mode === "Race"
+            ? html`
+                <canzeltly-input
+                  type="slider"
+                  label="Time Limit (${this.timeLimit} seconds)"
+                  .value="${this.timeLimit}"
+                  .min="${1}"
+                  .max="${300}"
+                  @input-change="${(e: CustomEvent) =>
+                    (this.timeLimit = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                <canzeltly-input
+                  type="slider"
+                  label="Number of Green Circles (${this.numGreenCircles})"
+                  .value="${this.numGreenCircles}"
+                  .min="${1}"
+                  .max="${100}"
+                  @input-change="${(e: CustomEvent) =>
+                    (this.numGreenCircles = Number((e.detail as { value: number }).value))}"></canzeltly-input>
               `
             : ""}
           <button class="primary" type="submit">Create Game</button>
@@ -171,7 +201,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       });
       gameState.name = this.gameName;
       gameState.id = id;
-    } else {
+    } else if (this.mode === "Adventure") {
       gameState = createAdventureGame({
         width: this.worldWidth,
         height: this.worldHeight,
@@ -180,6 +210,18 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         gameName: this.gameName,
         gameId: id,
       });
+    } else if (this.mode === "Race") {
+      gameState = createRaceGame({
+        width: this.worldWidth,
+        height: this.worldHeight,
+        playerId: crypto.randomUUID(),
+        timeLimit: this.timeLimit,
+        numGreenCircles: this.numGreenCircles,
+        gameName: this.gameName,
+        gameId: id,
+      });
+    } else {
+      throw new Error(`Unknown mode: ${this.mode}`);
     }
     saveGameState(gameState);
     // Set player assignment

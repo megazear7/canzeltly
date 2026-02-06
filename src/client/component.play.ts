@@ -91,6 +91,10 @@ export class CanzeltlyPlay extends LitElement {
           this.game.state.started = Date.now();
           // Set game status to Playing when the game starts
           this.game.state.status = "Playing";
+          // For Race mode, set startTime
+          if (this.game.state.mode === "Race") {
+            this.game.state.startTime = this.game.state.started;
+          }
         }
       }
       if (this.canvas && this.game) {

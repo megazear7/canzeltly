@@ -17,8 +17,11 @@ export const collection: affect = function (obj: GameObject<GameObjectState>): v
             obj.game.removeObject(otherObj.state.id);
             obj.game.state.collected++;
 
-            // Check for win condition in Adventure mode
-            if (obj.game.state.mode === "Adventure" && obj.game.state.totalCollectibles !== undefined) {
+            // Check for win condition in Adventure and Race modes
+            if (
+              (obj.game.state.mode === "Adventure" || obj.game.state.mode === "Race") &&
+              obj.game.state.totalCollectibles !== undefined
+            ) {
               if (obj.game.state.collected >= obj.game.state.totalCollectibles) {
                 if (obj.game.state.status !== GameStatus.enum.GameOver) {
                   obj.game.state.status = GameStatus.enum.GameOver;
