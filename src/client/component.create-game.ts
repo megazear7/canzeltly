@@ -15,6 +15,65 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   @state() numCircles = 10;
   @state() mode = "Survival";
 
+  private adjectives = [
+    "Epic",
+    "Mystic",
+    "Cosmic",
+    "Galactic",
+    "Enchanted",
+    "Legendary",
+    "Ancient",
+    "Mighty",
+    "Swift",
+    "Brave",
+    "Fierce",
+    "Radiant",
+    "Shadowy",
+    "Golden",
+    "Crystal",
+    "Thunder",
+    "Frosty",
+    "Blazing",
+    "Silent",
+    "Wild",
+  ];
+
+  private nouns = [
+    "Quest",
+    "Journey",
+    "Adventure",
+    "Realm",
+    "Kingdom",
+    "World",
+    "Galaxy",
+    "Forest",
+    "Mountain",
+    "Ocean",
+    "Castle",
+    "Temple",
+    "Cave",
+    "Island",
+    "Valley",
+    "Peak",
+    "Storm",
+    "Flame",
+    "Shadow",
+    "Beast",
+  ];
+
+  constructor() {
+    super();
+    if (!this.gameName) {
+      this.gameName = this.generateRandomName();
+    }
+  }
+
+  private generateRandomName(): string {
+    const adjective = this.adjectives[Math.floor(Math.random() * this.adjectives.length)];
+    const noun = this.nouns[Math.floor(Math.random() * this.nouns.length)];
+    return `${adjective} ${noun}`;
+  }
+
   static override styles = [
     globalStyles,
     css`
@@ -76,7 +135,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
                   type="slider"
                   label="Number of Circles (${this.numCircles})"
                   .value="${this.numCircles}"
-                  .min="${0}"
+                  .min="${1}"
                   .max="${1000}"
                   @input-change="${(e: CustomEvent) =>
                     (this.numCircles = Number((e.detail as { value: number }).value))}"></canzeltly-input>
@@ -91,8 +150,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   private handleSubmit(e: Event): void {
     e.preventDefault();
     if (!this.gameName.trim()) {
-      alert("Game name is required");
-      return;
+      this.gameName = this.generateRandomName();
     }
     // Generate id
     const id = this.gameName

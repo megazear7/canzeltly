@@ -12,7 +12,7 @@ export const gameOver: affect = function (obj: GameObject<GameObjectState>): voi
       const playerId = gameOverState.playerId;
 
       // Check collision with objects in specified layers
-      if (obj.game.state.mode === "Survival") {
+      if (obj.game.state.mode === "Survival" || obj.game.state.mode === "Adventure") {
         gameOverState.layers.forEach((layerIndex) => {
           const layer = obj.game.layers[layerIndex];
           if (layer) {
@@ -26,7 +26,7 @@ export const gameOver: affect = function (obj: GameObject<GameObjectState>): voi
 
                   // Find the player and set victory to Lose
                   const player = obj.game.state.players.find((p) => p.playerId === playerId);
-                  if (player) {
+                  if (player && player.victory !== "Win") {
                     player.victory = "Lose";
                   }
                 }

@@ -73,13 +73,24 @@ export class CanzeltlyInput extends LitElement {
         `;
       case "slider":
         return html`
-          <input
-            type="range"
-            .value="${String(this.value)}"
-            .min="${this.min}"
-            .max="${this.max}"
-            .step="${this.step}"
-            @input="${this.handleInput}" />
+          <div style="display: flex; align-items: center; gap: var(--size-small);">
+            <input
+              type="range"
+              .value="${String(this.value)}"
+              .min="${this.min}"
+              .max="${this.max}"
+              .step="${this.step}"
+              @input="${this.handleInput}"
+              style="flex: 1;" />
+            <input
+              type="number"
+              .value="${String(this.value)}"
+              .min="${this.min}"
+              .max="${this.max}"
+              .step="${this.step}"
+              @input="${this.handleInput}"
+              style="width: 80px;" />
+          </div>
         `;
       case "checkbox":
         return html`

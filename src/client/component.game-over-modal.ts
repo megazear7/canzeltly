@@ -53,6 +53,7 @@ export class CanzeltlyGameOverModal extends LitElement {
     const player = this.game.state.players.find((p) => p.playerId === this.playerId);
     const victory = player?.victory || "Unknown";
     // TODO: The duration property is always 0 here. Fix that.
+    // TODO: The victory property is always "Unknown". Fix that too.
     const duration = this.game.state.duration ? Math.round(this.game.state.duration / 1000) : 0;
 
     return html`

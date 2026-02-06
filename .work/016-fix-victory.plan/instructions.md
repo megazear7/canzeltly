@@ -1,0 +1,1 @@
+After collecting all of the green circles it STILL shows "defeat".

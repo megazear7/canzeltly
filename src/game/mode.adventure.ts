@@ -1,7 +1,7 @@
 import { GameState } from "./game.js";
 import { GameObjectCategory } from "./type.object.js";
 import { RectangleState, CircleState } from "./type.object.js";
-import { heroCircle } from "./object.circle.js";
+import { heroCircle, randomBouncingCircleState } from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
 
 export function createAdventureGame({
@@ -93,6 +93,11 @@ export function createAdventureGame({
       color: "#00FF00", // Green for collectibles
     };
     game.layers[1].push(collectible);
+  }
+
+  // Add red bouncing circles
+  for (let i = 0; i < 5; i++) {
+    game.layers[1].push(randomBouncingCircleState(game));
   }
 
   return game;

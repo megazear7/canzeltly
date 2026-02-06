@@ -20,16 +20,18 @@ export const collection: affect = function (obj: GameObject<GameObjectState>): v
             // Check for win condition in Adventure mode
             if (obj.game.state.mode === "Adventure" && obj.game.state.totalCollectibles !== undefined) {
               if (obj.game.state.collected >= obj.game.state.totalCollectibles) {
-                obj.game.state.status = GameStatus.enum.GameOver;
-                obj.game.state.ended = Date.now();
-                // Set victory for the player
-                const gameOverAffect = obj.state.affects.find((a) => a.category === AffectCategory.enum.GameOver) as
-                  | GameOverState
-                  | undefined;
-                const playerId = gameOverAffect?.playerId;
-                const player = obj.game.state.players.find((p) => p.playerId === playerId);
-                if (player) {
-                  player.victory = Victory.enum.Win;
+                if (obj.game.state.status !== GameStatus.enum.GameOver) {
+                  obj.game.state.status = GameStatus.enum.GameOver;
+                  obj.game.state.ended = Date.now();
+                  // Set victory for the player
+                  const gameOverAffect = obj.state.affects.find((a) => a.category === AffectCategory.enum.GameOver) as
+                    | GameOverState
+                    | undefined;
+                  const playerId = gameOverAffect?.playerId;
+                  const player = obj.game.state.players.find((p) => p.playerId === playerId);
+                  if (player) {
+                    player.victory = Victory.enum.Win;
+                  }
                 }
               }
             }
