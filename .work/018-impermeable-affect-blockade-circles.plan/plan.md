@@ -1,0 +1,3 @@
+- Add a "blockade" circle type of circles that will end the game on a collision but do not move but require you to navigate around them. This circle type should be able to be added to all the game modes in the create game screen.
+- Create an impermeable affect which means that if "this" object is ever touching another object then it moves such that it is not touching that other object (r1+r2 compared to distance between centers, an existing util function should exist for this). This should only be checked on major updates. Create a list called "majorAffects" which are things that are only checked during major updates.
+- Add the impermeable affect to green circles so that if they spawn on top of blockades, the green circle moves out of the blockade.

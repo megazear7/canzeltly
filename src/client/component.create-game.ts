@@ -20,6 +20,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   @state() numBouncy = 6;
   @state() numGravity = 0;
   @state() numHunter = 0;
+  @state() numBlockade = 0;
 
   constructor() {
     super();
@@ -79,15 +80,18 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       this.numBouncy = 5;
       this.numGravity = 0;
       this.numHunter = 0;
+      this.numBlockade = 3;
     } else if (this.mode === "Survival") {
       this.numBouncy = 6;
       this.numGravity = 0;
       this.numHunter = 0;
+      this.numBlockade = 0;
     } else if (this.mode === "Race") {
       this.numGreenCircles = 5;
       this.numBouncy = 1;
       this.numGravity = 0;
       this.numHunter = 0;
+      this.numBlockade = 0;
     }
   }
 
@@ -203,6 +207,14 @@ export class CanzeltlyCreateGameComponent extends LitElement {
                     .max="${100}"
                     @input-change="${(e: CustomEvent) =>
                       (this.numHunter = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+                  <canzeltly-input
+                    type="slider"
+                    label="Number of Blockade Circles (${this.numBlockade})"
+                    .value="${this.numBlockade}"
+                    .min="${0}"
+                    .max="${100}"
+                    @input-change="${(e: CustomEvent) =>
+                      (this.numBlockade = Number((e.detail as { value: number }).value))}"></canzeltly-input>
                 `
               : ""
           }
@@ -324,6 +336,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         numBouncy: this.numBouncy,
         numGravity: this.numGravity,
         numHunter: this.numHunter,
+        numBlockade: this.numBlockade,
         gameName: this.gameName,
         gameId: id,
       });

@@ -116,6 +116,7 @@ export class CanzeltlyPlay extends LitElement {
         if (currentTime - lastMajorUpdate >= 1000 && this.game) {
           this.game.state.duration += currentTime - lastMajorUpdate;
           this.game.serializeState();
+          this.game.majorUpdates();
           const fps = this.drawCount;
           if (this.hud) {
             this.hud.fps = fps;

@@ -9,6 +9,7 @@ import { gravity } from "./affect.gravity.js";
 import { ability } from "./affect.ability.js";
 import { gameOver } from "./affect.game-over.js";
 import { collection } from "./affect.collection.js";
+import { impermeable } from "./affect.impermeable.js";
 
 export abstract class GameObject<T extends GameObjectState> {
   game: Game;
@@ -51,6 +52,12 @@ export abstract class GameObject<T extends GameObjectState> {
       if (affect.category === AffectCategory.enum.Collection) collection(this);
 
       this.checkBounds();
+    });
+  }
+
+  majorUpdates(): void {
+    this.state.affects.forEach((affect) => {
+      if (affect.category === AffectCategory.enum.Impermeable) impermeable(this);
     });
   }
 

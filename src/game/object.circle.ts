@@ -84,6 +84,22 @@ export function randomBouncingCircleState(game: GameState): CircleState {
   };
 }
 
+export function randomBlockadeCircleState(game: GameState): CircleState {
+  return {
+    category: GameObjectCategory.enum.Circle,
+    id: crypto.randomUUID(),
+    affects: [
+      {
+        category: AffectCategory.enum.GameOverCollision,
+      },
+    ],
+    x: Math.random() * game.world.width,
+    y: Math.random() * game.world.height,
+    radius: 20 + Math.random() * 20,
+    color: `#000000`,
+  };
+}
+
 export function randomHunterCircleState(game: GameState, playerId: string): CircleState {
   const player = game.players.find((p) => p.playerId === playerId);
   const targetId = player?.selectedObjects[0] || playerId;

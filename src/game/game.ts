@@ -75,6 +75,15 @@ export class Game {
     });
   }
 
+  majorUpdates(): void {
+    if (this.state.status === GameStatus.enum.Paused || this.state.status === GameStatus.enum.GameOver) return;
+    this.layers.forEach((layer) => {
+      layer.forEach((obj) => {
+        obj.majorUpdates();
+      });
+    });
+  }
+
   alignViewport(targetAspectRatio: number): void {
     // Adjust viewport height to match the target aspect ratio while keeping width the same
     this.state.viewports.forEach((viewport) => {
