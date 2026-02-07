@@ -1,11 +1,13 @@
 import { GameState } from "./game.js";
 import { GameObjectCategory } from "./type.object.js";
-import { RectangleState } from "./type.object.js";
+import { RectangleState, CircleState } from "./type.object.js";
+import { AffectCategory } from "./game.affect.js";
 import {
   randomBouncingCircleState,
   heroCircle,
   randomGravityCircles,
   randomHunterCircleState,
+  randomBlockadeCircleState,
 } from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
 
@@ -16,6 +18,8 @@ export function createSurvivalGame({
   numBouncy = 6,
   numGravity = 0,
   numHunter = 0,
+  numBlockade = 0,
+  numGreenCircles = 0,
 }: {
   width?: number;
   height?: number;
@@ -23,6 +27,8 @@ export function createSurvivalGame({
   numBouncy?: number;
   numGravity?: number;
   numHunter?: number;
+  numBlockade?: number;
+  numGreenCircles?: number;
 } = {}): GameState {
   const circleId = crypto.randomUUID();
 
@@ -77,14 +83,32 @@ export function createSurvivalGame({
     duration: 0,
     mode: "Survival",
     collected: 0,
-    totalCollectibles: undefined,
+    totalCollectibles: numGreenCircles > 0 ? numGreenCircles : undefined,
   };
 
   // Create a circle for the player
   const circle = heroCircle(game, playerId);
   circle.id = circleId;
-  circle.color = "#00FF00"; // Green for player circle
+  circle.color = "#0000FF"; // Blue for player circle
   game.layers[1].push(circle);
+
+  // Add green collectible circles
+  for (let i = 0; i < numGreenCircles; i++) {
+    const collectible: CircleState = {
+      category: GameObjectCategory.enum.Circle,
+      id: crypto.randomUUID(),
+      affects: [
+        {
+          category: AffectCategory.enum.Impermeable,
+        },
+      ],
+      radius: 10,
+      x: Math.random() * width,
+      y: Math.random() * height,
+      color: "#00FF00", // Green for collectibles
+    };
+    game.layers[1].push(collectible);
+  }
 
   // Add initial enemy circles
   for (let i = 0; i < numBouncy; i++) {
@@ -96,8 +120,9 @@ export function createSurvivalGame({
   for (let i = 0; i < numHunter; i++) {
     game.layers[1].push(randomHunterCircleState(game, playerId));
   }
-
-  // TODO: Add spawner for green collectible circles
+  for (let i = 0; i < numBlockade; i++) {
+    game.layers[1].push(randomBlockadeCircleState(game));
+  }
 
   return game;
 }

@@ -1,11 +1,13 @@
 import { GameState } from "./game.js";
 import { GameObjectCategory } from "./type.object.js";
 import { RectangleState, CircleState } from "./type.object.js";
+import { AffectCategory } from "./game.affect.js";
 import {
   heroCircle,
   randomBouncingCircleState,
   randomGravityCircles,
   randomHunterCircleState,
+  randomBlockadeCircleState,
 } from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
 
@@ -18,6 +20,7 @@ export function createRaceGame({
   numBouncy = 1,
   numGravity = 0,
   numHunter = 0,
+  numBlockade = 0,
   gameName = "Race Game",
   gameId = "race-game",
 }: {
@@ -29,6 +32,7 @@ export function createRaceGame({
   numBouncy?: number;
   numGravity?: number;
   numHunter?: number;
+  numBlockade?: number;
   gameName?: string;
   gameId?: string;
 } = {}): GameState {
@@ -100,7 +104,11 @@ export function createRaceGame({
     const collectible: CircleState = {
       category: GameObjectCategory.enum.Circle,
       id: crypto.randomUUID(),
-      affects: [],
+      affects: [
+        {
+          category: AffectCategory.enum.Impermeable,
+        },
+      ],
       radius: 10,
       x: Math.random() * width,
       y: Math.random() * height,
@@ -118,6 +126,9 @@ export function createRaceGame({
   }
   for (let i = 0; i < numHunter; i++) {
     game.layers[1].push(randomHunterCircleState(game, playerId));
+  }
+  for (let i = 0; i < numBlockade; i++) {
+    game.layers[1].push(randomBlockadeCircleState(game));
   }
 
   return game;
