@@ -24,6 +24,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   constructor() {
     super();
     this.setDefaultsForMode();
+    this.gameName = this.generateRandomName();
   }
 
   private adjectives = [

@@ -73,6 +73,9 @@ export function randomBouncingCircleState(game: GameState): CircleState {
         maxSpeed: 5.0,
         brakingAcceleration: 0.075,
       },
+      {
+        category: AffectCategory.enum.GameOverCollision,
+      },
     ],
     x: Math.random() * game.world.width,
     y: Math.random() * (game.world.height / 2),
@@ -82,6 +85,8 @@ export function randomBouncingCircleState(game: GameState): CircleState {
 }
 
 export function randomHunterCircleState(game: GameState, playerId: string): CircleState {
+  const player = game.players.find((p) => p.playerId === playerId);
+  const targetId = player?.selectedObjects[0] || playerId;
   return {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
@@ -93,12 +98,21 @@ export function randomHunterCircleState(game: GameState, playerId: string): Circ
       },
       {
         category: AffectCategory.enum.TargetObject,
-        objectId: playerId,
+        objectId: targetId,
         acceleration: 0.1,
       },
       {
         category: AffectCategory.enum.Bounce,
         loss: 0,
+      },
+      {
+        category: AffectCategory.enum.Ability,
+        acceleration: 0.1,
+        maxSpeed: 3.0,
+        brakingAcceleration: 0.05,
+      },
+      {
+        category: AffectCategory.enum.GameOverCollision,
       },
     ],
     x: Math.random() * game.world.width,

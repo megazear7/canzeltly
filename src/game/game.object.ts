@@ -49,6 +49,7 @@ export abstract class GameObject<T extends GameObjectState> {
       if (affect.category === AffectCategory.enum.Ability) ability(this);
       if (affect.category === AffectCategory.enum.GameOver) gameOver(this);
       if (affect.category === AffectCategory.enum.Collection) collection(this);
+
       this.checkBounds();
     });
   }

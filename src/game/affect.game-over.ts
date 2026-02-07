@@ -11,14 +11,18 @@ export const gameOver: affect = function (obj: GameObject<GameObjectState>): voi
       const gameOverState = affect as GameOverState;
       const playerId = gameOverState.playerId;
 
-      // Check collision with objects in specified layers
+      // Check collision with objects in specified layers that have GameOverCollision affect
       gameOverState.layers.forEach((layerIndex) => {
         const layer = obj.game.layers[layerIndex];
         if (layer) {
           layer.forEach((otherObj) => {
             // Don't check collision with self
             if (otherObj.state.id !== obj.state.id) {
-              if (checkForCollision(obj.state, otherObj.state)) {
+              // Check if the other object has GameOverCollision affect
+              const hasGameOverCollision = otherObj.state.affects.some(
+                (a) => a.category === AffectCategory.enum.GameOverCollision,
+              );
+              if (hasGameOverCollision && checkForCollision(obj.state, otherObj.state)) {
                 // Collision detected - game over
                 obj.game.state.status = GameStatus.enum.GameOver;
                 obj.game.state.ended = Date.now();
