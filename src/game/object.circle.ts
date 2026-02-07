@@ -14,18 +14,21 @@ export class Circle extends GameObject<CircleState> {
 }
 
 export function randomCircleState(game: Game): CircleState {
+  const radius = 10 + Math.random() * 20;
   return {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
     affects: [],
     x: Math.random() * game.state.world.width,
     y: Math.random() * (game.state.world.height / 2),
-    radius: 10 + Math.random() * 20,
+    radius,
+    mass: radius * radius,
     color: `hsl(${Math.random() * 360}, 70%, 50%)`,
   };
 }
 
 export function randomMovingCircleState(game: GameState): CircleState {
+  const radius = 10 + Math.random() * 20;
   return {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
@@ -48,12 +51,14 @@ export function randomMovingCircleState(game: GameState): CircleState {
     ],
     x: Math.random() * game.world.width,
     y: Math.random() * (game.world.height / 2),
-    radius: 10 + Math.random() * 20,
+    radius,
+    mass: radius * radius,
     color: `hsl(${Math.random() * 360}, 70%, 50%)`,
   };
 }
 
 export function randomBouncingCircleState(game: GameState): CircleState {
+  const radius = 30 + Math.random() * 10;
   return {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
@@ -79,12 +84,37 @@ export function randomBouncingCircleState(game: GameState): CircleState {
     ],
     x: Math.random() * game.world.width,
     y: Math.random() * (game.world.height / 2),
-    radius: 30 + Math.random() * 10,
+    radius,
+    mass: radius * radius,
     color: `#FF0000`,
   };
 }
 
 export function randomBlockadeCircleState(game: GameState): CircleState {
+  const radius = 20 + Math.random() * 20;
+  return {
+    category: GameObjectCategory.enum.Circle,
+    id: crypto.randomUUID(),
+    affects: [
+      {
+        category: AffectCategory.enum.Velocity,
+        dx: 0,
+        dy: 0,
+      },
+      {
+        category: AffectCategory.enum.ElasticCollision,
+      },
+    ],
+    x: Math.random() * game.world.width,
+    y: Math.random() * game.world.height,
+    radius,
+    mass: Number.MAX_SAFE_INTEGER, // Infinite mass - immovable
+    color: `#808080`,
+  };
+}
+
+export function randomVoidCircleState(game: GameState): CircleState {
+  const radius = 20 + Math.random() * 20;
   return {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
@@ -95,7 +125,8 @@ export function randomBlockadeCircleState(game: GameState): CircleState {
     ],
     x: Math.random() * game.world.width,
     y: Math.random() * game.world.height,
-    radius: 20 + Math.random() * 20,
+    radius,
+    mass: radius * radius,
     color: `#000000`,
   };
 }
@@ -103,6 +134,50 @@ export function randomBlockadeCircleState(game: GameState): CircleState {
 export function randomHunterCircleState(game: GameState, playerId: string): CircleState {
   const player = game.players.find((p) => p.playerId === playerId);
   const targetId = player?.selectedObjects[0] || playerId;
+  const radius = 15 + Math.random() * 10;
+  return {
+    category: GameObjectCategory.enum.Circle,
+    id: crypto.randomUUID(),
+    affects: [
+      {
+        category: AffectCategory.enum.Velocity,
+        dx: 0,
+        dy: 0,
+      },
+      {
+        category: AffectCategory.enum.TargetObject,
+        objectId: targetId,
+        acceleration: 0.1,
+      },
+      {
+        category: AffectCategory.enum.Bounce,
+        loss: 0,
+      },
+      {
+        category: AffectCategory.enum.Ability,
+        acceleration: 0.1,
+        maxSpeed: 3.0,
+        brakingAcceleration: 0.05,
+      },
+      {
+        category: AffectCategory.enum.GameOverCollision,
+      },
+      {
+        category: AffectCategory.enum.ElasticCollision,
+      },
+    ],
+    x: Math.random() * game.world.width,
+    y: Math.random() * (game.world.height / 2),
+    radius,
+    mass: radius * radius,
+    color: `#800080`, // Purple for hunters
+  };
+}
+
+export function randomGhostCircleState(game: GameState, playerId: string): CircleState {
+  const player = game.players.find((p) => p.playerId === playerId);
+  const targetId = player?.selectedObjects[0] || playerId;
+  const radius = 15 + Math.random() * 10;
   return {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
@@ -133,12 +208,14 @@ export function randomHunterCircleState(game: GameState, playerId: string): Circ
     ],
     x: Math.random() * game.world.width,
     y: Math.random() * (game.world.height / 2),
-    radius: 15 + Math.random() * 10,
-    color: `#800080`, // Purple for hunters
+    radius,
+    mass: radius * radius,
+    color: `#C0C0C0`, // Silver for ghosts
   };
 }
 
 export function randomGravityCircles(game: GameState): CircleState {
+  const radius = 10 + Math.random() * 20;
   return {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
@@ -159,12 +236,14 @@ export function randomGravityCircles(game: GameState): CircleState {
     ],
     x: Math.random() * game.world.width,
     y: Math.random() * (game.world.height / 2),
-    radius: 10 + Math.random() * 20,
+    radius,
+    mass: radius * radius,
     color: `hsl(${Math.random() * 360}, 70%, 50%)`,
   };
 }
 
 export function heroCircle(game: GameState, playerId: string): CircleState {
+  const radius = 15;
   return {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
@@ -192,10 +271,14 @@ export function heroCircle(game: GameState, playerId: string): CircleState {
         maxSpeed: 5.0,
         brakingAcceleration: 0.1,
       },
+      {
+        category: AffectCategory.enum.ElasticCollision,
+      },
     ],
     x: Math.random() * game.world.width,
     y: (0.5 + Math.random() * 0.5) * game.world.height,
-    radius: 15,
+    radius,
+    mass: radius * radius,
     color: `hsl(${Math.random() * 360}, 70%, 60%)`,
   };
 }

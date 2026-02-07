@@ -1,10 +1,10 @@
 import { GameObject } from "./game.object.js";
-import { GameObjectState, GameOverState } from "./type.object.js";
+import { AnyGameObjectState, GameOverState } from "./type.object.js";
 import { affect, AffectCategory } from "./game.affect.js";
 import { checkForCollision } from "../shared/util.collision.js";
 import { GameStatus } from "./game.js";
 
-export const gameOver: affect = function (obj: GameObject<GameObjectState>): void {
+export const gameOver: affect = function (obj: GameObject<AnyGameObjectState>): void {
   obj.state.affects
     .filter((affect) => affect.category === AffectCategory.enum.GameOver)
     .forEach((affect) => {

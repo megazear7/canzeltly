@@ -1,10 +1,10 @@
 import { GameObject } from "./game.object.js";
-import { GameObjectState, GameOverState } from "./type.object.js";
+import { AnyGameObjectState, GameOverState } from "./type.object.js";
 import { affect, AffectCategory } from "./game.affect.js";
 import { checkForCollision } from "../shared/util.collision.js";
 import { GameStatus, Victory } from "./game.js";
 
-export const collection: affect = function (obj: GameObject<GameObjectState>): void {
+export const collection: affect = function (obj: GameObject<AnyGameObjectState>): void {
   const hasCollection = obj.state.affects.some((affect) => affect.category === AffectCategory.enum.Collection);
   if (hasCollection) {
     // Check collision with collectibles (green circles with no affects)

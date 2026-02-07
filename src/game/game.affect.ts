@@ -1,6 +1,6 @@
 import z from "zod";
 import { GameObject } from "./game.object.js";
-import { GameObjectState } from "./type.object.js";
+import { AnyGameObjectState } from "./type.object.js";
 
 export const AffectCategory = z.enum([
   "Bounce",
@@ -13,6 +13,7 @@ export const AffectCategory = z.enum([
   "Collection",
   "GameOverCollision",
   "Impermeable",
+  "ElasticCollision",
 ]);
 export type AffectCategory = z.infer<typeof AffectCategory>;
 
@@ -22,5 +23,5 @@ export const AffectState = z.object({
 export type AffectState = z.infer<typeof AffectState>;
 
 export interface affect {
-  (obj: GameObject<GameObjectState>): void;
+  (obj: GameObject<AnyGameObjectState>): void;
 }

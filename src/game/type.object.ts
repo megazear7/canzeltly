@@ -76,6 +76,11 @@ export const ImpermeableState = AffectState.extend({
 });
 export type ImpermeableState = z.infer<typeof ImpermeableState>;
 
+export const ElasticCollisionState = AffectState.extend({
+  category: z.literal(AffectCategory.enum.ElasticCollision),
+});
+export type ElasticCollisionState = z.infer<typeof ElasticCollisionState>;
+
 export const AnyAffectState = z.union([
   BounceState,
   VelocityState,
@@ -87,6 +92,7 @@ export const AnyAffectState = z.union([
   CollectionState,
   GameOverCollisionState,
   ImpermeableState,
+  ElasticCollisionState,
 ]);
 export type AnyAffectState = z.infer<typeof AnyAffectState>;
 
@@ -95,6 +101,7 @@ export const GameObjectState = z.object({
   id: GameObjectId,
   affects: AnyAffectState.array(),
   radius: z.number(),
+  mass: z.number().default(1),
   x: z.number(),
   y: z.number(),
 });

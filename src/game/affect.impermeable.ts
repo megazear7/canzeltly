@@ -1,8 +1,9 @@
 import { GameObject } from "./game.object.js";
+import { AnyGameObjectState } from "./type.object.js";
 import { affect } from "./game.affect.js";
 import { checkForCollision } from "../shared/util.collision.js";
 
-export const impermeable: affect = function (obj: GameObject<any>): void {
+export const impermeable: affect = function (obj: GameObject<AnyGameObjectState>): void {
   // Find the layer this object is in
   const layerIndex = obj.game.layers.findIndex((layer) => layer.includes(obj));
   if (layerIndex === -1) return;

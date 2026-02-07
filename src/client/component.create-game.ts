@@ -21,6 +21,8 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   @state() numGravity = 0;
   @state() numHunter = 0;
   @state() numBlockade = 0;
+  @state() numVoid = 0;
+  @state() numGhost = 0;
 
   constructor() {
     super();
@@ -81,18 +83,24 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       this.numGravity = 0;
       this.numHunter = 0;
       this.numBlockade = 3;
+      this.numVoid = 0;
+      this.numGhost = 0;
     } else if (this.mode === "Survival") {
       this.numGreenCircles = 0;
       this.numBouncy = 6;
       this.numGravity = 0;
       this.numHunter = 0;
       this.numBlockade = 0;
+      this.numVoid = 0;
+      this.numGhost = 0;
     } else if (this.mode === "Race") {
       this.numGreenCircles = 5;
       this.numBouncy = 1;
       this.numGravity = 0;
       this.numHunter = 0;
       this.numBlockade = 0;
+      this.numVoid = 0;
+      this.numGhost = 0;
     }
   }
 
@@ -227,6 +235,22 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             .max="${100}"
             @input-change="${(e: CustomEvent) =>
               (this.numBlockade = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+          <canzeltly-input
+            type="slider"
+            label="Number of Void Circles (${this.numVoid})"
+            .value="${this.numVoid}"
+            .min="${0}"
+            .max="${100}"
+            @input-change="${(e: CustomEvent) =>
+              (this.numVoid = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+          <canzeltly-input
+            type="slider"
+            label="Number of Ghost Circles (${this.numGhost})"
+            .value="${this.numGhost}"
+            .min="${0}"
+            .max="${100}"
+            @input-change="${(e: CustomEvent) =>
+              (this.numGhost = Number((e.detail as { value: number }).value))}"></canzeltly-input>
           <button class="primary" type="submit">Create Game</button>
         </form>
       </main>
@@ -259,6 +283,8 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         numHunter: this.numHunter,
         numBlockade: this.numBlockade,
         numGreenCircles: this.numGreenCircles,
+        numVoid: this.numVoid,
+        numGhost: this.numGhost,
       });
       gameState.name = this.gameName;
       gameState.id = id;
@@ -272,6 +298,8 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         numGravity: this.numGravity,
         numHunter: this.numHunter,
         numBlockade: this.numBlockade,
+        numVoid: this.numVoid,
+        numGhost: this.numGhost,
         gameName: this.gameName,
         gameId: id,
       });
@@ -286,6 +314,8 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         numGravity: this.numGravity,
         numHunter: this.numHunter,
         numBlockade: this.numBlockade,
+        numVoid: this.numVoid,
+        numGhost: this.numGhost,
         gameName: this.gameName,
         gameId: id,
       });

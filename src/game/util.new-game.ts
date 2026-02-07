@@ -23,6 +23,7 @@ export function newGame({
       width: width,
       height: height,
       radius: (width + height) / 2,
+      mass: width * height,
       x: 0,
       y: 0,
       color: "#53744c",

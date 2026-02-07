@@ -53,6 +53,7 @@ export class GameInput {
         id: crypto.randomUUID(),
         affects: [],
         radius: 10,
+        mass: 10 * 10,
         x: Math.random() * this.game.state.world.width,
         y: Math.random() * this.game.state.world.height,
         color: "#d7ad2f",

@@ -8,6 +8,8 @@ import {
   randomGravityCircles,
   randomHunterCircleState,
   randomBlockadeCircleState,
+  randomVoidCircleState,
+  randomGhostCircleState,
 } from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
 
@@ -20,6 +22,8 @@ export function createAdventureGame({
   numGravity = 0,
   numHunter = 0,
   numBlockade = 0,
+  numVoid = 0,
+  numGhost = 0,
   gameName = "Adventure Game",
   gameId = "adventure-game",
 }: {
@@ -31,6 +35,8 @@ export function createAdventureGame({
   numGravity?: number;
   numHunter?: number;
   numBlockade?: number;
+  numVoid?: number;
+  numGhost?: number;
   gameName?: string;
   gameId?: string;
 } = {}): GameState {
@@ -44,6 +50,7 @@ export function createAdventureGame({
       width: width,
       height: height,
       radius: (width + height) / 2,
+      mass: width * height,
       x: 0,
       y: 0,
       color: "#53744c",
@@ -98,6 +105,7 @@ export function createAdventureGame({
 
   // Add green collectible circles
   for (let i = 0; i < numGreenCircles; i++) {
+    const radius = 10;
     const collectible: CircleState = {
       category: GameObjectCategory.enum.Circle,
       id: crypto.randomUUID(),
@@ -106,7 +114,8 @@ export function createAdventureGame({
           category: AffectCategory.enum.Impermeable,
         },
       ],
-      radius: 10,
+      radius,
+      mass: radius * radius,
       x: Math.random() * width,
       y: Math.random() * height,
       color: "#00FF00", // Green for collectibles
@@ -126,6 +135,12 @@ export function createAdventureGame({
   }
   for (let i = 0; i < numBlockade; i++) {
     game.layers[1].push(randomBlockadeCircleState(game));
+  }
+  for (let i = 0; i < numVoid; i++) {
+    game.layers[1].push(randomVoidCircleState(game));
+  }
+  for (let i = 0; i < numGhost; i++) {
+    game.layers[1].push(randomGhostCircleState(game, playerId));
   }
 
   return game;

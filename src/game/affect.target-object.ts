@@ -1,14 +1,14 @@
 import { GameObject } from "./game.object.js";
-import { GameObjectState, TargetObjectState, VelocityState } from "./type.object.js";
+import { AnyGameObjectState, TargetObjectState, VelocityState } from "./type.object.js";
 import { affect, AffectCategory } from "./game.affect.js";
 
-export const targetObject: affect = function (obj: GameObject<GameObjectState>): void {
+export const targetObject: affect = function (obj: GameObject<AnyGameObjectState>): void {
   obj.state.affects
     .filter((affect) => affect.category === AffectCategory.enum.TargetObject)
     .forEach((affect) => {
       const targ = affect as TargetObjectState;
       // Find the target object in all layers
-      let targetObj: GameObject<GameObjectState> | undefined;
+      let targetObj: GameObject<AnyGameObjectState> | undefined;
       for (const layer of obj.game.layers) {
         targetObj = layer.find((o) => o.state.id === targ.objectId);
         if (targetObj) break;

@@ -1,8 +1,8 @@
 import { GameObject } from "./game.object.js";
-import { GameObjectState, VelocityState } from "./type.object.js";
+import { AnyGameObjectState, VelocityState } from "./type.object.js";
 import { affect, AffectCategory } from "./game.affect.js";
 
-export const velocity: affect = function (obj: GameObject<GameObjectState>): void {
+export const velocity: affect = function (obj: GameObject<AnyGameObjectState>): void {
   obj.state.affects
     .filter((affect) => affect.category === AffectCategory.enum.Velocity)
     .forEach((affect) => {
