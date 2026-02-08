@@ -83,3 +83,9 @@
  - Always check `src/static/app.css` for css variable names. Do not refer to non-existent css variables.
  - Always use Zod enums such as `Example.enum.Value` instead of hardcoded strings such as `"Value"`.
  - We create `.work/` markdown files for development plans and tasks. These should be committed to the repository alongside code changes.
+
+ ## Testings
+
+ - Use the Playwright MCP server for end-to-end testing.
+ - Use the Chrome DevTools for debugging client-side code during testing, checking local storage, and other browser-specific testing.
+ - If you learn anything about the application, development process, or testing process that you could benefit from in the future, add it to the relevant section in a new or existing skill file in the `.github/skills/` directory.

@@ -70,6 +70,13 @@ export const globalStyles = css`
     box-shadow: var(--shadow-normal) !important;
   }
 
+  .back-button {
+    position: fixed;
+    top: var(--size-medium);
+    left: var(--size-medium);
+    z-index: 1000;
+  }
+
   form {
     display: flex;
     flex-direction: column;

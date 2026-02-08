@@ -3,7 +3,7 @@ import { customElement, property, query } from "lit/decorators.js";
 import { Game, GameStatus } from "../game/game.js";
 import { globalStyles } from "./styles.global.js";
 import { draw } from "../canvas/draw.canvas.js";
-import { loadGameState, saveGameState } from "./util.storage.js";
+import { loadGameState, saveGameState, loadNewGameState, deleteNewGameState } from "./util.storage.js";
 import { CanzeltlyHeadsUpDisplay } from "./component.heads-up-display.js";
 import { mapFromCanvas } from "../canvas/util.map-to-canvas.js";
 import { createSurvivalGame } from "../game/mode.survival.js";
@@ -18,6 +18,9 @@ export class CanzeltlyPlay extends LitElement {
 
   @property({ type: String })
   playerId: string = "";
+
+  @property({ type: Boolean })
+  isNewGame: boolean = false;
 
   static override styles = [
     globalStyles,
@@ -45,7 +48,7 @@ export class CanzeltlyPlay extends LitElement {
   override render(): TemplateResult {
     return html`
       <canvas></canvas>
-      <canzeltly-heads-up-display .game=${this.game}></canzeltly-heads-up-display>
+      <canzeltly-heads-up-display .game=${this.game} .isNewGame=${this.isNewGame}></canzeltly-heads-up-display>
       <canzeltly-game-over-modal .game=${this.game} .playerId=${this.playerId}></canzeltly-game-over-modal>
     `;
   }
@@ -53,7 +56,12 @@ export class CanzeltlyPlay extends LitElement {
   override async connectedCallback(): Promise<void> {
     super.connectedCallback();
     document.body.style.overflow = "hidden";
-    const gameState = loadGameState(this.gameId);
+    let gameState;
+    if (this.isNewGame) {
+      gameState = loadNewGameState();
+    } else {
+      gameState = loadGameState(this.gameId);
+    }
     if (gameState) {
       this.game = new Game(gameState);
     } else if (this.gameId && this.playerId) {
@@ -109,6 +117,9 @@ export class CanzeltlyPlay extends LitElement {
           }
           this.requestUpdate();
           saveGameState(this.game.state);
+          if (this.isNewGame) {
+            deleteNewGameState();
+          }
           this.gameOverModal?.open();
           return;
         }

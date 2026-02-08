@@ -151,7 +151,7 @@ export class CanzeltlyApp extends LitElement {
       event.preventDefault();
       sessionStorage.setItem("previousUrl", "");
       const url = new URL(target.href);
-      const path = url.pathname;
+      const path = url.pathname + url.search;
       window.history.pushState({}, "", path);
       this.currentRoute = this.determineRouteName();
       this.requestUpdate();

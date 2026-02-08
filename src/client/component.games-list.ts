@@ -22,6 +22,15 @@ export class CanzeltlyGamesList extends LitElement {
   selectedIds: string[] = [];
 
   @state()
+  selectAllActive: boolean = false;
+
+  @state()
+  selectAllCompleted: boolean = false;
+
+  @state()
+  selectedCount: number = 0;
+
+  @state()
   modalContent: TemplateResult | null = null;
 
   @state()
@@ -47,7 +56,6 @@ export class CanzeltlyGamesList extends LitElement {
   ];
 
   override render(): TemplateResult {
-    const selectedCount = this.selectedIds.length;
     const { status, games } = this.gamesContext;
 
     let content: TemplateResult;
@@ -71,14 +79,18 @@ export class CanzeltlyGamesList extends LitElement {
         ${activeGames.length > 0
           ? html`
               <h2>Active Games</h2>
+              <label>
+                <input type="checkbox" .checked=${this.selectAllActive} @change=${this.handleSelectAllActive} />
+                Select All Active
+              </label>
               <div class="games-list">
                 ${activeGames.map(
                   (game) => html`
                     <canzeltly-game-preview
                       .gameState=${game}
                       .selected=${this.selectedIds.includes(game.id)}
-                      @toggle-selection=${this.handleToggleSelection}
-                      @open-game-options=${this.handleOpenGameOptions}></canzeltly-game-preview>
+                      .onToggleSelection=${(id: string) => this.toggleSelection(id)}
+                      .onOpenGameOptions=${this.handleOpenGameOptions}></canzeltly-game-preview>
                   `,
                 )}
               </div>
@@ -87,14 +99,18 @@ export class CanzeltlyGamesList extends LitElement {
         ${completedGames.length > 0
           ? html`
               <h2>Completed Games</h2>
+              <label>
+                <input type="checkbox" .checked=${this.selectAllCompleted} @change=${this.handleSelectAllCompleted} />
+                Select All Completed
+              </label>
               <div class="games-list">
                 ${completedGames.map(
                   (game) => html`
                     <canzeltly-game-preview
                       .gameState=${game}
                       .selected=${this.selectedIds.includes(game.id)}
-                      @toggle-selection=${this.handleToggleSelection}
-                      @open-game-options=${this.handleOpenGameOptions}></canzeltly-game-preview>
+                      .onToggleSelection=${(id: string) => this.toggleSelection(id)}
+                      .onOpenGameOptions=${this.handleOpenGameOptions}></canzeltly-game-preview>
                   `,
                 )}
               </div>
@@ -106,8 +122,8 @@ export class CanzeltlyGamesList extends LitElement {
     return html`
       <div class="header">
         <h1>Saved Games</h1>
-        <button class="warning" ?disabled=${selectedCount === 0} @click=${this.handleDeleteSelected}>
-          Delete (${selectedCount})
+        <button class="warning" ?disabled=${this.selectedCount === 0} @click=${this.handleDeleteSelected}>
+          Delete (${this.selectedCount})
         </button>
       </div>
       ${content}
@@ -119,27 +135,15 @@ export class CanzeltlyGamesList extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.addEventListener("toggle-selection", this.handleToggleSelection);
-    this.addEventListener("open-game-options", this.handleOpenGameOptions);
     this.addEventListener(ModelSubmitEventName.value, this.handleModalSubmit);
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.removeEventListener("toggle-selection", this.handleToggleSelection);
-    this.removeEventListener("open-game-options", this.handleOpenGameOptions);
     this.removeEventListener(ModelSubmitEventName.value, this.handleModalSubmit);
   }
 
-  private handleToggleSelection = (event: Event): void => {
-    const customEvent = event as CustomEvent;
-    const { id } = customEvent.detail;
-    this.toggleSelection(id);
-  };
-
-  private handleOpenGameOptions = (event: Event): void => {
-    const customEvent = event as CustomEvent;
-    const { gameId } = customEvent.detail;
+  private handleOpenGameOptions(gameId: string): void {
     this.currentGameId = gameId;
     const game = this.gamesContext.games.find((g) => g.id === gameId);
     if (!game) return;
@@ -154,7 +158,7 @@ export class CanzeltlyGamesList extends LitElement {
       <button @click=${() => this.handleRenameGame(gameId)}>Rename Game</button>
     `;
     this.modal.open();
-  };
+  }
 
   private handlePlayGame(gameId: string, isCompleted: boolean = false): void {
     this.modal.close();
@@ -188,6 +192,36 @@ export class CanzeltlyGamesList extends LitElement {
     // Don't close modal, just change content
   }
 
+  private handleSelectAllActive = (): void => {
+    const activeGames = this.gamesContext.games.filter((game) => game.status !== "GameOver");
+    if (this.selectAllActive) {
+      // Deselect all active
+      this.selectedIds = this.selectedIds.filter((id) => !activeGames.some((g) => g.id === id));
+      this.selectAllActive = false;
+    } else {
+      // Select all active
+      const activeIds = activeGames.map((g) => g.id);
+      this.selectedIds = [...new Set([...this.selectedIds, ...activeIds])];
+      this.selectAllActive = true;
+    }
+    this.selectedCount = this.selectedIds.length;
+  };
+
+  private handleSelectAllCompleted = (): void => {
+    const completedGames = this.gamesContext.games.filter((game) => game.status === "GameOver");
+    if (this.selectAllCompleted) {
+      // Deselect all completed
+      this.selectedIds = this.selectedIds.filter((id) => !completedGames.some((g) => g.id === id));
+      this.selectAllCompleted = false;
+    } else {
+      // Select all completed
+      const completedIds = completedGames.map((g) => g.id);
+      this.selectedIds = [...new Set([...this.selectedIds, ...completedIds])];
+      this.selectAllCompleted = true;
+    }
+    this.selectedCount = this.selectedIds.length;
+  };
+
   private handleDeleteSelected = (): void => {
     const selectedIds = this.selectedIds;
     if (selectedIds.length === 0) return;
@@ -213,6 +247,7 @@ export class CanzeltlyGamesList extends LitElement {
     this.modal.close();
     dispatch(this, DeleteGamesEvent(selectedIds));
     this.selectedIds = [];
+    this.selectedCount = 0;
   };
 
   private submitRename = (): void => {
@@ -234,7 +269,17 @@ export class CanzeltlyGamesList extends LitElement {
     } else {
       this.selectedIds = [...this.selectedIds, id];
     }
+    this.selectedCount = this.selectedIds.length;
+    this.updateSelectAllStates();
     console.log("Selected IDs:", this.selectedIds);
     this.requestUpdate();
+  }
+
+  private updateSelectAllStates(): void {
+    const activeGames = this.gamesContext.games.filter((game) => game.status !== "GameOver");
+    const completedGames = this.gamesContext.games.filter((game) => game.status === "GameOver");
+    this.selectAllActive = activeGames.length > 0 && activeGames.every((game) => this.selectedIds.includes(game.id));
+    this.selectAllCompleted =
+      completedGames.length > 0 && completedGames.every((game) => this.selectedIds.includes(game.id));
   }
 }

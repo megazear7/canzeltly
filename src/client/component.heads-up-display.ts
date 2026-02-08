@@ -6,13 +6,16 @@ import { CanzeltlyModal } from "./component.modal.js";
 import { dispatch } from "./util.events.js";
 import { NavigationEvent } from "./event.navigation.js";
 import { SuccessEvent } from "./event.success.js";
-import { saveGameState } from "./util.storage.js";
+import { saveGameState, deleteNewGameState } from "./util.storage.js";
 import "./component.modal.js";
 
 @customElement("canzeltly-heads-up-display")
 export class CanzeltlyHeadsUpDisplay extends LitElement {
   @property({ attribute: false })
   game?: Game;
+
+  @property({ type: Boolean })
+  isNewGame: boolean = false;
 
   @property({ type: Number })
   fps?: number;
@@ -99,6 +102,9 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
   private saveGame(): void {
     if (this.game) {
       saveGameState(this.game.state);
+      if (this.isNewGame) {
+        deleteNewGameState();
+      }
       dispatch(this, SuccessEvent("Game saved successfully"));
       this.menuModal?.close();
     }
@@ -107,6 +113,9 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
   private saveAndExit(): void {
     if (this.game) {
       saveGameState(this.game.state);
+      if (this.isNewGame) {
+        deleteNewGameState();
+      }
       this.menuModal?.close();
       dispatch(this, NavigationEvent({ path: "/" }));
     }

@@ -1,7 +1,7 @@
 import { html, css, TemplateResult, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { globalStyles } from "./styles.global.js";
-import { saveGameState, setPlayerAssignment } from "./util.storage.js";
+import { saveNewGameState, setPlayerAssignment } from "./util.storage.js";
 import { createSurvivalGame } from "../game/mode.survival.js";
 import { createAdventureGame } from "../game/mode.adventure.js";
 import { createRaceGame } from "../game/mode.race.js";
@@ -322,7 +322,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
     } else {
       throw new Error(`Unknown mode: ${this.mode}`);
     }
-    saveGameState(gameState);
+    saveNewGameState(gameState);
     // Set player assignment
     const playerId = gameState.players[0].playerId;
     setPlayerAssignment(id, playerId);

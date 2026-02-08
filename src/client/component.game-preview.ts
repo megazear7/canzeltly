@@ -15,6 +15,12 @@ export class CanzeltlyGamePreview extends LitElement {
   @property({ type: Boolean })
   selected = false;
 
+  @property()
+  onToggleSelection?: (id: string) => void;
+
+  @property()
+  onOpenGameOptions?: (id: string) => void;
+
   static override styles = [
     globalStyles,
     css`
@@ -63,14 +69,7 @@ export class CanzeltlyGamePreview extends LitElement {
   }
 
   private handleCheckboxChange(): void {
-    // Dispatch event to provider to toggle selection
-    this.dispatchEvent(
-      new CustomEvent("toggle-selection", {
-        detail: { id: this.gameState.id },
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    this.onToggleSelection?.(this.gameState.id);
   }
 
   private handlePlay(): void {
@@ -86,13 +85,6 @@ export class CanzeltlyGamePreview extends LitElement {
   }
 
   private handleKebab(): void {
-    // Dispatch event to open modal with options
-    this.dispatchEvent(
-      new CustomEvent("open-game-options", {
-        detail: { gameId: this.gameState.id },
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    this.onOpenGameOptions?.(this.gameState.id);
   }
 }

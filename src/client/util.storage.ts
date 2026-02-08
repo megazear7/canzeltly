@@ -4,6 +4,7 @@ import { slugify } from "../shared/util.slug.js";
 
 const STORAGE_KEY = "canzeltly_saved_games";
 const PLAYER_ASSIGNMENTS_KEY = "canzeltly_player_assignments";
+const NEW_GAME_KEY = "canzeltly_new_game";
 
 export function saveGameState(gameState: GameState): void {
   const savedGames = getAllGameStates();
@@ -41,6 +42,26 @@ export function deleteGameState(id: GameId): void {
 export function deleteMultipleGameStates(ids: GameId[]): void {
   const savedGames = getAllGameStates().filter((g) => !ids.includes(g.id));
   localStorage.setItem(STORAGE_KEY, JSON.stringify(savedGames));
+}
+
+export function saveNewGameState(gameState: GameState): void {
+  localStorage.setItem(NEW_GAME_KEY, JSON.stringify(gameState));
+}
+
+export function loadNewGameState(): GameState | undefined {
+  const stored = localStorage.getItem(NEW_GAME_KEY);
+  if (!stored) return undefined;
+  try {
+    const parsed = JSON.parse(stored);
+    return parsed;
+  } catch (error) {
+    console.error("Error parsing new game state:", error);
+    return undefined;
+  }
+}
+
+export function deleteNewGameState(): void {
+  localStorage.removeItem(NEW_GAME_KEY);
 }
 
 export function renameGameState(oldId: GameId, newName: string): void {
