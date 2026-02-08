@@ -17,8 +17,15 @@ export const healthCollision: affect = function (obj: GameObject<AnyGameObjectSt
             // Don't check collision with self
             if (otherObj.state.id !== obj.state.id) {
               if (checkForCollision(obj.state, otherObj.state)) {
-                // Collision detected - reduce health
-                obj.state.health -= otherObj.state.damage;
+                // Check cooldown - only allow damage once per second per object pair
+                const pairKey = `${obj.state.id}-${otherObj.state.id}`;
+                const now = Date.now();
+                const lastDamageTime = healthCollisionState.lastDamageTimes.get(pairKey) || 0;
+                if (now - lastDamageTime >= 1000) {
+                  // Collision detected - reduce health
+                  obj.state.health -= otherObj.state.damage;
+                  healthCollisionState.lastDamageTimes.set(pairKey, now);
+                }
               }
             }
           });

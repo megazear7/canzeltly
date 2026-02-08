@@ -85,6 +85,7 @@ export type ElasticCollisionState = z.infer<typeof ElasticCollisionState>;
 export const HealthCollisionState = AffectState.extend({
   category: z.literal(AffectCategory.enum.HealthCollision),
   layers: z.array(z.number()),
+  lastDamageTimes: z.map(z.string(), z.number()).default(new Map()),
 });
 export type HealthCollisionState = z.infer<typeof HealthCollisionState>;
 
