@@ -1,7 +1,6 @@
 import { GameObject } from "./game.object.js";
 import { AnyGameObjectState, GameOverState } from "./type.object.js";
 import { affect, AffectCategory } from "./game.affect.js";
-import { checkForCollision } from "../shared/util.collision.js";
 import { GameStatus } from "./game.js";
 
 export const gameOver: affect = function (obj: GameObject<AnyGameObjectState>): void {
@@ -11,32 +10,19 @@ export const gameOver: affect = function (obj: GameObject<AnyGameObjectState>): 
       const gameOverState = affect as GameOverState;
       const playerId = gameOverState.playerId;
 
-      // Check collision with objects in specified layers that have GameOverCollision affect
-      gameOverState.layers.forEach((layerIndex) => {
-        const layer = obj.game.layers[layerIndex];
-        if (layer) {
-          layer.forEach((otherObj) => {
-            // Don't check collision with self
-            if (otherObj.state.id !== obj.state.id) {
-              // Check if the other object has GameOverCollision affect
-              const hasGameOverCollision = otherObj.state.affects.some(
-                (a) => a.category === AffectCategory.enum.GameOverCollision,
-              );
-              if (hasGameOverCollision && checkForCollision(obj.state, otherObj.state)) {
-                // Collision detected - game over
-                obj.game.state.status = GameStatus.enum.GameOver;
-                obj.game.state.ended = Date.now();
+      // Check if health is 0 or less
+      if (obj.state.health <= 0) {
+        obj.game.state.status = GameStatus.enum.GameOver;
+        obj.game.state.ended = Date.now();
 
-                // Find the player and set victory to Lose
-                const player = obj.game.state.players.find((p) => p.playerId === playerId);
-                if (player && player.victory !== "Win") {
-                  player.victory = "Lose";
-                }
-              }
-            }
-          });
+        // Find the player and set victory to Lose
+        const player = obj.game.state.players.find((p) => p.playerId === playerId);
+        if (player && player.victory !== "Win") {
+          player.victory = "Lose";
         }
-      });
+        return; // No need to check further
+      }
+
       if (obj.game.state.mode === "Race") {
         // Also check time limit
         if (obj.game.state.startTime && obj.game.state.timeLimit) {

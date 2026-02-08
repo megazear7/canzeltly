@@ -51,6 +51,7 @@ export const AbilityState = AffectState.extend({
   acceleration: z.number(),
   maxSpeed: z.number(),
   brakingAcceleration: z.number(),
+  damage: z.number().default(0),
 });
 export type AbilityState = z.infer<typeof AbilityState>;
 
@@ -81,6 +82,12 @@ export const ElasticCollisionState = AffectState.extend({
 });
 export type ElasticCollisionState = z.infer<typeof ElasticCollisionState>;
 
+export const HealthCollisionState = AffectState.extend({
+  category: z.literal(AffectCategory.enum.HealthCollision),
+  layers: z.array(z.number()),
+});
+export type HealthCollisionState = z.infer<typeof HealthCollisionState>;
+
 export const AnyAffectState = z.union([
   BounceState,
   VelocityState,
@@ -93,6 +100,7 @@ export const AnyAffectState = z.union([
   GameOverCollisionState,
   ImpermeableState,
   ElasticCollisionState,
+  HealthCollisionState,
 ]);
 export type AnyAffectState = z.infer<typeof AnyAffectState>;
 
@@ -102,6 +110,8 @@ export const GameObjectState = z.object({
   affects: AnyAffectState.array(),
   radius: z.number(),
   mass: z.number().default(1),
+  health: z.number().default(1),
+  damage: z.number().default(1),
   x: z.number(),
   y: z.number(),
 });

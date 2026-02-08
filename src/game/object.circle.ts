@@ -127,6 +127,7 @@ export function randomVoidCircleState(game: GameState): CircleState {
     y: Math.random() * game.world.height,
     radius,
     mass: radius * radius,
+    damage: 5,
     color: `#000000`,
   };
 }
@@ -210,6 +211,7 @@ export function randomGhostCircleState(game: GameState, playerId: string): Circl
     y: Math.random() * (game.world.height / 2),
     radius,
     mass: radius * radius,
+    damage: 2,
     color: `#C0C0C0`, // Silver for ghosts
   };
 }
@@ -242,7 +244,7 @@ export function randomGravityCircles(game: GameState): CircleState {
   };
 }
 
-export function heroCircle(game: GameState, playerId: string): CircleState {
+export function heroCircle(game: GameState, playerId: string, health: number = 1): CircleState {
   const radius = 15;
   return {
     category: GameObjectCategory.enum.Circle,
@@ -274,11 +276,17 @@ export function heroCircle(game: GameState, playerId: string): CircleState {
       {
         category: AffectCategory.enum.ElasticCollision,
       },
+      {
+        category: AffectCategory.enum.HealthCollision,
+        layers: [1],
+      },
     ],
     x: Math.random() * game.world.width,
     y: (0.5 + Math.random() * 0.5) * game.world.height,
     radius,
     mass: radius * radius,
+    health,
+    damage: 0,
     color: `hsl(${Math.random() * 360}, 70%, 60%)`,
   };
 }

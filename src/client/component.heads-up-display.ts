@@ -56,7 +56,13 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
       .collected {
         font-size: var(--font-size-large);
         font-weight: bold;
-        color: var(--color-text);
+        color: var(--color-primary-text-bold);
+      }
+
+      .health {
+        font-size: var(--font-size-large);
+        font-weight: bold;
+        color: var(--color-primary-text-bold);
       }
 
       .menu-options {
@@ -77,6 +83,7 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
         <button @click=${this.openModal()}>Menu</button>
         <div class="fps ${this.fps && this.fps < 30 ? "low" : ""}">${this.fps ? this.fps.toFixed(0) : ""} FPS</div>
         <div class="collected">${this.game ? this.getCollectedText() : ""}</div>
+        <div class="health">${this.game ? this.getHealthText() : ""}</div>
       </div>
       <canzeltly-modal @modal-opening=${this.handleModalOpening} @modal-closing=${this.handleModalClosing}>
         <div slot="body">
@@ -143,6 +150,18 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
         timeText = ` | Time: ${remaining.toFixed(0)}s`;
       }
       return `Collected: ${collected}/${total}${timeText}`;
+    }
+    return "";
+  }
+
+  private getHealthText(): string {
+    if (!this.game) return "";
+    const player = this.game.state.players[0];
+    if (player) {
+      const playerObject = this.game.layers[1].find((obj) => obj.state.id === player.selectedObjects[0]);
+      if (playerObject) {
+        return `Health: ${playerObject.state.health}`;
+      }
     }
     return "";
   }

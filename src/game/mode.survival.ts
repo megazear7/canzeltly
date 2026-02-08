@@ -24,6 +24,7 @@ export function createSurvivalGame({
   numGreenCircles = 0,
   numVoid = 0,
   numGhost = 0,
+  health = 1,
 }: {
   width?: number;
   height?: number;
@@ -35,6 +36,7 @@ export function createSurvivalGame({
   numGreenCircles?: number;
   numVoid?: number;
   numGhost?: number;
+  health?: number;
 } = {}): GameState {
   const circleId = crypto.randomUUID();
 
@@ -94,7 +96,7 @@ export function createSurvivalGame({
   };
 
   // Create a circle for the player
-  const circle = heroCircle(game, playerId);
+  const circle = heroCircle(game, playerId, health);
   circle.id = circleId;
   circle.color = "#0000FF"; // Blue for player circle
   game.layers[1].push(circle);

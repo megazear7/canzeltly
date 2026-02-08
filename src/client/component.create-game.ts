@@ -16,6 +16,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   @state() numCircles = 10;
   @state() mode = "Survival";
   @state() timeLimit = 60;
+  @state() health = 1;
   @state() numGreenCircles = 5;
   @state() numBouncy = 6;
   @state() numGravity = 0;
@@ -181,6 +182,14 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             .max="${10000}"
             @input-change="${(e: CustomEvent) =>
               (this.worldHeight = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+          <canzeltly-input
+            type="slider"
+            label="Health (${this.health})"
+            .value="${this.health}"
+            .min="${1}"
+            .max="${100}"
+            @input-change="${(e: CustomEvent) =>
+              (this.health = Number((e.detail as { value: number }).value))}"></canzeltly-input>
           ${
             this.mode === "Race"
               ? html`
@@ -285,6 +294,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         numGreenCircles: this.numGreenCircles,
         numVoid: this.numVoid,
         numGhost: this.numGhost,
+        health: this.health,
       });
       gameState.name = this.gameName;
       gameState.id = id;
@@ -302,6 +312,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         numGhost: this.numGhost,
         gameName: this.gameName,
         gameId: id,
+        health: this.health,
       });
     } else if (this.mode === "Race") {
       gameState = createRaceGame({
@@ -318,6 +329,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         numGhost: this.numGhost,
         gameName: this.gameName,
         gameId: id,
+        health: this.health,
       });
     } else {
       throw new Error(`Unknown mode: ${this.mode}`);
