@@ -7,3 +7,4 @@ data/
 !data/example.docx
 !data/app/index.example.json
 !dist/cli/index.cjs
+.playwright-mcp/*

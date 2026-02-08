@@ -12,6 +12,12 @@
 			"headers": {
 				"X-MCP-Readonly": "true"
 			}
+		},
+		"playwright": {
+			"command": "npx",
+			"args": [
+				"@playwright/mcp@latest"
+			]
 		}
 	},
 	"inputs": []

@@ -1,0 +1,24 @@
+---
+agent: 'agent'
+model: Grok Code Fast 1
+tools: ['vscode', 'execute', 'read', 'agent', 'edit', 'search', 'web', 'todo']
+description: 'Preserve our conversation history by saving it as a markdown file in the .work directory.'
+---
+
+# Steps
+
+ - Save our conversation history as a single markdown file in either a new file in the `.work` directory, or an existing directory if I specify one.
+ - If you are creating a new directory, it should be prefixed with three numbers that are one higher than the highest numbered directory in the `.work` directory. For example, if the highest numbered directory is `020`, then the new directory should be prefixed with `021`.
+ - The markdown file should be named `conversation.md` and should be placed inside the new or existing directory.
+ - The markdown file should include all of our conversation history.
+ - The file format should:
+    - Have a header with the date and summary of the conversation.
+    - Use `## User` for user messages and `### Assistant` for assistant messages.
+    - Separate messages with horizontal rules (`---`) for readability.
+    - Include summarizations of reasoning and MCP calls in the assistant messages when relevant.
+ - After saving the file, open the file preview for me to review.
+
+# Notes
+
+ - Do NOT include the contents of `promopt` and `skill` files in the conversation history, only refer to them by name when relevant.
+ - Do NOT make these file references clickable links. Format them with backticks only.
