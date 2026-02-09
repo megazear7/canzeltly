@@ -1,5 +1,5 @@
 import { GameState } from "./game.js";
-import { GameObjectCategory } from "./type.object.js";
+import { GameObjectCategory, GameObjectLabel } from "./type.object.js";
 import { RectangleState, CircleState } from "./type.object.js";
 import { AffectCategory } from "./game.affect.js";
 import {
@@ -45,7 +45,7 @@ export function createAdventureGame({
   const circleId = crypto.randomUUID();
 
   const background: RectangleState[] = [
-    {
+    RectangleState.parse({
       category: GameObjectCategory.enum.Rectangle,
       id: crypto.randomUUID(),
       affects: [],
@@ -53,10 +53,12 @@ export function createAdventureGame({
       height: height,
       radius: (width + height) / 2,
       mass: width * height,
+      health: 1,
+      damage: 1,
       x: 0,
       y: 0,
       color: "#53744c",
-    },
+    }),
   ];
 
   const players: Player[] = [
@@ -118,6 +120,9 @@ export function createAdventureGame({
       ],
       radius,
       mass: radius * radius,
+      health: 1,
+      damage: 1,
+      labels: [GameObjectLabel.enum.Collectable],
       x: Math.random() * width,
       y: Math.random() * height,
       color: "#00FF00", // Green for collectibles

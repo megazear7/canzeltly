@@ -1,6 +1,6 @@
 import { Circle } from "./object.circle.js";
 import { Game, MAIN_OBJECT_LAYER_INDEX } from "./game.js";
-import { GameObjectCategory } from "./type.object.js";
+import { CircleState, GameObjectCategory } from "./type.object.js";
 import { AffectCategory } from "./game.affect.js";
 import { TargetState, AbilityState, VelocityState } from "./type.object.js";
 
@@ -48,16 +48,21 @@ export class GameInput {
 
   addCircle(): void {
     this.game.layers[MAIN_OBJECT_LAYER_INDEX].push(
-      new Circle(this.game, {
-        category: GameObjectCategory.enum.Circle,
-        id: crypto.randomUUID(),
-        affects: [],
-        radius: 10,
-        mass: 10 * 10,
-        x: Math.random() * this.game.state.world.width,
-        y: Math.random() * this.game.state.world.height,
-        color: "#d7ad2f",
-      }),
+      new Circle(
+        this.game,
+        CircleState.parse({
+          category: GameObjectCategory.enum.Circle,
+          id: crypto.randomUUID(),
+          affects: [],
+          radius: 10,
+          mass: 10 * 10,
+          x: Math.random() * this.game.state.world.width,
+          y: Math.random() * this.game.state.world.height,
+          color: "#d7ad2f",
+          health: 1,
+          damage: 1,
+        }),
+      ),
     );
   }
 

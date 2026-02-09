@@ -4,6 +4,8 @@ import typescript from '@rollup/plugin-typescript';
 import copy from 'rollup-plugin-copy'
 import watchGlobs from 'rollup-plugin-watch-globs';
 
+const isWatch = process.env.ROLLUP_WATCH === 'true';
+
 export default {
   input: 'src/client/app.ts',
   output: {
@@ -21,6 +23,7 @@ export default {
       declaration: false,
       declarationMap: false,
       outDir: 'dist',
+      noEmitOnError: !isWatch,
     }),
     resolve(),
     copy({

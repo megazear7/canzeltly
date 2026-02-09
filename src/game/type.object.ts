@@ -4,6 +4,9 @@ import { AffectCategory } from "./game.affect.js";
 export const GameObjectCategory = z.enum(["Circle", "Rectangle", "Unknown"]);
 export type GameObjectCategory = z.infer<typeof GameObjectCategory>;
 
+export const GameObjectLabel = z.enum(["Collectable"]);
+export type GameObjectLabel = z.infer<typeof GameObjectLabel>;
+
 export const GameObjectId = z.uuid();
 export type GameObjectId = z.infer<typeof GameObjectId>;
 
@@ -82,10 +85,16 @@ export const ElasticCollisionState = AffectState.extend({
 });
 export type ElasticCollisionState = z.infer<typeof ElasticCollisionState>;
 
+export const HealthCollision = z.object({
+  with: GameObjectId,
+  damage: z.number(),
+});
+export type HealthCollision = z.infer<typeof HealthCollision>;
+
 export const HealthCollisionState = AffectState.extend({
   category: z.literal(AffectCategory.enum.HealthCollision),
+  collisions: z.array(HealthCollision).default([]),
   layers: z.array(z.number()),
-  lastDamageTimes: z.map(z.string(), z.number()).default(new Map()),
 });
 export type HealthCollisionState = z.infer<typeof HealthCollisionState>;
 
@@ -109,6 +118,7 @@ export const GameObjectState = z.object({
   category: GameObjectCategory,
   id: GameObjectId,
   affects: AnyAffectState.array(),
+  labels: GameObjectLabel.array().default([]),
   radius: z.number(),
   mass: z.number().default(1),
   health: z.number().default(1),
@@ -132,5 +142,10 @@ export const RectangleState = GameObjectState.extend({
 });
 export type RectangleState = z.infer<typeof RectangleState>;
 
-export const AnyGameObjectState = CircleState.or(RectangleState);
+export const UnknownState = GameObjectState.extend({
+  category: z.literal(GameObjectCategory.enum.Unknown),
+});
+export type UnknownState = z.infer<typeof UnknownState>;
+
+export const AnyGameObjectState = CircleState.or(RectangleState).or(UnknownState);
 export type AnyGameObjectState = z.infer<typeof AnyGameObjectState>;

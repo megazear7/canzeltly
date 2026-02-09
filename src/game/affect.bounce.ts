@@ -1,8 +1,8 @@
 import { GameObject } from "./game.object.js";
-import { AnyGameObjectState, BounceState, VelocityState } from "./type.object.js";
+import { BounceState, GameObjectState, VelocityState } from "./type.object.js";
 import { affect, AffectCategory } from "./game.affect.js";
 
-export const bounce: affect = function (obj: GameObject<AnyGameObjectState>): void {
+export const bounce: affect = function <T extends GameObjectState>(obj: GameObject<T>): void {
   const bounce = obj.state.affects.find((affect) => affect.category === AffectCategory.enum.Bounce) as BounceState;
   if (!bounce) return;
   obj.state.affects

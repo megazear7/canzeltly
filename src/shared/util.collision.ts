@@ -10,5 +10,5 @@ export function checkForCollision(object1: GameObjectState, object2: GameObjectS
   const dx = object1.x - object2.x;
   const dy = object1.y - object2.y;
   const distance = Math.sqrt(dx * dx + dy * dy);
-  return distance < object1.radius + object2.radius;
+  return distance <= object1.radius + object2.radius;
 }

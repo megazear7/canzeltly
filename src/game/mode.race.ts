@@ -46,8 +46,8 @@ export function createRaceGame({
 } = {}): GameState {
   const circleId = crypto.randomUUID();
 
-  const background: RectangleState[] = [
-    {
+  const background = [
+    RectangleState.parse({
       category: GameObjectCategory.enum.Rectangle,
       id: crypto.randomUUID(),
       affects: [],
@@ -55,10 +55,12 @@ export function createRaceGame({
       height: height,
       radius: (width + height) / 2,
       mass: width * height,
+      health: 1,
+      damage: 1,
       x: 0,
       y: 0,
       color: "#53744c",
-    },
+    }),
   ];
 
   const players: Player[] = [
@@ -111,7 +113,7 @@ export function createRaceGame({
   // Add green collectible circles
   for (let i = 0; i < numGreenCircles; i++) {
     const radius = 10;
-    const collectible: CircleState = {
+    const collectible = CircleState.parse({
       category: GameObjectCategory.enum.Circle,
       id: crypto.randomUUID(),
       affects: [
@@ -121,10 +123,12 @@ export function createRaceGame({
       ],
       radius,
       mass: radius * radius,
+      health: 1,
+      damage: 1,
       x: Math.random() * width,
       y: Math.random() * height,
       color: "#00FF00", // Green for collectibles
-    };
+    });
     game.layers[1].push(collectible);
   }
 

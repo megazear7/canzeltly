@@ -32,31 +32,36 @@ export abstract class GameObject<T extends GameObjectState> {
   }
 
   update(): void {
-    this.updateState();
+    this.updatePosition();
     this.checkForDestroy();
+    this.updateAffects();
+  }
+
+  updatePosition(): void {
+    this.state.affects.forEach((affect) => {
+      if (affect.category === AffectCategory.enum.Velocity) velocity(this);
+      if (affect.category === AffectCategory.enum.Bounce) bounce(this);
+      this.checkBounds();
+    });
+  }
+
+  updateAffects(): void {
+    this.state.affects.forEach((affect) => {
+      if (affect.category === AffectCategory.enum.Target) target(this);
+      if (affect.category === AffectCategory.enum.TargetObject) targetObject(this);
+      if (affect.category === AffectCategory.enum.Gravity) gravity(this);
+      if (affect.category === AffectCategory.enum.Ability) ability(this);
+      if (affect.category === AffectCategory.enum.Collection) collection(this);
+      if (affect.category === AffectCategory.enum.HealthCollision) healthCollision(this);
+      if (affect.category === AffectCategory.enum.ElasticCollision) elasticCollision(this);
+      if (affect.category === AffectCategory.enum.GameOver) gameOver(this);
+    });
   }
 
   checkForDestroy(): void {
     if (!this.isInWorld()) {
       this.game.removeObject(this.state.id);
     }
-  }
-
-  updateState(): void {
-    this.state.affects.forEach((affect) => {
-      if (affect.category === AffectCategory.enum.Velocity) velocity(this);
-      if (affect.category === AffectCategory.enum.Bounce) bounce(this);
-      if (affect.category === AffectCategory.enum.Target) target(this);
-      if (affect.category === AffectCategory.enum.TargetObject) targetObject(this);
-      if (affect.category === AffectCategory.enum.Gravity) gravity(this);
-      if (affect.category === AffectCategory.enum.Ability) ability(this);
-      if (affect.category === AffectCategory.enum.GameOver) gameOver(this);
-      if (affect.category === AffectCategory.enum.Collection) collection(this);
-      if (affect.category === AffectCategory.enum.ElasticCollision) elasticCollision(this);
-      if (affect.category === AffectCategory.enum.HealthCollision) healthCollision(this);
-
-      this.checkBounds();
-    });
   }
 
   majorUpdates(): void {

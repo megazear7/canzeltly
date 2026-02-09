@@ -1,11 +1,11 @@
 import { GameObject } from "./game.object.js";
-import { AnyGameObjectState, VelocityState } from "./type.object.js";
+import { GameObjectState, VelocityState } from "./type.object.js";
 import { checkForCollision } from "../shared/util.collision.js";
 import { affect, AffectCategory } from "./game.affect.js";
 
-export const elasticCollision: affect = function (obj: GameObject<AnyGameObjectState>): void {
+export const elasticCollision: affect = function <T extends GameObjectState>(obj: GameObject<T>): void {
   // Get all objects in the same layer with ElasticCollision affect
-  const layerIndex = obj.game.layers.findIndex((layer) => layer.includes(obj));
+  const layerIndex = obj.game.layers.findIndex((layer) => layer.map((o) => o.state.id).includes(obj.state.id));
   if (layerIndex === -1) return;
 
   const elasticObjects = obj.game.layers[layerIndex].filter(
@@ -17,6 +17,12 @@ export const elasticCollision: affect = function (obj: GameObject<AnyGameObjectS
   // Check collisions with each elastic object
   elasticObjects.forEach((otherObj) => {
     if (checkForCollision(obj.state, otherObj.state)) {
+
+      const otherHealthAffect = otherObj.state.affects.find((affect) => affect.category === AffectCategory.enum.HealthCollision);
+      if (obj.state.damage && otherHealthAffect) {
+        otherHealthAffect.collisions.push({ with: obj.state.id, damage: obj.state.damage });
+      }
+
       // Calculate collision response
       const dx = otherObj.state.x - obj.state.x;
       const dy = otherObj.state.y - obj.state.y;
