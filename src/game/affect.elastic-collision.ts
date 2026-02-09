@@ -17,8 +17,9 @@ export const elasticCollision: affect = function <T extends GameObjectState>(obj
   // Check collisions with each elastic object
   elasticObjects.forEach((otherObj) => {
     if (checkForCollision(obj.state, otherObj.state)) {
-
-      const otherHealthAffect = otherObj.state.affects.find((affect) => affect.category === AffectCategory.enum.HealthCollision);
+      const otherHealthAffect = otherObj.state.affects.find(
+        (affect) => affect.category === AffectCategory.enum.HealthCollision,
+      );
       if (obj.state.damage && otherHealthAffect) {
         otherHealthAffect.collisions.push({ with: obj.state.id, damage: obj.state.damage });
       }

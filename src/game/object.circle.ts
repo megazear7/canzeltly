@@ -119,7 +119,7 @@ export function randomBlockadeCircleState(game: GameState): CircleState {
     y: Math.random() * game.world.height,
     radius,
     health: 1,
-    damage: 1,
+    damage: 0,
     mass: Number.MAX_SAFE_INTEGER, // Infinite mass - immovable
     color: `#808080`,
   });

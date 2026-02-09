@@ -7,7 +7,7 @@ export const healthCollision: affect = function <T extends GameObjectState>(obj:
     .filter((affect) => affect.category === AffectCategory.enum.HealthCollision)
     .map((affect) => {
       const healthAffect = affect as HealthCollisionState;
-      healthAffect.collisions.forEach((collision) => obj.state.health -= collision.damage);
+      healthAffect.collisions.forEach((collision) => (obj.state.health -= collision.damage));
       healthAffect.collisions = [];
     });
 };
