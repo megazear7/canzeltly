@@ -3,6 +3,7 @@ import z from "zod";
 import { LoadingStatus } from "../shared/type.loading.js";
 import { AppConfig } from "../shared/type.app.js";
 import { GameState } from "../game/game.js";
+import { CustomGameMode } from "../shared/type.custom-game-mode.js";
 
 export const AppContext = z.object({
   app: AppConfig.optional(),
@@ -18,3 +19,10 @@ export const GamesContext = z.object({
 });
 export type GamesContext = z.infer<typeof GamesContext>;
 export const gamesContext = createContext<GamesContext>("games");
+
+export const CustomGameModesContext = z.object({
+  status: LoadingStatus,
+  modes: z.array(CustomGameMode),
+});
+export type CustomGameModesContext = z.infer<typeof CustomGameModesContext>;
+export const customGameModesContext = createContext<CustomGameModesContext>("customGameModes");

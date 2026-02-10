@@ -1,12 +1,21 @@
 import { html, css, TemplateResult, LitElement } from "lit";
-import { customElement, state } from "lit/decorators.js";
+import { customElement, state, query } from "lit/decorators.js";
 import { globalStyles } from "./styles.global.js";
-import { saveNewGameState, setPlayerAssignment } from "./util.storage.js";
+import {
+  saveNewGameState,
+  setPlayerAssignment,
+  loadCustomGameMode,
+  saveCustomGameMode,
+  getAllCustomGameModes,
+} from "./util.storage.js";
 import { createSurvivalGame } from "../game/mode.survival.js";
 import { createAdventureGame } from "../game/mode.adventure.js";
 import { createRaceGame } from "../game/mode.race.js";
 import "./component.input.js";
+import "./component.modal.js";
 import { GameState } from "../game/game.js";
+import { CanzeltlyModal } from "./component.modal.js";
+import { ModelSubmitEventName } from "./event.modal-submit.js";
 
 @customElement("canzeltly-create-game")
 export class CanzeltlyCreateGameComponent extends LitElement {
@@ -25,10 +34,18 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   @state() numVoid = 0;
   @state() numGhost = 0;
 
+  @state() modalContent: TemplateResult | null = null;
+
+  @state() customModeName = "";
+
+  @query("canzeltly-modal")
+  modal!: CanzeltlyModal;
+
   constructor() {
     super();
     this.setDefaultsForMode();
     this.gameName = this.generateRandomName();
+    this.loadFromUrlParams();
   }
 
   private adjectives = [
@@ -76,6 +93,30 @@ export class CanzeltlyCreateGameComponent extends LitElement {
     "Shadow",
     "Beast",
   ];
+
+  private loadFromUrlParams(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    const modeName = urlParams.get("mode");
+    if (modeName) {
+      const customMode = loadCustomGameMode(modeName);
+      if (customMode) {
+        this.gameName = customMode.name;
+        this.worldWidth = customMode.worldWidth;
+        this.worldHeight = customMode.worldHeight;
+        this.numCircles = customMode.numCircles;
+        this.mode = customMode.mode;
+        this.timeLimit = customMode.timeLimit;
+        this.health = customMode.health;
+        this.numGreenCircles = customMode.numGreenCircles;
+        this.numBouncy = customMode.numBouncy;
+        this.numGravity = customMode.numGravity;
+        this.numHunter = customMode.numHunter;
+        this.numBlockade = customMode.numBlockade;
+        this.numVoid = customMode.numVoid;
+        this.numGhost = customMode.numGhost;
+      }
+    }
+  }
 
   private setDefaultsForMode(): void {
     if (this.mode === "Adventure") {
@@ -260,9 +301,13 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             .max="${100}"
             @input-change="${(e: CustomEvent) =>
               (this.numGhost = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+          <button type="button" @click=${this.handleSaveCustomMode}>Save Custom Game Mode</button>
           <button class="primary" type="submit">Create Game</button>
         </form>
       </main>
+      <canzeltly-modal>
+        <div slot="body">${this.modalContent}</div>
+      </canzeltly-modal>
     `;
   }
 
@@ -340,4 +385,73 @@ export class CanzeltlyCreateGameComponent extends LitElement {
     setPlayerAssignment(id, playerId);
     this.dispatchEvent(new CustomEvent("game-created", { detail: { id, playerId } }));
   }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.addEventListener(ModelSubmitEventName.value, this.handleModalSubmit);
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener(ModelSubmitEventName.value, this.handleModalSubmit);
+  }
+
+  private handleSaveCustomMode(): void {
+    this.customModeName = this.gameName;
+    this.modalContent = html`
+      <h2>Save Custom Game Mode</h2>
+      <canzeltly-input
+        type="plaintext"
+        onSecondarySurface
+        .value="${this.customModeName}"
+        @input-change="${(e: CustomEvent) =>
+          (this.customModeName = (e.detail as { value: string }).value)}"></canzeltly-input>
+      <div style="display: flex; gap: var(--size-small); margin-top: var(--size-medium);">
+        <button @click=${this.confirmSave}>Save</button>
+        <button @click=${() => this.modal.close()}>Cancel</button>
+      </div>
+    `;
+    this.modal.open();
+  }
+
+  private confirmSave = (): void => {
+    const name = this.customModeName.trim();
+    if (!name) return;
+    const existing = getAllCustomGameModes().find((m) => m.name === name);
+    if (existing) {
+      this.modalContent = html`
+        <h2>Override Custom Game Mode</h2>
+        <p>A custom game mode with this name already exists. Do you want to override it?</p>
+        <button @click=${() => this.doSave(name)}>Override</button>
+        <button @click=${() => this.modal.close()}>Cancel</button>
+      `;
+    } else {
+      this.doSave(name);
+    }
+  };
+
+  private doSave(name: string): void {
+    const mode = {
+      name,
+      worldWidth: this.worldWidth,
+      worldHeight: this.worldHeight,
+      numCircles: this.numCircles,
+      mode: this.mode,
+      timeLimit: this.timeLimit,
+      health: this.health,
+      numGreenCircles: this.numGreenCircles,
+      numBouncy: this.numBouncy,
+      numGravity: this.numGravity,
+      numHunter: this.numHunter,
+      numBlockade: this.numBlockade,
+      numVoid: this.numVoid,
+      numGhost: this.numGhost,
+    };
+    saveCustomGameMode(mode);
+    this.modal.close();
+  }
+
+  private handleModalSubmit = (): void => {
+    // Handle submit if needed
+  };
 }

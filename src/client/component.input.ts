@@ -11,6 +11,7 @@ export class CanzeltlyInput extends LitElement {
   @property({ type: Number }) max?: number;
   @property({ type: Number }) step?: number;
   @property({ type: Array }) options?: string[]; // for dropdown
+  @property({ type: Boolean }) onSecondarySurface = false;
 
   static override styles = [
     globalStyles,
@@ -25,6 +26,7 @@ export class CanzeltlyInput extends LitElement {
       input,
       select,
       textarea {
+        box-sizing: border-box;
         width: 100%;
         padding: var(--size-small) var(--size-medium);
         font-size: var(--font-medium);
@@ -32,6 +34,12 @@ export class CanzeltlyInput extends LitElement {
         border: var(--border-normal);
         background-color: var(--color-secondary-surface);
         color: var(--color-secondary-text);
+      }
+      .on-secondary-surface input,
+      .on-secondary-surface select,
+      .on-secondary-surface textarea {
+        background-color: var(--color-primary-surface);
+        color: var(--color-primary-text);
       }
       input:focus,
       select:focus,
@@ -52,7 +60,7 @@ export class CanzeltlyInput extends LitElement {
 
   override render(): TemplateResult {
     return html`
-      <div class="input-group">
+      <div class="input-group ${this.onSecondarySurface ? "on-secondary-surface" : ""}">
         <label>${this.label}</label>
         ${this.renderInput()}
       </div>

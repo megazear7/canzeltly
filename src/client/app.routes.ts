@@ -21,4 +21,8 @@ export const routes = [
     name: RouteName.enum.game_summary,
     path: "/summary/game/:gameId/player/:playerId",
   },
+  {
+    name: RouteName.enum.custom_game_modes,
+    path: "/custom-game-modes",
+  },
 ];

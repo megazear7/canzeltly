@@ -3,7 +3,15 @@ import z from "zod";
 export const RoutePath = z.string();
 export type RoutePath = z.infer<typeof RoutePath>;
 
-export const RouteName = z.enum(["home", "play", "create_game", "saved_games", "game_summary", "not_found"]);
+export const RouteName = z.enum([
+  "home",
+  "play",
+  "create_game",
+  "saved_games",
+  "game_summary",
+  "custom_game_modes",
+  "not_found",
+]);
 export type RouteName = z.infer<typeof RouteName>;
 
 export const RouteConfig = z.object({

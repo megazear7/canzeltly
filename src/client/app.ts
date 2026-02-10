@@ -16,6 +16,7 @@ import "./page.not-found.js";
 import "./page.create-game.js";
 import "./page.saved-games.js";
 import "./page.game-summary.js";
+import "./page.custom-game-modes.js";
 import "./component.toast.js";
 import "./component.save-indicator.js";
 import "./component.play.js";
@@ -92,6 +93,10 @@ export class CanzeltlyApp extends LitElement {
             case RouteName.enum.game_summary:
               return html`
                 <canzeltly-game-summary-page></canzeltly-game-summary-page>
+              `;
+            case RouteName.enum.custom_game_modes:
+              return html`
+                <canzeltly-custom-game-modes-page></canzeltly-custom-game-modes-page>
               `;
             default:
               return html`

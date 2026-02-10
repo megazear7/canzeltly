@@ -1,10 +1,12 @@
 import { GameState } from "../game/game.js";
 import { GameId } from "../game/type.game.js";
 import { slugify } from "../shared/util.slug.js";
+import { CustomGameMode } from "../shared/type.custom-game-mode.js";
 
 const STORAGE_KEY = "canzeltly_saved_games";
 const PLAYER_ASSIGNMENTS_KEY = "canzeltly_player_assignments";
 const NEW_GAME_KEY = "canzeltly_new_game";
+const CUSTOM_GAME_MODES_KEY = "canzeltly_custom_game_modes";
 
 export function saveGameState(gameState: GameState): void {
   const savedGames = getAllGameStates();
@@ -95,4 +97,42 @@ export function getAllPlayerAssignments(): Record<string, string> {
     console.error("Error parsing player assignments:", error);
     return {};
   }
+}
+
+export function saveCustomGameMode(mode: CustomGameMode): void {
+  const modes = getAllCustomGameModes();
+  const existingIndex = modes.findIndex((m) => m.name === mode.name);
+  if (existingIndex >= 0) {
+    modes[existingIndex] = mode;
+  } else {
+    modes.push(mode);
+  }
+  localStorage.setItem(CUSTOM_GAME_MODES_KEY, JSON.stringify(modes));
+}
+
+export function loadCustomGameMode(name: string): CustomGameMode | undefined {
+  const modes = getAllCustomGameModes();
+  return modes.find((m) => m.name === name);
+}
+
+export function getAllCustomGameModes(): CustomGameMode[] {
+  const stored = localStorage.getItem(CUSTOM_GAME_MODES_KEY);
+  if (!stored) return [];
+  try {
+    const parsed = JSON.parse(stored);
+    return parsed;
+  } catch (error) {
+    console.error("Error parsing custom game modes:", error);
+    return [];
+  }
+}
+
+export function deleteCustomGameMode(name: string): void {
+  const modes = getAllCustomGameModes().filter((m) => m.name !== name);
+  localStorage.setItem(CUSTOM_GAME_MODES_KEY, JSON.stringify(modes));
+}
+
+export function deleteMultipleCustomGameModes(names: string[]): void {
+  const modes = getAllCustomGameModes().filter((m) => !names.includes(m.name));
+  localStorage.setItem(CUSTOM_GAME_MODES_KEY, JSON.stringify(modes));
 }
