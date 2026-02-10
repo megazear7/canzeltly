@@ -2,11 +2,13 @@ import { GameState } from "../game/game.js";
 import { GameId } from "../game/type.game.js";
 import { slugify } from "../shared/util.slug.js";
 import { CustomGameMode } from "../shared/type.custom-game-mode.js";
+import { CampaignInstance } from "../shared/type.campaign.js";
 
 const STORAGE_KEY = "canzeltly_saved_games";
 const PLAYER_ASSIGNMENTS_KEY = "canzeltly_player_assignments";
 const NEW_GAME_KEY = "canzeltly_new_game";
 const CUSTOM_GAME_MODES_KEY = "canzeltly_custom_game_modes";
+const ACTIVE_CAMPAIGNS_KEY = "canzeltly_active_campaigns";
 
 export function saveGameState(gameState: GameState): void {
   const savedGames = getAllGameStates();
@@ -135,4 +137,35 @@ export function deleteCustomGameMode(name: string): void {
 export function deleteMultipleCustomGameModes(names: string[]): void {
   const modes = getAllCustomGameModes().filter((m) => !names.includes(m.name));
   localStorage.setItem(CUSTOM_GAME_MODES_KEY, JSON.stringify(modes));
+}
+
+export function getAllActiveCampaigns(): CampaignInstance[] {
+  const stored = localStorage.getItem(ACTIVE_CAMPAIGNS_KEY);
+  if (!stored) return [];
+  try {
+    return JSON.parse(stored);
+  } catch (error) {
+    console.error("Error parsing active campaigns:", error);
+    return [];
+  }
+}
+
+export function getActiveCampaign(campaignSlug: string): CampaignInstance | undefined {
+  return getAllActiveCampaigns().find((c) => c.campaignSlug === campaignSlug);
+}
+
+export function saveActiveCampaign(instance: CampaignInstance): void {
+  const campaigns = getAllActiveCampaigns();
+  const existingIndex = campaigns.findIndex((c) => c.campaignSlug === instance.campaignSlug);
+  if (existingIndex >= 0) {
+    campaigns[existingIndex] = instance;
+  } else {
+    campaigns.push(instance);
+  }
+  localStorage.setItem(ACTIVE_CAMPAIGNS_KEY, JSON.stringify(campaigns));
+}
+
+export function deleteActiveCampaign(campaignSlug: string): void {
+  const campaigns = getAllActiveCampaigns().filter((c) => c.campaignSlug !== campaignSlug);
+  localStorage.setItem(ACTIVE_CAMPAIGNS_KEY, JSON.stringify(campaigns));
 }

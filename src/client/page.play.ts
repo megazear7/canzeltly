@@ -7,13 +7,15 @@ import { CanzeltlyAppProvider } from "./provider.app.js";
 export class CanzeltlyPlayPage extends CanzeltlyAppProvider {
   params = parseRouteParams("/play/game/:gameId/player/:playerId", window.location.pathname);
   isNewGame = new URLSearchParams(window.location.search).get("newgame") === "true";
+  campaignSlug = new URLSearchParams(window.location.search).get("campaign") || "";
 
   override render(): TemplateResult {
     return html`
       <canzeltly-play
         .gameId="${this.params.gameId}"
         .playerId="${this.params.playerId}"
-        .isNewGame="${this.isNewGame}"></canzeltly-play>
+        .isNewGame="${this.isNewGame}"
+        .campaignSlug="${this.campaignSlug}"></canzeltly-play>
     `;
   }
 }

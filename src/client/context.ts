@@ -4,6 +4,7 @@ import { LoadingStatus } from "../shared/type.loading.js";
 import { AppConfig } from "../shared/type.app.js";
 import { GameState } from "../game/game.js";
 import { CustomGameMode } from "../shared/type.custom-game-mode.js";
+import { Campaign, CampaignInstance } from "../shared/type.campaign.js";
 
 export const AppContext = z.object({
   app: AppConfig.optional(),
@@ -26,3 +27,11 @@ export const CustomGameModesContext = z.object({
 });
 export type CustomGameModesContext = z.infer<typeof CustomGameModesContext>;
 export const customGameModesContext = createContext<CustomGameModesContext>("customGameModes");
+
+export const CampaignsContext = z.object({
+  status: LoadingStatus,
+  campaigns: z.array(Campaign),
+  activeCampaigns: z.array(CampaignInstance),
+});
+export type CampaignsContext = z.infer<typeof CampaignsContext>;
+export const campaignsContext = createContext<CampaignsContext>("campaigns");

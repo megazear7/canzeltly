@@ -10,6 +10,10 @@ export const RouteName = z.enum([
   "saved_games",
   "game_summary",
   "custom_game_modes",
+  "start_campaign",
+  "continue_campaign",
+  "campaign_games",
+  "campaign_upgrade",
   "not_found",
 ]);
 export type RouteName = z.infer<typeof RouteName>;

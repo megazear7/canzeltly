@@ -25,4 +25,20 @@ export const routes = [
     name: RouteName.enum.custom_game_modes,
     path: "/custom-game-modes",
   },
+  {
+    name: RouteName.enum.start_campaign,
+    path: "/campaigns/start",
+  },
+  {
+    name: RouteName.enum.continue_campaign,
+    path: "/campaigns/continue",
+  },
+  {
+    name: RouteName.enum.campaign_games,
+    path: "/campaigns/:campaignSlug",
+  },
+  {
+    name: RouteName.enum.campaign_upgrade,
+    path: "/campaigns/:campaignSlug/upgrade",
+  },
 ];

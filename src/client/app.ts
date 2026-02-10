@@ -17,6 +17,10 @@ import "./page.create-game.js";
 import "./page.saved-games.js";
 import "./page.game-summary.js";
 import "./page.custom-game-modes.js";
+import "./page.start-campaign.js";
+import "./page.continue-campaign.js";
+import "./page.campaign-games.js";
+import "./page.campaign-upgrade.js";
 import "./component.toast.js";
 import "./component.save-indicator.js";
 import "./component.play.js";
@@ -97,6 +101,22 @@ export class CanzeltlyApp extends LitElement {
             case RouteName.enum.custom_game_modes:
               return html`
                 <canzeltly-custom-game-modes-page></canzeltly-custom-game-modes-page>
+              `;
+            case RouteName.enum.start_campaign:
+              return html`
+                <canzeltly-start-campaign-page></canzeltly-start-campaign-page>
+              `;
+            case RouteName.enum.continue_campaign:
+              return html`
+                <canzeltly-continue-campaign-page></canzeltly-continue-campaign-page>
+              `;
+            case RouteName.enum.campaign_games:
+              return html`
+                <canzeltly-campaign-games-page></canzeltly-campaign-games-page>
+              `;
+            case RouteName.enum.campaign_upgrade:
+              return html`
+                <canzeltly-campaign-upgrade-page></canzeltly-campaign-upgrade-page>
               `;
             default:
               return html`

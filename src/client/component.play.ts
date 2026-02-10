@@ -1,15 +1,30 @@
 import { css, html, LitElement, TemplateResult } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { Game, GameStatus } from "../game/game.js";
 import { globalStyles } from "./styles.global.js";
 import { draw } from "../canvas/draw.canvas.js";
-import { loadGameState, saveGameState, loadNewGameState, deleteNewGameState } from "./util.storage.js";
+import {
+  loadGameState,
+  saveGameState,
+  loadNewGameState,
+  deleteNewGameState,
+  getActiveCampaign,
+  saveActiveCampaign,
+} from "./util.storage.js";
 import { CanzeltlyHeadsUpDisplay } from "./component.heads-up-display.js";
 import { mapFromCanvas } from "../canvas/util.map-to-canvas.js";
 import { createSurvivalGame } from "../game/mode.survival.js";
+import { createAdventureGame } from "../game/mode.adventure.js";
+import { createRaceGame } from "../game/mode.race.js";
 import { CanzeltlyGameOverModal } from "./component.game-over-modal.js";
+import { CanzeltlyModal } from "./component.modal.js";
+import { getCampaignBySlug } from "../shared/data.campaigns.js";
+import { CampaignGame, CampaignInstance } from "../shared/type.campaign.js";
+import { dispatch } from "./util.events.js";
+import { NavigationEvent } from "./event.navigation.js";
 import "./component.heads-up-display.js";
 import "./component.game-over-modal.js";
+import "./component.modal.js";
 
 @customElement("canzeltly-play")
 export class CanzeltlyPlay extends LitElement {
@@ -22,6 +37,9 @@ export class CanzeltlyPlay extends LitElement {
   @property({ type: Boolean })
   isNewGame: boolean = false;
 
+  @property({ type: String })
+  campaignSlug: string = "";
+
   static override styles = [
     globalStyles,
     css`
@@ -32,6 +50,36 @@ export class CanzeltlyPlay extends LitElement {
         width: 100vw;
         height: 100vh;
       }
+
+      .campaign-modal-content {
+        text-align: center;
+        padding: var(--size-xl);
+      }
+
+      .campaign-modal-content h2 {
+        margin-top: 0;
+      }
+
+      .campaign-modal-content p {
+        font-size: var(--font-medium);
+        line-height: 1.6;
+        margin: var(--size-large) 0;
+      }
+
+      .campaign-modal-actions {
+        display: flex;
+        gap: var(--size-medium);
+        justify-content: center;
+        margin-top: var(--size-large);
+      }
+
+      .result-win {
+        color: var(--color-success);
+      }
+
+      .result-lose {
+        color: var(--color-error);
+      }
     `,
   ];
 
@@ -41,11 +89,29 @@ export class CanzeltlyPlay extends LitElement {
   private drawCount = 0;
   private gameOverModalShown = false;
 
+  @state()
+  private campaignGame?: CampaignGame;
+
+  @state()
+  private campaignInstance?: CampaignInstance;
+
+  @state()
+  private campaignResult: "win" | "lose" | null = null;
+
   @query("canvas") private canvas?: HTMLCanvasElement;
   @query("canzeltly-heads-up-display") private hud?: CanzeltlyHeadsUpDisplay;
   @query("canzeltly-game-over-modal") private gameOverModal?: CanzeltlyGameOverModal;
+  @query("#campaign-intro-modal") private introModal?: CanzeltlyModal;
+  @query("#campaign-result-modal") private resultModal?: CanzeltlyModal;
 
   override render(): TemplateResult {
+    if (this.campaignSlug) {
+      return html`
+        <canvas></canvas>
+        <canzeltly-heads-up-display .game=${this.game} .isNewGame=${false}></canzeltly-heads-up-display>
+        ${this.renderCampaignIntroModal()} ${this.renderCampaignResultModal()}
+      `;
+    }
     return html`
       <canvas></canvas>
       <canzeltly-heads-up-display .game=${this.game} .isNewGame=${this.isNewGame}></canzeltly-heads-up-display>
@@ -53,9 +119,58 @@ export class CanzeltlyPlay extends LitElement {
     `;
   }
 
+  private renderCampaignIntroModal(): TemplateResult {
+    if (!this.campaignGame) return html``;
+    return html`
+      <canzeltly-modal id="campaign-intro-modal" .closeable=${false}>
+        <div slot="body" class="campaign-modal-content">
+          <h2>${this.campaignGame.name}</h2>
+          <p>${this.campaignGame.intro.text}</p>
+          <div class="campaign-modal-actions">
+            <button class="primary" @click=${this.startCampaignGame}>Start Game</button>
+          </div>
+        </div>
+      </canzeltly-modal>
+    `;
+  }
+
+  private renderCampaignResultModal(): TemplateResult {
+    if (!this.campaignGame || !this.campaignResult) return html``;
+    const isWin = this.campaignResult === "win";
+    const text = isWin ? this.campaignGame.victory.text : this.campaignGame.defeat.text;
+    const hasUpgrades = isWin && this.campaignGame.upgrades;
+
+    return html`
+      <canzeltly-modal id="campaign-result-modal" .closeable=${false}>
+        <div slot="body" class="campaign-modal-content">
+          <h2 class="${isWin ? "result-win" : "result-lose"}">${isWin ? "Victory!" : "Defeat"}</h2>
+          <p>${text}</p>
+          <div class="campaign-modal-actions">
+            ${isWin
+              ? html`
+                  <button class="primary" @click=${this.continueCampaign}>
+                    ${hasUpgrades ? "Upgrade Hero" : "Continue Campaign"}
+                  </button>
+                `
+              : html`
+                  <button class="primary" @click=${this.retryCampaignGame}>Try Again</button>
+                `}
+            <button @click=${this.goHome}>Back to Home</button>
+          </div>
+        </div>
+      </canzeltly-modal>
+    `;
+  }
+
   override async connectedCallback(): Promise<void> {
     super.connectedCallback();
     document.body.style.overflow = "hidden";
+
+    if (this.campaignSlug) {
+      await this.initCampaignGame();
+      return;
+    }
+
     let gameState;
     if (this.isNewGame) {
       gameState = loadNewGameState();
@@ -120,7 +235,12 @@ export class CanzeltlyPlay extends LitElement {
           if (this.isNewGame) {
             deleteNewGameState();
           }
-          this.gameOverModal?.open();
+
+          if (this.campaignSlug && this.campaignInstance) {
+            this.handleCampaignGameOver();
+          } else {
+            this.gameOverModal?.open();
+          }
           return;
         }
 
@@ -196,4 +316,134 @@ export class CanzeltlyPlay extends LitElement {
     const worldPos = mapFromCanvas(viewport, this.canvas, canvasX, canvasY);
     this.game.input.handleCanvasClick(this.playerId, worldPos.x, worldPos.y);
   }
+
+  private async initCampaignGame(): Promise<void> {
+    const campaign = getCampaignBySlug(this.campaignSlug);
+    const instance = getActiveCampaign(this.campaignSlug);
+    if (!campaign || !instance) return;
+
+    this.campaignInstance = instance;
+    const gameIndex = instance.currentGameIndex;
+    const campaignGame = campaign.games[gameIndex];
+    if (!campaignGame) return;
+
+    this.campaignGame = campaignGame;
+
+    // Create the game state from campaign game mode
+    const mode = campaignGame.mode;
+    const health = instance.heroStats.health;
+
+    let gameState;
+    if (mode.mode === "Adventure") {
+      gameState = createAdventureGame({
+        width: mode.worldWidth,
+        height: mode.worldHeight,
+        playerId: this.playerId,
+        numGreenCircles: mode.numGreenCircles,
+        numBouncy: mode.numBouncy,
+        numGravity: mode.numGravity,
+        numHunter: mode.numHunter,
+        numBlockade: mode.numBlockade,
+        numVoid: mode.numVoid,
+        numGhost: mode.numGhost,
+        gameName: campaignGame.name,
+        gameId: this.gameId,
+        health,
+      });
+    } else if (mode.mode === "Race") {
+      gameState = createRaceGame({
+        width: mode.worldWidth,
+        height: mode.worldHeight,
+        playerId: this.playerId,
+        timeLimit: mode.timeLimit,
+        numGreenCircles: mode.numGreenCircles,
+        numBouncy: mode.numBouncy,
+        numGravity: mode.numGravity,
+        numHunter: mode.numHunter,
+        numBlockade: mode.numBlockade,
+        numVoid: mode.numVoid,
+        numGhost: mode.numGhost,
+        gameName: campaignGame.name,
+        gameId: this.gameId,
+        health,
+      });
+    } else {
+      gameState = createSurvivalGame({
+        width: mode.worldWidth,
+        height: mode.worldHeight,
+        playerId: this.playerId,
+        numBouncy: mode.numCircles || mode.numBouncy,
+        numGravity: mode.numGravity,
+        numHunter: mode.numHunter,
+        numBlockade: mode.numBlockade,
+        numGreenCircles: mode.numGreenCircles,
+        numVoid: mode.numVoid,
+        numGhost: mode.numGhost,
+        health,
+      });
+      gameState.id = this.gameId;
+    }
+
+    this.game = new Game(gameState);
+    this.requestUpdate();
+
+    // Wait for render then show intro modal
+    await this.updateComplete;
+    this.introModal?.open();
+  }
+
+  private startCampaignGame = async (): Promise<void> => {
+    await this.introModal?.close();
+    if (this.game) {
+      this.startGameLoop();
+    }
+  };
+
+  private handleCampaignGameOver(): void {
+    if (!this.game || !this.campaignInstance) return;
+
+    const player = this.game.state.players.find((p) => p.playerId === this.playerId);
+    const isWin = player?.victory === "Win";
+
+    if (isWin) {
+      // Mark game as completed
+      const gameIndex = this.campaignInstance.currentGameIndex;
+      if (!this.campaignInstance.completedGameIndexes.includes(gameIndex)) {
+        this.campaignInstance.completedGameIndexes.push(gameIndex);
+      }
+      this.campaignInstance.currentGameIndex = gameIndex + 1;
+      saveActiveCampaign(this.campaignInstance);
+    }
+
+    this.campaignResult = isWin ? "win" : "lose";
+    this.requestUpdate();
+
+    // Wait for render then show result modal
+    this.updateComplete.then(() => {
+      this.resultModal?.open();
+    });
+  }
+
+  private continueCampaign = (): void => {
+    if (!this.campaignGame?.upgrades) {
+      dispatch(this, NavigationEvent({ path: `/campaigns/${this.campaignSlug}` }));
+    } else {
+      dispatch(this, NavigationEvent({ path: `/campaigns/${this.campaignSlug}/upgrade` }));
+    }
+  };
+
+  private retryCampaignGame = (): void => {
+    const randomGameId = "campaign-" + Math.floor(Math.random() * 90000 + 10000);
+    const randomPlayerId = crypto.randomUUID();
+    dispatch(
+      this,
+      NavigationEvent({
+        path: `/play/game/${randomGameId}/player/${randomPlayerId}?campaign=${this.campaignSlug}`,
+      }),
+    );
+  };
+
+  private goHome = (): void => {
+    dispatch(this, NavigationEvent({ path: "/" }));
+  };
 }
