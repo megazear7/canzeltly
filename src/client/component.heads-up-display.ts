@@ -7,6 +7,8 @@ import { dispatch } from "./util.events.js";
 import { NavigationEvent } from "./event.navigation.js";
 import { SuccessEvent } from "./event.success.js";
 import { saveGameState, deleteNewGameState } from "./util.storage.js";
+import { AffectCategory } from "../game/game.affect.js";
+import { HealthState } from "../game/type.object.js";
 import "./component.modal.js";
 
 @customElement("canzeltly-heads-up-display")
@@ -160,7 +162,12 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
     if (player) {
       const playerObject = this.game.layers[1].find((obj) => obj.state.id === player.selectedObjects[0]);
       if (playerObject) {
-        return `Health: ${playerObject.state.health}`;
+        const healthAffect = playerObject.state.affects.find((a) => a.category === AffectCategory.enum.Health) as
+          | HealthState
+          | undefined;
+        if (healthAffect) {
+          return `Health: ${healthAffect.health}`;
+        }
       }
     }
     return "";

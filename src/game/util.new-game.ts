@@ -27,8 +27,6 @@ export function newGame({
       x: 0,
       y: 0,
       color: "#53744c",
-      health: 1,
-      damage: 1,
     }),
   ];
 

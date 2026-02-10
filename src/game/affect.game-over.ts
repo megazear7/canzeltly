@@ -1,5 +1,5 @@
 import { GameObject } from "./game.object.js";
-import { GameObjectState, GameOverState } from "./type.object.js";
+import { GameObjectState, GameOverState, HealthState } from "./type.object.js";
 import { affect, AffectCategory } from "./game.affect.js";
 import { GameStatus } from "./game.js";
 
@@ -11,7 +11,10 @@ export const gameOver: affect = function <T extends GameObjectState>(obj: GameOb
       const playerId = gameOverState.playerId;
 
       // Check if health is 0 or less
-      if (obj.state.health <= 0) {
+      const healthAffect = obj.state.affects.find((a) => a.category === AffectCategory.enum.Health) as
+        | HealthState
+        | undefined;
+      if (healthAffect && healthAffect.health <= 0) {
         obj.game.state.status = GameStatus.enum.GameOver;
         obj.game.state.ended = Date.now();
 

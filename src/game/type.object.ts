@@ -49,6 +49,12 @@ export const GravityState = AffectState.extend({
 });
 export type GravityState = z.infer<typeof GravityState>;
 
+export const HealthState = AffectState.extend({
+  category: z.literal(AffectCategory.enum.Health),
+  health: z.number(),
+});
+export type HealthState = z.infer<typeof HealthState>;
+
 export const AbilityState = AffectState.extend({
   category: z.literal(AffectCategory.enum.Ability),
   acceleration: z.number(),
@@ -80,23 +86,25 @@ export const ImpermeableState = AffectState.extend({
 });
 export type ImpermeableState = z.infer<typeof ImpermeableState>;
 
+export const OverlappingDamageState = AffectState.extend({
+  category: z.literal(AffectCategory.enum.OverlappingDamage),
+  damage: z.number().default(0),
+  attackSpeed: z.number(),
+  lastAttack: z.number().default(0),
+  makesAttacks: z.boolean(),
+  receivesAttacks: z.boolean(),
+});
+export type OverlappingDamageState = z.infer<typeof OverlappingDamageState>;
+
 export const ElasticCollisionState = AffectState.extend({
   category: z.literal(AffectCategory.enum.ElasticCollision),
+  damage: z.number().default(0),
+  attackSpeed: z.number(),
+  lastAttack: z.number().default(0),
+  makesAttacks: z.boolean(),
+  receivesAttacks: z.boolean(),
 });
 export type ElasticCollisionState = z.infer<typeof ElasticCollisionState>;
-
-export const HealthCollision = z.object({
-  with: GameObjectId,
-  damage: z.number(),
-});
-export type HealthCollision = z.infer<typeof HealthCollision>;
-
-export const HealthCollisionState = AffectState.extend({
-  category: z.literal(AffectCategory.enum.HealthCollision),
-  collisions: z.array(HealthCollision).default([]),
-  layers: z.array(z.number()),
-});
-export type HealthCollisionState = z.infer<typeof HealthCollisionState>;
 
 export const AnyAffectState = z.union([
   BounceState,
@@ -104,13 +112,14 @@ export const AnyAffectState = z.union([
   TargetState,
   TargetObjectState,
   GravityState,
+  HealthState,
   AbilityState,
   GameOverState,
   CollectionState,
   GameOverCollisionState,
   ImpermeableState,
+  OverlappingDamageState,
   ElasticCollisionState,
-  HealthCollisionState,
 ]);
 export type AnyAffectState = z.infer<typeof AnyAffectState>;
 
@@ -121,8 +130,6 @@ export const GameObjectState = z.object({
   labels: GameObjectLabel.array().default([]),
   radius: z.number(),
   mass: z.number().default(1),
-  health: z.number().default(1),
-  damage: z.number().default(1),
   x: z.number(),
   y: z.number(),
 });

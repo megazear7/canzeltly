@@ -8,13 +8,14 @@ export const AffectCategory = z.enum([
   "Target",
   "TargetObject",
   "Gravity",
+  "Health",
   "Ability",
   "GameOver",
   "Collection",
   "GameOverCollision",
   "Impermeable",
+  "OverlappingDamage",
   "ElasticCollision",
-  "HealthCollision",
 ]);
 export type AffectCategory = z.infer<typeof AffectCategory>;
 

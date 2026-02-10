@@ -53,8 +53,6 @@ export function createAdventureGame({
       height: height,
       radius: (width + height) / 2,
       mass: width * height,
-      health: 1,
-      damage: 1,
       x: 0,
       y: 0,
       color: "#53744c",
@@ -115,13 +113,15 @@ export function createAdventureGame({
       id: crypto.randomUUID(),
       affects: [
         {
+          category: AffectCategory.enum.Health,
+          health: 1,
+        },
+        {
           category: AffectCategory.enum.Impermeable,
         },
       ],
       radius,
       mass: radius * radius,
-      health: 1,
-      damage: 1,
       labels: [GameObjectLabel.enum.Collectable],
       x: Math.random() * width,
       y: Math.random() * height,

@@ -7,8 +7,8 @@ description: 'Preserve our conversation history by saving it as a markdown file 
 
 # Steps
 
- - Save our conversation history as a single markdown file in either a new file in the `.work` directory, or an existing directory if I specify one.
- - If you are creating a new directory, it should be prefixed with three numbers that are one higher than the highest numbered directory in the `.work` directory. For example, if the highest numbered directory is `020`, then the new directory should be prefixed with `021`.
+ - Save our conversation history as a single markdown file in the `.work` directory.
+ - The file should be named `conversation.md` and should be placed inside the latest numbered directory under the `.work` directory.
  - The markdown file should be named `conversation.md` and should be placed inside the new or existing directory.
  - The markdown file should include all of our conversation history.
  - The file format should:

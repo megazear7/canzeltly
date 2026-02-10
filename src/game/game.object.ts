@@ -6,12 +6,13 @@ import { velocity } from "./affect.velocity.js";
 import { target } from "./affect.target.js";
 import { targetObject } from "./affect.target-object.js";
 import { gravity } from "./affect.gravity.js";
+import { health } from "./affect.health.js";
 import { ability } from "./affect.ability.js";
 import { gameOver } from "./affect.game-over.js";
 import { collection } from "./affect.collection.js";
 import { impermeable } from "./affect.impermeable.js";
+import { overlappingDamage } from "./affect.overlapping-damage.js";
 import { elasticCollision } from "./affect.elastic-collision.js";
-import { healthCollision } from "./affect.health-collision.js";
 
 export abstract class GameObject<T extends GameObjectState> {
   game: Game;
@@ -50,9 +51,10 @@ export abstract class GameObject<T extends GameObjectState> {
       if (affect.category === AffectCategory.enum.Target) target(this);
       if (affect.category === AffectCategory.enum.TargetObject) targetObject(this);
       if (affect.category === AffectCategory.enum.Gravity) gravity(this);
+      if (affect.category === AffectCategory.enum.Health) health(this);
       if (affect.category === AffectCategory.enum.Ability) ability(this);
       if (affect.category === AffectCategory.enum.Collection) collection(this);
-      if (affect.category === AffectCategory.enum.HealthCollision) healthCollision(this);
+      if (affect.category === AffectCategory.enum.OverlappingDamage) overlappingDamage(this);
       if (affect.category === AffectCategory.enum.ElasticCollision) elasticCollision(this);
       if (affect.category === AffectCategory.enum.GameOver) gameOver(this);
     });

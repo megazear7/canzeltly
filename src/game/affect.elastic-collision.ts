@@ -1,5 +1,5 @@
 import { GameObject } from "./game.object.js";
-import { GameObjectState, VelocityState } from "./type.object.js";
+import { GameObjectState, VelocityState, ElasticCollisionState, HealthState } from "./type.object.js";
 import { checkForCollision } from "../shared/util.collision.js";
 import { affect, AffectCategory } from "./game.affect.js";
 
@@ -17,11 +17,38 @@ export const elasticCollision: affect = function <T extends GameObjectState>(obj
   // Check collisions with each elastic object
   elasticObjects.forEach((otherObj) => {
     if (checkForCollision(obj.state, otherObj.state)) {
-      const otherHealthAffect = otherObj.state.affects.find(
-        (affect) => affect.category === AffectCategory.enum.HealthCollision,
-      );
-      if (obj.state.damage && otherHealthAffect) {
-        otherHealthAffect.collisions.push({ with: obj.state.id, damage: obj.state.damage });
+      // Handle damage
+      const objCollisionState = obj.state.affects.find((a) => a.category === AffectCategory.enum.ElasticCollision) as
+        | ElasticCollisionState
+        | undefined;
+      const otherCollisionState = otherObj.state.affects.find(
+        (a) => a.category === AffectCategory.enum.ElasticCollision,
+      ) as ElasticCollisionState | undefined;
+
+      if (objCollisionState?.makesAttacks && otherCollisionState?.receivesAttacks) {
+        const now = Date.now();
+        if (now - objCollisionState.lastAttack >= objCollisionState.attackSpeed) {
+          const otherHealth = otherObj.state.affects.find((a) => a.category === AffectCategory.enum.Health) as
+            | HealthState
+            | undefined;
+          if (otherHealth) {
+            otherHealth.health -= objCollisionState.damage;
+          }
+          objCollisionState.lastAttack = now;
+        }
+      }
+
+      if (otherCollisionState?.makesAttacks && objCollisionState?.receivesAttacks) {
+        const now = Date.now();
+        if (now - otherCollisionState.lastAttack >= otherCollisionState.attackSpeed) {
+          const objHealth = obj.state.affects.find((a) => a.category === AffectCategory.enum.Health) as
+            | HealthState
+            | undefined;
+          if (objHealth) {
+            objHealth.health -= otherCollisionState.damage;
+          }
+          otherCollisionState.lastAttack = now;
+        }
       }
 
       // Calculate collision response

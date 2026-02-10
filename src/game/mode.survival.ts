@@ -49,8 +49,6 @@ export function createSurvivalGame({
       height: height,
       radius: (width + height) / 2,
       mass: width * height,
-      health: 1,
-      damage: 1,
       x: 0,
       y: 0,
       color: "#53744c",
@@ -116,8 +114,6 @@ export function createSurvivalGame({
       ],
       radius,
       mass: radius * radius,
-      health: 1,
-      damage: 1,
       x: Math.random() * width,
       y: Math.random() * height,
       color: "#00FF00", // Green for collectibles

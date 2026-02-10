@@ -22,8 +22,6 @@ export function randomCircleState(game: Game): CircleState {
     x: Math.random() * game.state.world.width,
     y: Math.random() * (game.state.world.height / 2),
     radius,
-    health: 1,
-    damage: 1,
     mass: radius * radius,
     color: `hsl(${Math.random() * 360}, 70%, 50%)`,
   });
@@ -54,8 +52,6 @@ export function randomMovingCircleState(game: GameState): CircleState {
     x: Math.random() * game.world.width,
     y: Math.random() * (game.world.height / 2),
     radius,
-    health: 1,
-    damage: 1,
     mass: radius * radius,
     color: `hsl(${Math.random() * 360}, 70%, 50%)`,
   });
@@ -67,6 +63,10 @@ export function randomBouncingCircleState(game: GameState): CircleState {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
     affects: [
+      {
+        category: AffectCategory.enum.Health,
+        health: 1,
+      },
       {
         category: AffectCategory.enum.Velocity,
         dx: (Math.random() - 0.5) * 25,
@@ -88,13 +88,22 @@ export function randomBouncingCircleState(game: GameState): CircleState {
       },
       {
         category: AffectCategory.enum.ElasticCollision,
+        damage: 1,
+        attackSpeed: 1000,
+        makesAttacks: true,
+        receivesAttacks: false,
+      },
+      {
+        category: AffectCategory.enum.OverlappingDamage,
+        damage: 1,
+        attackSpeed: 1000,
+        makesAttacks: true,
+        receivesAttacks: false,
       },
     ],
     x: Math.random() * game.world.width,
     y: Math.random() * (game.world.height / 2),
     radius,
-    health: 1,
-    damage: 1,
     mass: radius * radius,
     color: `#FF0000`,
   });
@@ -107,19 +116,25 @@ export function randomBlockadeCircleState(game: GameState): CircleState {
     id: crypto.randomUUID(),
     affects: [
       {
+        category: AffectCategory.enum.Health,
+        health: 1,
+      },
+      {
         category: AffectCategory.enum.Velocity,
         dx: 0,
         dy: 0,
       },
       {
         category: AffectCategory.enum.ElasticCollision,
+        damage: 0,
+        attackSpeed: 1000,
+        makesAttacks: false,
+        receivesAttacks: false,
       },
     ],
     x: Math.random() * game.world.width,
     y: Math.random() * game.world.height,
     radius,
-    health: 1,
-    damage: 0,
     mass: Number.MAX_SAFE_INTEGER, // Infinite mass - immovable
     color: `#808080`,
   });
@@ -132,6 +147,18 @@ export function randomVoidCircleState(game: GameState): CircleState {
     id: crypto.randomUUID(),
     affects: [
       {
+        category: AffectCategory.enum.Health,
+        health: 1,
+      },
+      {
+        category: AffectCategory.enum.OverlappingDamage,
+        damage: 1,
+        attackSpeed: 1000,
+        lastAttack: 0,
+        makesAttacks: true,
+        receivesAttacks: false,
+      },
+      {
         category: AffectCategory.enum.GameOverCollision,
       },
     ],
@@ -139,8 +166,6 @@ export function randomVoidCircleState(game: GameState): CircleState {
     y: Math.random() * game.world.height,
     radius,
     mass: radius * radius,
-    damage: 5,
-    health: 1,
     color: `#000000`,
   });
 }
@@ -153,6 +178,10 @@ export function randomHunterCircleState(game: GameState, playerId: string): Circ
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
     affects: [
+      {
+        category: AffectCategory.enum.Health,
+        health: 1,
+      },
       {
         category: AffectCategory.enum.Velocity,
         dx: 0,
@@ -179,13 +208,22 @@ export function randomHunterCircleState(game: GameState, playerId: string): Circ
       },
       {
         category: AffectCategory.enum.ElasticCollision,
+        damage: 1,
+        attackSpeed: 1000,
+        makesAttacks: true,
+        receivesAttacks: false,
+      },
+      {
+        category: AffectCategory.enum.OverlappingDamage,
+        damage: 1,
+        attackSpeed: 1000,
+        makesAttacks: true,
+        receivesAttacks: false,
       },
     ],
     x: Math.random() * game.world.width,
     y: Math.random() * (game.world.height / 2),
     radius,
-    health: 1,
-    damage: 1,
     mass: radius * radius,
     color: `#800080`, // Purple for hunters
   });
@@ -200,6 +238,10 @@ export function randomGhostCircleState(game: GameState, playerId: string): Circl
     id: crypto.randomUUID(),
     affects: [
       {
+        category: AffectCategory.enum.Health,
+        health: 1,
+      },
+      {
         category: AffectCategory.enum.Velocity,
         dx: 0,
         dy: 0,
@@ -223,13 +265,18 @@ export function randomGhostCircleState(game: GameState, playerId: string): Circl
       {
         category: AffectCategory.enum.GameOverCollision,
       },
+      {
+        category: AffectCategory.enum.OverlappingDamage,
+        damage: 2,
+        attackSpeed: 1000,
+        makesAttacks: true,
+        receivesAttacks: false,
+      },
     ],
     x: Math.random() * game.world.width,
     y: Math.random() * (game.world.height / 2),
     radius,
     mass: radius * radius,
-    damage: 2,
-    health: 1,
     color: `#C0C0C0`, // Silver for ghosts
   });
 }
@@ -240,6 +287,10 @@ export function randomGravityCircles(game: GameState): CircleState {
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
     affects: [
+      {
+        category: AffectCategory.enum.Health,
+        health: 1,
+      },
       {
         category: AffectCategory.enum.Gravity,
         strength: 0.1 + Math.random() * 0.1,
@@ -257,8 +308,6 @@ export function randomGravityCircles(game: GameState): CircleState {
     x: Math.random() * game.world.width,
     y: Math.random() * (game.world.height / 2),
     radius,
-    health: 1,
-    damage: 1,
     mass: radius * radius,
     color: `hsl(${Math.random() * 360}, 70%, 50%)`,
   });
@@ -270,6 +319,10 @@ export function heroCircle(game: GameState, playerId: string, health: number = 1
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
     affects: [
+      {
+        category: AffectCategory.enum.Health,
+        health,
+      },
       {
         category: AffectCategory.enum.GameOver,
         layers: [1],
@@ -295,20 +348,24 @@ export function heroCircle(game: GameState, playerId: string, health: number = 1
         damage: 0,
       },
       {
-        category: AffectCategory.enum.HealthCollision,
-        layers: [1],
-        lastDamageTimes: new Map(),
+        category: AffectCategory.enum.ElasticCollision,
+        damage: 0,
+        attackSpeed: 1000,
+        makesAttacks: false,
+        receivesAttacks: true,
       },
       {
-        category: AffectCategory.enum.ElasticCollision,
+        category: AffectCategory.enum.OverlappingDamage,
+        damage: 0,
+        attackSpeed: 1000,
+        makesAttacks: false,
+        receivesAttacks: true,
       },
     ],
     x: Math.random() * game.world.width,
     y: (0.5 + Math.random() * 0.5) * game.world.height,
     radius,
     mass: radius * radius,
-    health,
-    damage: 0,
     color: `hsl(${Math.random() * 360}, 70%, 60%)`,
   });
 }
