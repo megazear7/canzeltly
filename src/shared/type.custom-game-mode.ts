@@ -1,11 +1,12 @@
 import z from "zod";
+import { GameMode } from "../game/type.game.js";
 
 export const CustomGameMode = z.object({
   name: z.string(),
   worldWidth: z.number(),
   worldHeight: z.number(),
   numCircles: z.number(),
-  mode: z.string(), // "Survival", "Adventure", "Race"
+  mode: GameMode,
   timeLimit: z.number(),
   health: z.number(),
   numGreenCircles: z.number(),

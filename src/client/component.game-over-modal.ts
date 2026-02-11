@@ -1,7 +1,7 @@
 import { html, css, TemplateResult, LitElement } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { globalStyles } from "./styles.global.js";
-import { Game } from "../game/game.js";
+import { Game, Victory } from "../game/game.js";
 import { CanzeltlyModal } from "./component.modal.js";
 
 @customElement("canzeltly-game-over-modal")
@@ -52,16 +52,15 @@ export class CanzeltlyGameOverModal extends LitElement {
 
     const player = this.game.state.players.find((p) => p.playerId === this.playerId);
     const victory = player?.victory || "Unknown";
-    // TODO: The duration property is always 0 and the victory property is always "Unknown". Fix this. Add console logs and debug with the chrome devtools mcp.
     const duration = this.game.state.duration ? Math.round(this.game.state.duration / 1000) : 0;
-
-    console.log("Game Over Modal Debug:", { duration, victory, gameState: this.game.state });
 
     return html`
       <canzeltly-modal .closeable=${false}>
         <div slot="body" class="modal-content">
           <h1>Game Over</h1>
-          <div class="result ${victory === "Win" ? "win" : "lose"}">${victory === "Win" ? "Victory!" : "Defeat"}</div>
+          <div class="result ${victory === Victory.enum.Win ? "win" : "lose"}">
+            ${victory === Victory.enum.Win ? "Victory!" : "Defeat"}
+          </div>
           <div class="stats">
             <div class="stat">Duration: ${duration} seconds</div>
             <div class="stat">Objects: ${this.game.state.layers[1].length}</div>

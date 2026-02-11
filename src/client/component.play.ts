@@ -1,6 +1,7 @@
 import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { Game, GameStatus } from "../game/game.js";
+import { Game, GameStatus, Victory } from "../game/game.js";
+import { GameMode } from "../game/type.game.js";
 import { globalStyles } from "./styles.global.js";
 import { draw } from "../canvas/draw.canvas.js";
 import {
@@ -227,7 +228,7 @@ export class CanzeltlyPlay extends LitElement {
           // Set game status to Playing when the game starts
           this.game.state.status = "Playing";
           // For Race mode, set startTime
-          if (this.game.state.mode === "Race") {
+          if (this.game.state.mode === GameMode.enum.Race) {
             this.game.state.startTime = this.game.state.started;
           }
         }
@@ -348,7 +349,7 @@ export class CanzeltlyPlay extends LitElement {
     const health = instance.heroStats.health;
 
     let gameState;
-    if (mode.mode === "Adventure") {
+    if (mode.mode === GameMode.enum.Adventure) {
       gameState = createAdventureGame({
         width: mode.worldWidth,
         height: mode.worldHeight,
@@ -364,7 +365,7 @@ export class CanzeltlyPlay extends LitElement {
         gameId: this.gameId,
         health,
       });
-    } else if (mode.mode === "Race") {
+    } else if (mode.mode === GameMode.enum.Race) {
       gameState = createRaceGame({
         width: mode.worldWidth,
         height: mode.worldHeight,
@@ -417,7 +418,7 @@ export class CanzeltlyPlay extends LitElement {
     if (!this.game || !this.campaignInstance) return;
 
     const player = this.game.state.players.find((p) => p.playerId === this.playerId);
-    const isWin = player?.victory === "Win";
+    const isWin = player?.victory === Victory.enum.Win;
 
     if (isWin) {
       // Mark game as completed
@@ -451,7 +452,7 @@ export class CanzeltlyPlay extends LitElement {
     if (!customMode) return;
 
     let gameState;
-    if (customMode.mode === "Survival") {
+    if (customMode.mode === GameMode.enum.Survival) {
       gameState = createSurvivalGame({
         width: customMode.worldWidth,
         height: customMode.worldHeight,
@@ -465,7 +466,7 @@ export class CanzeltlyPlay extends LitElement {
         numGhost: customMode.numGhost,
         health: customMode.health,
       });
-    } else if (customMode.mode === "Adventure") {
+    } else if (customMode.mode === GameMode.enum.Adventure) {
       gameState = createAdventureGame({
         width: customMode.worldWidth,
         height: customMode.worldHeight,
@@ -481,7 +482,7 @@ export class CanzeltlyPlay extends LitElement {
         gameId: this.gameId,
         health: customMode.health,
       });
-    } else if (customMode.mode === "Race") {
+    } else if (customMode.mode === GameMode.enum.Race) {
       gameState = createRaceGame({
         width: customMode.worldWidth,
         height: customMode.worldHeight,

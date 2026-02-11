@@ -4,7 +4,7 @@ import { globalStyles } from "./styles.global.js";
 import { CanzeltlyAppProvider } from "./provider.app.js";
 import { parseRouteParams } from "../shared/util.route-params.js";
 import { loadGameState } from "./util.storage.js";
-import { GameState } from "../game/game.js";
+import { GameState, GameStatus } from "../game/game.js";
 
 @customElement("canzeltly-game-summary-page")
 export class CanzeltlyGameSummaryPage extends CanzeltlyAppProvider {
@@ -96,7 +96,7 @@ export class CanzeltlyGameSummaryPage extends CanzeltlyAppProvider {
         </div>
 
         <a href="/" class="standalone">Back to Home</a>
-        ${this.gameState.status !== "GameOver"
+        ${this.gameState.status !== GameStatus.enum.GameOver
           ? html`
               <a href="/play/game/${this.params.gameId}/player/${this.params.playerId}" class="standalone secondary">
                 Continue Game

@@ -1,6 +1,7 @@
 import { GameObject } from "./game.object.js";
 import { GameObjectState, GameOverState, HealthState } from "./type.object.js";
 import { affect, AffectCategory } from "./game.affect.js";
+import { Victory } from "./game.js";
 
 export const gameOver: affect = function <T extends GameObjectState>(obj: GameObject<T>): void {
   obj.state.affects
@@ -18,8 +19,8 @@ export const gameOver: affect = function <T extends GameObjectState>(obj: GameOb
 
         // Find the player and set victory to Lose
         const player = obj.game.state.players.find((p) => p.playerId === playerId);
-        if (player && player.victory !== "Win") {
-          player.victory = "Lose";
+        if (player && player.victory !== Victory.enum.Win) {
+          player.victory = Victory.enum.Lose;
         }
         return; // No need to check further
       }
@@ -35,8 +36,8 @@ export const gameOver: affect = function <T extends GameObjectState>(obj: GameOb
 
             // Find the player and set victory to Lose
             const player = obj.game.state.players.find((p) => p.playerId === playerId);
-            if (player && player.victory !== "Win") {
-              player.victory = "Lose";
+            if (player && player.victory !== Victory.enum.Win) {
+              player.victory = Victory.enum.Lose;
             }
           }
         }

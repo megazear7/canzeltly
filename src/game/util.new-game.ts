@@ -1,4 +1,5 @@
-import { GameState } from "./game.js";
+import { GameState, GameStatus } from "./game.js";
+import { GameMode } from "./type.game.js";
 import { GameObjectCategory } from "./type.object.js";
 import { RectangleState } from "./type.object.js";
 import { randomBouncingCircleState, heroCircle } from "./object.circle.js";
@@ -63,9 +64,9 @@ export function newGame({
       [], // Main objects layer
     ],
     players,
-    status: "NotStarted",
+    status: GameStatus.enum.NotStarted,
     duration: 0,
-    mode: "Survival",
+    mode: GameMode.enum.Survival,
     collected: 0,
     totalCollectibles: undefined,
   };

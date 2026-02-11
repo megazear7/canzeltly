@@ -1,4 +1,5 @@
-import { GameState } from "./game.js";
+import { GameState, GameStatus } from "./game.js";
+import { GameMode } from "./type.game.js";
 import { GameObjectCategory } from "./type.object.js";
 import { RectangleState, CircleState } from "./type.object.js";
 import { AffectCategory } from "./game.affect.js";
@@ -88,9 +89,9 @@ export function createSurvivalGame({
       [], // Main objects layer
     ],
     players,
-    status: "NotStarted",
+    status: GameStatus.enum.NotStarted,
     duration: 0,
-    mode: "Survival",
+    mode: GameMode.enum.Survival,
     collected: 0,
     totalCollectibles: numGreenCircles > 0 ? numGreenCircles : undefined,
   };

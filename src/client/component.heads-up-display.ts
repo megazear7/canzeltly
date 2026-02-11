@@ -1,6 +1,7 @@
 import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { Game } from "../game/game.js";
+import { GameMode } from "../game/type.game.js";
 import { globalStyles } from "./styles.global.js";
 import { CanzeltlyModal } from "./component.modal.js";
 import { dispatch } from "./util.events.js";
@@ -138,12 +139,12 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
   private getCollectedText(): string {
     if (!this.game) return "";
     const collected = this.game.state.collected;
-    if (this.game.state.mode === "Survival") {
+    if (this.game.state.mode === GameMode.enum.Survival) {
       return `Collected: ${collected}`;
-    } else if (this.game.state.mode === "Adventure") {
+    } else if (this.game.state.mode === GameMode.enum.Adventure) {
       const total = this.game.state.totalCollectibles || 0;
       return `Collected: ${collected}/${total}`;
-    } else if (this.game.state.mode === "Race") {
+    } else if (this.game.state.mode === GameMode.enum.Race) {
       const total = this.game.state.totalCollectibles || 0;
       let timeText = "";
       if (this.game.state.startTime && this.game.state.timeLimit) {

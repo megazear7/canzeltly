@@ -5,6 +5,7 @@ import { parseRouteParams } from "../shared/util.route-params.js";
 import { routes } from "./app.routes.js";
 import { CanzeltlyAbstractProvider } from "./provider.abstract.js";
 import { CanzeltlyToast } from "./component.toast.js";
+import { ToastType } from "./component.toast.js";
 import { CanzeltlySaveIndicator } from "./component.save-indicator.js";
 import { SaveEventName } from "./event.save.js";
 import { NavigationEventName } from "./event.navigation.js";
@@ -34,7 +35,7 @@ export class CanzeltlyApp extends LitElement {
   currentRoute: RouteConfig | null = this.determineRouteName();
 
   @property({ type: String }) toastMessage = "";
-  @property({ type: String }) toastType: "error" | "warning" | "success" | "info" = "info";
+  @property({ type: String }) toastType: ToastType = ToastType.enum.info;
   @property({ type: Boolean }) toastVisible = false;
   @query("canzeltly-toast") toast!: CanzeltlyToast;
   @query("canzeltly-save-indicator") saveIndicator!: CanzeltlySaveIndicator;
@@ -46,11 +47,11 @@ export class CanzeltlyApp extends LitElement {
     document.addEventListener("click", this.navigate.bind(this));
     document.addEventListener(WarningEventName.value, (event: Event) => {
       const customEvent = event as CustomEvent;
-      this.toast.show(customEvent.detail.message, "warning");
+      this.toast.show(customEvent.detail.message, ToastType.enum.warning);
     });
     document.addEventListener(SuccessEventName.value, (event: Event) => {
       const customEvent = event as CustomEvent;
-      this.toast.show(customEvent.detail.message, "success");
+      this.toast.show(customEvent.detail.message, ToastType.enum.success);
     });
     document.addEventListener(NavigationEventName.value, (event: Event) => {
       const customEvent = event as CustomEvent;

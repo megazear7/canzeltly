@@ -8,6 +8,7 @@ import { ModelSubmitEventName } from "./event.modal-submit.js";
 import { DeleteGamesEvent } from "./event.delete-games.js";
 import { RenameGameEvent } from "./event.rename-game.js";
 import { dispatch } from "./util.events.js";
+import { GameStatus } from "../game/game.js";
 import { NavigationEvent } from "./event.navigation.js";
 import { LoadingStatus } from "../shared/type.loading.js";
 import "./component.game-preview.js";
@@ -72,8 +73,8 @@ export class CanzeltlyGamesList extends LitElement {
         <p>No saved games found.</p>
       `;
     } else {
-      const activeGames = games.filter((game) => game.status !== "GameOver");
-      const completedGames = games.filter((game) => game.status === "GameOver");
+      const activeGames = games.filter((game) => game.status !== GameStatus.enum.GameOver);
+      const completedGames = games.filter((game) => game.status === GameStatus.enum.GameOver);
 
       content = html`
         ${activeGames.length > 0
@@ -148,7 +149,7 @@ export class CanzeltlyGamesList extends LitElement {
     const game = this.gamesContext.games.find((g) => g.id === gameId);
     if (!game) return;
 
-    const isCompleted = game.status === "GameOver";
+    const isCompleted = game.status === GameStatus.enum.GameOver;
     const playButtonText = isCompleted ? "View Summary" : "Play Game";
 
     this.modalContent = html`
@@ -193,7 +194,7 @@ export class CanzeltlyGamesList extends LitElement {
   }
 
   private handleSelectAllActive = (): void => {
-    const activeGames = this.gamesContext.games.filter((game) => game.status !== "GameOver");
+    const activeGames = this.gamesContext.games.filter((game) => game.status !== GameStatus.enum.GameOver);
     if (this.selectAllActive) {
       // Deselect all active
       this.selectedIds = this.selectedIds.filter((id) => !activeGames.some((g) => g.id === id));
@@ -208,7 +209,7 @@ export class CanzeltlyGamesList extends LitElement {
   };
 
   private handleSelectAllCompleted = (): void => {
-    const completedGames = this.gamesContext.games.filter((game) => game.status === "GameOver");
+    const completedGames = this.gamesContext.games.filter((game) => game.status === GameStatus.enum.GameOver);
     if (this.selectAllCompleted) {
       // Deselect all completed
       this.selectedIds = this.selectedIds.filter((id) => !completedGames.some((g) => g.id === id));
@@ -276,8 +277,8 @@ export class CanzeltlyGamesList extends LitElement {
   }
 
   private updateSelectAllStates(): void {
-    const activeGames = this.gamesContext.games.filter((game) => game.status !== "GameOver");
-    const completedGames = this.gamesContext.games.filter((game) => game.status === "GameOver");
+    const activeGames = this.gamesContext.games.filter((game) => game.status !== GameStatus.enum.GameOver);
+    const completedGames = this.gamesContext.games.filter((game) => game.status === GameStatus.enum.GameOver);
     this.selectAllActive = activeGames.length > 0 && activeGames.every((game) => this.selectedIds.includes(game.id));
     this.selectAllCompleted =
       completedGames.length > 0 && completedGames.every((game) => this.selectedIds.includes(game.id));

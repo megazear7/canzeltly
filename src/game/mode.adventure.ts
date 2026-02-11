@@ -1,4 +1,5 @@
-import { GameState } from "./game.js";
+import { GameState, GameStatus } from "./game.js";
+import { GameMode } from "./type.game.js";
 import { GameObjectCategory, GameObjectLabel } from "./type.object.js";
 import { RectangleState, CircleState } from "./type.object.js";
 import { AffectCategory } from "./game.affect.js";
@@ -92,9 +93,9 @@ export function createAdventureGame({
       [], // Main objects layer
     ],
     players,
-    status: "NotStarted",
+    status: GameStatus.enum.NotStarted,
     duration: 0,
-    mode: "Adventure",
+    mode: GameMode.enum.Adventure,
     collected: 0,
     totalCollectibles: numGreenCircles,
   };

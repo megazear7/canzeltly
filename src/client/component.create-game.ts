@@ -1,6 +1,7 @@
 import { html, css, TemplateResult, LitElement } from "lit";
 import { customElement, state, query } from "lit/decorators.js";
 import { globalStyles } from "./styles.global.js";
+import { GameMode } from "../game/type.game.js";
 import {
   saveNewGameState,
   setPlayerAssignment,
@@ -23,7 +24,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   @state() worldWidth = 1000;
   @state() worldHeight = 1000;
   @state() numCircles = 10;
-  @state() mode = "Survival";
+  @state() mode: GameMode = GameMode.enum.Survival;
   @state() timeLimit = 60;
   @state() health = 1;
   @state() numGreenCircles = 5;
@@ -119,7 +120,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   }
 
   private setDefaultsForMode(): void {
-    if (this.mode === "Adventure") {
+    if (this.mode === GameMode.enum.Adventure) {
       this.numGreenCircles = 10;
       this.numBouncy = 5;
       this.numGravity = 0;
@@ -127,7 +128,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       this.numBlockade = 3;
       this.numVoid = 0;
       this.numGhost = 0;
-    } else if (this.mode === "Survival") {
+    } else if (this.mode === GameMode.enum.Survival) {
       this.numGreenCircles = 0;
       this.numBouncy = 6;
       this.numGravity = 0;
@@ -135,7 +136,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       this.numBlockade = 0;
       this.numVoid = 0;
       this.numGhost = 0;
-    } else if (this.mode === "Race") {
+    } else if (this.mode === GameMode.enum.Race) {
       this.numGreenCircles = 5;
       this.numBouncy = 1;
       this.numGravity = 0;
@@ -186,9 +187,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
               type="radio"
               name="mode"
               value="Survival"
-              .checked="${this.mode === "Survival"}"
+              .checked="${this.mode === GameMode.enum.Survival}"
               @change="${(e: Event) => {
-                this.mode = (e.target as HTMLInputElement).value;
+                this.mode = (e.target as HTMLInputElement).value as GameMode;
                 this.setDefaultsForMode();
               }}"></canzeltly-input>
             Survival
@@ -196,9 +197,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
               type="radio"
               name="mode"
               value="Adventure"
-              .checked="${this.mode === "Adventure"}"
+              .checked="${this.mode === GameMode.enum.Adventure}"
               @change="${(e: Event) => {
-                this.mode = (e.target as HTMLInputElement).value;
+                this.mode = (e.target as HTMLInputElement).value as GameMode;
                 this.setDefaultsForMode();
               }}"></canzeltly-input>
             Adventure
@@ -206,9 +207,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
               type="radio"
               name="mode"
               value="Race"
-              .checked="${this.mode === "Race"}"
+              .checked="${this.mode === GameMode.enum.Race}"
               @change="${(e: Event) => {
-                this.mode = (e.target as HTMLInputElement).value;
+                this.mode = (e.target as HTMLInputElement).value as GameMode;
                 this.setDefaultsForMode();
               }}"></canzeltly-input>
             Race
@@ -238,7 +239,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             @input-change="${(e: CustomEvent) =>
               (this.health = Number((e.detail as { value: number }).value))}"></canzeltly-input>
           ${
-            this.mode === "Race"
+            this.mode === GameMode.enum.Race
               ? html`
                   <canzeltly-input
                     type="slider"
@@ -335,7 +336,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
     }
     // Create game state
     let gameState: GameState;
-    if (this.mode === "Survival") {
+    if (this.mode === GameMode.enum.Survival) {
       gameState = createSurvivalGame({
         width: this.worldWidth,
         height: this.worldHeight,
@@ -351,7 +352,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       });
       gameState.name = this.gameName;
       gameState.id = id;
-    } else if (this.mode === "Adventure") {
+    } else if (this.mode === GameMode.enum.Adventure) {
       gameState = createAdventureGame({
         width: this.worldWidth,
         height: this.worldHeight,
@@ -367,7 +368,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         gameId: id,
         health: this.health,
       });
-    } else if (this.mode === "Race") {
+    } else if (this.mode === GameMode.enum.Race) {
       gameState = createRaceGame({
         width: this.worldWidth,
         height: this.worldHeight,

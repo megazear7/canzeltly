@@ -75,7 +75,7 @@ export class CanzeltlyToast extends LitElement {
   message = "";
 
   @property({ type: String, reflect: true })
-  type: ToastType = "info";
+  type: ToastType = ToastType.enum.info;
 
   @property({ type: Boolean, reflect: true })
   visible = false;
