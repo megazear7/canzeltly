@@ -1,7 +1,6 @@
 import { GameObject } from "./game.object.js";
 import { GameObjectState, GameOverState, HealthState } from "./type.object.js";
 import { affect, AffectCategory } from "./game.affect.js";
-import { GameStatus } from "./game.js";
 
 export const gameOver: affect = function <T extends GameObjectState>(obj: GameObject<T>): void {
   obj.state.affects
@@ -15,8 +14,7 @@ export const gameOver: affect = function <T extends GameObjectState>(obj: GameOb
         | HealthState
         | undefined;
       if (healthAffect && healthAffect.health <= 0) {
-        obj.game.state.status = GameStatus.enum.GameOver;
-        obj.game.state.ended = Date.now();
+        obj.game.end();
 
         // Find the player and set victory to Lose
         const player = obj.game.state.players.find((p) => p.playerId === playerId);
@@ -33,8 +31,7 @@ export const gameOver: affect = function <T extends GameObjectState>(obj: GameOb
           const elapsed = (currentTime - obj.game.state.startTime) / 1000; // in seconds
           if (elapsed >= obj.game.state.timeLimit) {
             // Time's up - game over lose
-            obj.game.state.status = GameStatus.enum.GameOver;
-            obj.game.state.ended = currentTime;
+            obj.game.end();
 
             // Find the player and set victory to Lose
             const player = obj.game.state.players.find((p) => p.playerId === playerId);

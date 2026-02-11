@@ -55,6 +55,8 @@ export class CanzeltlyGameOverModal extends LitElement {
     // TODO: The duration property is always 0 and the victory property is always "Unknown". Fix this. Add console logs and debug with the chrome devtools mcp.
     const duration = this.game.state.duration ? Math.round(this.game.state.duration / 1000) : 0;
 
+    console.log("Game Over Modal Debug:", { duration, victory, gameState: this.game.state });
+
     return html`
       <canzeltly-modal .closeable=${false}>
         <div slot="body" class="modal-content">

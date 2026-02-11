@@ -27,8 +27,7 @@ export const collection: affect = function <T extends GameObjectState>(obj: Game
             ) {
               if (obj.game.state.collected >= obj.game.state.totalCollectibles) {
                 if (obj.game.state.status !== GameStatus.enum.GameOver) {
-                  obj.game.state.status = GameStatus.enum.GameOver;
-                  obj.game.state.ended = Date.now();
+                  obj.game.end();
                   // Set victory for the player
                   const gameOverAffect = obj.state.affects.find((a) => a.category === AffectCategory.enum.GameOver) as
                     | GameOverState

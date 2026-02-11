@@ -252,6 +252,7 @@ export class CanzeltlyPlay extends LitElement {
             this.handleCampaignGameOver();
           } else {
             this.gameOverModal?.open();
+            this.gameOverModal?.requestUpdate();
           }
           return;
         }
