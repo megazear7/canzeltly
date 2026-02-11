@@ -1,5 +1,5 @@
 import { GameState } from "./game.js";
-import { GameObjectCategory } from "./type.object.js";
+import { GameObjectCategory, GameObjectLabel } from "./type.object.js";
 import { RectangleState, CircleState } from "./type.object.js";
 import { AffectCategory } from "./game.affect.js";
 import {
@@ -116,11 +116,16 @@ export function createRaceGame({
       id: crypto.randomUUID(),
       affects: [
         {
+          category: AffectCategory.enum.Health,
+          health: 1,
+        },
+        {
           category: AffectCategory.enum.Impermeable,
         },
       ],
       radius,
       mass: radius * radius,
+      labels: [GameObjectLabel.enum.Collectable],
       x: Math.random() * width,
       y: Math.random() * height,
       color: "#00FF00", // Green for collectibles

@@ -160,6 +160,12 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         margin: 0 auto;
         padding: var(--size-large);
       }
+
+      .button-row {
+        display: flex;
+        gap: var(--size-medium);
+        margin-top: var(--size-medium);
+      }
     `,
   ];
 
@@ -301,8 +307,10 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             .max="${100}"
             @input-change="${(e: CustomEvent) =>
               (this.numGhost = Number((e.detail as { value: number }).value))}"></canzeltly-input>
-          <button type="button" @click=${this.handleSaveCustomMode}>Save Custom Game Mode</button>
-          <button class="primary" type="submit">Create Game</button>
+          <div class="button-row">
+            <button type="button" @click=${this.handleSaveCustomMode}>Save Custom Game Mode</button>
+            <button class="primary" type="submit">Start Game</button>
+          </div>
         </form>
       </main>
       <canzeltly-modal>

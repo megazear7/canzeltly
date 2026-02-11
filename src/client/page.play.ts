@@ -8,6 +8,7 @@ export class CanzeltlyPlayPage extends CanzeltlyAppProvider {
   params = parseRouteParams("/play/game/:gameId/player/:playerId", window.location.pathname);
   isNewGame = new URLSearchParams(window.location.search).get("newgame") === "true";
   campaignSlug = new URLSearchParams(window.location.search).get("campaign") || "";
+  modeName = new URLSearchParams(window.location.search).get("mode") || "";
 
   override render(): TemplateResult {
     return html`
@@ -15,7 +16,8 @@ export class CanzeltlyPlayPage extends CanzeltlyAppProvider {
         .gameId="${this.params.gameId}"
         .playerId="${this.params.playerId}"
         .isNewGame="${this.isNewGame}"
-        .campaignSlug="${this.campaignSlug}"></canzeltly-play>
+        .campaignSlug="${this.campaignSlug}"
+        .modeName="${this.modeName}"></canzeltly-play>
     `;
   }
 }

@@ -304,6 +304,13 @@ export function randomGravityCircles(game: GameState): CircleState {
         category: AffectCategory.enum.Bounce,
         loss: 0,
       },
+      {
+        category: AffectCategory.enum.OverlappingDamage,
+        damage: 1,
+        attackSpeed: 1000,
+        makesAttacks: true,
+        receivesAttacks: false,
+      },
     ],
     x: Math.random() * game.world.width,
     y: Math.random() * (game.world.height / 2),

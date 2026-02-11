@@ -10,6 +10,7 @@ import {
   deleteNewGameState,
   getActiveCampaign,
   saveActiveCampaign,
+  loadCustomGameMode,
 } from "./util.storage.js";
 import { CanzeltlyHeadsUpDisplay } from "./component.heads-up-display.js";
 import { mapFromCanvas } from "../canvas/util.map-to-canvas.js";
@@ -39,6 +40,12 @@ export class CanzeltlyPlay extends LitElement {
 
   @property({ type: String })
   campaignSlug: string = "";
+
+  @property({ type: String })
+  modeName: string = "";
+
+  @state()
+  isLastGame: boolean = false;
 
   static override styles = [
     globalStyles,
@@ -149,7 +156,7 @@ export class CanzeltlyPlay extends LitElement {
             ${isWin
               ? html`
                   <button class="primary" @click=${this.continueCampaign}>
-                    ${hasUpgrades ? "Upgrade Hero" : "Continue Campaign"}
+                    ${hasUpgrades ? "Upgrade Hero" : this.isLastGame ? "Finish Campaign" : "Continue Campaign"}
                   </button>
                 `
               : html`
@@ -168,6 +175,11 @@ export class CanzeltlyPlay extends LitElement {
 
     if (this.campaignSlug) {
       await this.initCampaignGame();
+      return;
+    }
+
+    if (this.modeName) {
+      await this.initCustomGame();
       return;
     }
 
@@ -328,6 +340,7 @@ export class CanzeltlyPlay extends LitElement {
     if (!campaignGame) return;
 
     this.campaignGame = campaignGame;
+    this.isLastGame = gameIndex + 1 >= campaign.games.length;
 
     // Create the game state from campaign game mode
     const mode = campaignGame.mode;
@@ -432,17 +445,71 @@ export class CanzeltlyPlay extends LitElement {
     }
   };
 
+  private async initCustomGame(): Promise<void> {
+    const customMode = loadCustomGameMode(this.modeName);
+    if (!customMode) return;
+
+    let gameState;
+    if (customMode.mode === "Survival") {
+      gameState = createSurvivalGame({
+        width: customMode.worldWidth,
+        height: customMode.worldHeight,
+        playerId: this.playerId,
+        numBouncy: customMode.numBouncy,
+        numGravity: customMode.numGravity,
+        numHunter: customMode.numHunter,
+        numBlockade: customMode.numBlockade,
+        numGreenCircles: customMode.numGreenCircles,
+        numVoid: customMode.numVoid,
+        numGhost: customMode.numGhost,
+        health: customMode.health,
+      });
+    } else if (customMode.mode === "Adventure") {
+      gameState = createAdventureGame({
+        width: customMode.worldWidth,
+        height: customMode.worldHeight,
+        playerId: this.playerId,
+        numGreenCircles: customMode.numGreenCircles,
+        numBouncy: customMode.numBouncy,
+        numGravity: customMode.numGravity,
+        numHunter: customMode.numHunter,
+        numBlockade: customMode.numBlockade,
+        numVoid: customMode.numVoid,
+        numGhost: customMode.numGhost,
+        gameName: customMode.name,
+        gameId: this.gameId,
+        health: customMode.health,
+      });
+    } else if (customMode.mode === "Race") {
+      gameState = createRaceGame({
+        width: customMode.worldWidth,
+        height: customMode.worldHeight,
+        playerId: this.playerId,
+        timeLimit: customMode.timeLimit,
+        numGreenCircles: customMode.numGreenCircles,
+        numBouncy: customMode.numBouncy,
+        numGravity: customMode.numGravity,
+        numHunter: customMode.numHunter,
+        numBlockade: customMode.numBlockade,
+        numVoid: customMode.numVoid,
+        numGhost: customMode.numGhost,
+        gameName: customMode.name,
+        gameId: this.gameId,
+        health: customMode.health,
+      });
+    } else {
+      return;
+    }
+
+    this.game = new Game(gameState);
+    this.startGameLoop();
+  }
   private retryCampaignGame = (): void => {
     const randomGameId = "campaign-" + Math.floor(Math.random() * 90000 + 10000);
     const randomPlayerId = crypto.randomUUID();
-    dispatch(
-      this,
-      NavigationEvent({
-        path: `/play/game/${randomGameId}/player/${randomPlayerId}?campaign=${this.campaignSlug}`,
-      }),
-    );
+    const path = `/play/game/${randomGameId}/player/${randomPlayerId}?campaign=${this.campaignSlug}`;
+    window.location.assign(path);
   };
-
   private goHome = (): void => {
     dispatch(this, NavigationEvent({ path: "/" }));
   };

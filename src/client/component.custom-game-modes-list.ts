@@ -106,6 +106,7 @@ export class CanzeltlyCustomGameModesList extends LitElement {
                     @change=${() => this.toggleSelection(mode.name)} />
                   <span class="mode-name">${mode.name}</span>
                 </label>
+                <button @click=${() => this.handleDirectPlay(mode.name)}>Play</button>
                 <button class="kebab-menu" @click=${() => this.handleOpenModeOptions(mode.name)}>⋮</button>
               </div>
             `,
@@ -144,7 +145,7 @@ export class CanzeltlyCustomGameModesList extends LitElement {
     this.removeEventListener(ModelSubmitEventName.value, this.handleModalSubmit);
   }
 
-  private handlePlay(name: string): void {
+  private handleEdit(name: string): void {
     dispatch(this, NavigationEvent({ path: `/create-game?mode=${encodeURIComponent(name)}` }));
   }
 
@@ -152,7 +153,7 @@ export class CanzeltlyCustomGameModesList extends LitElement {
     this.currentModeName = name;
     this.modalContent = html`
       <h2>Options for ${name}</h2>
-      <button @click=${() => this.handlePlay(name)}>Play</button>
+      <button @click=${() => this.handleEdit(name)}>Edit</button>
       <button @click=${() => this.handleDelete(name)}>Delete</button>
     `;
     this.modal.open();
@@ -226,4 +227,15 @@ export class CanzeltlyCustomGameModesList extends LitElement {
   private handleModalSubmit = (): void => {
     // Handle submit if needed
   };
+
+  private handleDirectPlay(name: string): void {
+    const randomGameId = "custom-" + Math.floor(Math.random() * 90000 + 10000);
+    const randomPlayerId = crypto.randomUUID();
+    dispatch(
+      this,
+      NavigationEvent({
+        path: `/play/game/${randomGameId}/player/${randomPlayerId}?mode=${encodeURIComponent(name)}`,
+      }),
+    );
+  }
 }

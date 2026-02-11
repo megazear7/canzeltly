@@ -216,17 +216,17 @@ export const tutorialCampaign: Campaign = {
       },
     },
     {
-      name: "Game 7: Survival Gauntlet",
+      name: "Game 7: Final Race",
       mode: {
         name: "Tutorial 7",
         worldWidth: 1000,
         worldHeight: 1000,
-        numCircles: 5,
-        mode: "Survival",
-        timeLimit: 0,
+        numCircles: 0,
+        mode: "Race",
+        timeLimit: 60,
         health: 1,
-        numGreenCircles: 0,
-        numBouncy: 5,
+        numGreenCircles: 5,
+        numBouncy: 1,
         numGravity: 0,
         numHunter: 0,
         numBlockade: 0,
@@ -235,7 +235,7 @@ export const tutorialCampaign: Campaign = {
       },
       intro: {
         type: "text",
-        text: "The final tutorial challenge — pure survival. Five red circles are closing in. Stay alive as long as you can. There is nothing to collect, only danger to avoid.",
+        text: "The final tutorial challenge — a race against time! Collect all five green circles before the clock runs out. Speed and strategy are key. You have 60 seconds — go!",
       },
       victory: {
         type: "text",
@@ -243,7 +243,7 @@ export const tutorialCampaign: Campaign = {
       },
       defeat: {
         type: "text",
-        text: "You have now played through the entire tutorial. But the greatest challenge is still ahead...",
+        text: "Time's up! You have now played through the entire tutorial. But the greatest challenge is still ahead...",
       },
     },
   ],
