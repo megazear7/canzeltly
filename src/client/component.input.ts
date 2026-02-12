@@ -55,6 +55,17 @@ export class CanzeltlyInput extends LitElement {
         width: auto;
         margin-right: var(--size-small);
       }
+      .slider-with-number {
+        display: flex;
+        align-items: center;
+        gap: var(--size-small);
+      }
+      .slider-with-number input[type="range"] {
+        flex: 1;
+      }
+      .slider-with-number input[type="number"] {
+        width: var(--size-80);
+      }
     `,
   ];
 
@@ -81,23 +92,21 @@ export class CanzeltlyInput extends LitElement {
         `;
       case "slider":
         return html`
-          <div style="display: flex; align-items: center; gap: var(--size-small);">
+          <div class="slider-with-number">
             <input
               type="range"
               .value="${String(this.value)}"
               .min="${this.min}"
               .max="${this.max}"
               .step="${this.step}"
-              @input="${this.handleInput}"
-              style="flex: 1;" />
+              @input="${this.handleInput}" />
             <input
               type="number"
               .value="${String(this.value)}"
               .min="${this.min}"
               .max="${this.max}"
               .step="${this.step}"
-              @input="${this.handleInput}"
-              style="width: 80px;" />
+              @input="${this.handleInput}" />
           </div>
         `;
       case "checkbox":

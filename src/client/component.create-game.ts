@@ -186,7 +186,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             <input
               type="radio"
               name="mode"
-              value="Survival"
+              value="${GameMode.enum.Survival}"
               .checked="${this.mode === GameMode.enum.Survival}"
               @change="${(e: Event) => {
                 this.mode = (e.target as HTMLInputElement).value as GameMode;
@@ -196,7 +196,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             <input
               type="radio"
               name="mode"
-              value="Adventure"
+              value="${GameMode.enum.Adventure}"
               .checked="${this.mode === GameMode.enum.Adventure}"
               @change="${(e: Event) => {
                 this.mode = (e.target as HTMLInputElement).value as GameMode;
@@ -206,7 +206,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             <input
               type="radio"
               name="mode"
-              value="Race"
+              value="${GameMode.enum.Race}"
               .checked="${this.mode === GameMode.enum.Race}"
               @change="${(e: Event) => {
                 this.mode = (e.target as HTMLInputElement).value as GameMode;

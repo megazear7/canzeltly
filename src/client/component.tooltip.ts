@@ -18,30 +18,31 @@ export class CanzeltlyTooltip extends LitElement {
 
       .tooltip {
         position: fixed;
-        max-width: var(--size-7x);
-        text-align: center;
         background-color: var(--color-secondary-surface);
         color: var(--color-primary-text);
         padding: var(--size-small) var(--size-medium);
-        border-radius: var(--radius-medium);
-        box-shadow: var(--shadow-hover);
-        font-size: var(--font-small);
+        border-radius: var(--border-radius-medium);
+        box-shadow: var(--shadow-normal);
         z-index: 1000;
+        max-width: var(--size-7x);
+        word-wrap: break-word;
+        text-align: center;
+        font-size: var(--font-small);
         opacity: 0;
         visibility: hidden;
         transition: all 350ms ease-in-out;
-        border: 1px solid var(--color-secondary-text);
+        border: var(--border-width-thin) solid var(--color-secondary-text);
         pointer-events: none;
       }
 
       .tooltip::after {
         content: "";
         position: absolute;
-        bottom: -5px;
+        bottom: calc(-1 * var(--size-5));
         left: 50%;
         transform: translateX(-50%);
-        border: 5px solid transparent;
-        border-top-color: var(--color-secondary-surface);
+        border: var(--size-5) solid transparent;
+        border-top-color: var(--color-secondary-text);
       }
 
       .tooltip.visible {

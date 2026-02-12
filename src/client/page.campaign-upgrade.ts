@@ -23,7 +23,7 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
     globalStyles,
     css`
       main {
-        max-width: 600px;
+        max-width: var(--size-600);
         margin: 0 auto;
         padding: var(--size-large);
         text-align: center;
@@ -43,7 +43,7 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
         box-shadow: var(--shadow-normal);
         cursor: pointer;
         transition: var(--transition-all);
-        border: 2px solid transparent;
+        border: var(--border-normal);
       }
 
       .upgrade-option:hover {

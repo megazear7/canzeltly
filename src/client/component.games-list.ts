@@ -272,7 +272,6 @@ export class CanzeltlyGamesList extends LitElement {
     }
     this.selectedCount = this.selectedIds.length;
     this.updateSelectAllStates();
-    console.log("Selected IDs:", this.selectedIds);
     this.requestUpdate();
   }
 

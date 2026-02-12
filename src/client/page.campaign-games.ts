@@ -17,7 +17,7 @@ export class CanzeltlyCampaignGamesPage extends CanzeltlyCampaignsProvider {
     globalStyles,
     css`
       main {
-        max-width: 800px;
+        max-width: var(--size-800);
         margin: 0 auto;
         padding: var(--size-large);
       }
@@ -47,13 +47,13 @@ export class CanzeltlyCampaignGamesPage extends CanzeltlyCampaignsProvider {
       }
 
       .game-item.next {
-        border: 2px solid var(--color-1);
+        border: var(--border-width-normal) solid var(--color-1);
       }
 
       .check-icon {
         color: var(--color-1);
-        width: 24px;
-        height: 24px;
+        width: var(--size-24);
+        height: var(--size-24);
         flex-shrink: 0;
       }
 
@@ -172,7 +172,7 @@ export class CanzeltlyCampaignGamesPage extends CanzeltlyCampaignsProvider {
                       <span class="check-icon">${checkIcon}</span>
                     `
                   : html`
-                      <span style="width:24px"></span>
+                      <span class="spacer"></span>
                     `}
                 <div class="game-info">
                   <div class="game-name">${game.name}</div>

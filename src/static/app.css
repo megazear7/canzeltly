@@ -40,6 +40,16 @@ html {
   --size-small: 8px;
   --size-tiny: 4px;
   --size-nano: 2px;
+  --size-800: 800px;
+  --size-600: 600px;
+  --size-24: 24px;
+  --size-80: 80px;
+  --size-83: 83px;
+  --size-10: 10px;
+  --size-5: 5px;
+  --size-75: 75px;
+  --size-100: 100px;
+  --size-150: 150px;
 
   /* Fonts */
   --font-xl: 28px;
@@ -55,6 +65,8 @@ html {
   --border-active: 2px solid var(--color-1);
   --border-radius-medium: 12px;
   --border-radius-large: 20px;
+  --border-width-normal: 2px;
+  --border-width-thin: 1px;
 
   /* Shadows */
   --shadow-normal: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -63,6 +75,12 @@ html {
   --shadow-inverse-normal: 0 6px 20px rgba(255, 255, 255, 0.1);
   --shadow-inverse-active: 0 6px 20px rgba(255, 255, 255, 0.3);
   --shadow-inverse-hover: 0 6px 20px rgba(255, 255, 255, 0.5);
+
+  /* Blur */
+  --blur-normal: blur(5px);
+
+  /* Additional colors */
+  --color-black: #000;
 
   /* Times & Transitions */
   --time-normal: 350ms;

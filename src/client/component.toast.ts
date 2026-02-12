@@ -20,7 +20,7 @@ export class CanzeltlyToast extends LitElement {
         display: none;
         max-width: 30vw;
         padding: var(--size-medium);
-        border-radius: var(--radius-medium);
+        border-radius: var(--border-radius-medium);
         box-shadow: var(--shadow-active);
         color: var(--color-primary-text);
         font-size: var(--font-medium);
@@ -37,7 +37,7 @@ export class CanzeltlyToast extends LitElement {
 
       :host([type="warning"]) {
         background-color: var(--color-warning);
-        color: #000;
+        color: var(--color-black);
       }
 
       :host([type="success"]) {

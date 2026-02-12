@@ -29,7 +29,7 @@
  - Page routes must be added by following these steps:
    - If needed, create a provider at `src/client/provider.<provider-name>.ts`
    - Create the new page file at `src/client/page.<page-name>.ts`
-   - Add a `RouteConfig` entry in the `routes` array in the `src/shared/service.client.ts` file.
+   - Add a `RouteConfig` entry in the `routes` array in the `src/client/app.routes.ts` file.
    - Add a `case` entry in the `render` method in the `src/client/app.ts` file.
 
 ### Client Components
@@ -41,6 +41,7 @@
  - All styles must use css variables and avoid hardcoded values such as colors and sizes.
  - CSS variables must be defined in `static/app.css`.
  - Global styles which need to be available in all pages and components must be created at `src/client/styles.global.ts`.
+ - Common component styles (e.g., for inputs, modals, buttons) must be created at `src/client/styles.component.ts` and imported where needed.
  - Component specific styles must be created within the component file using the `static styles` property.
 
 ### Client Events
@@ -84,8 +85,21 @@
  - Always use Zod enums such as `Example.enum.Value` instead of hardcoded strings such as `"Value"`.
  - We create `.work/` markdown files for development plans and tasks. These should be committed to the repository alongside code changes.
 
- ## Testings
+ ## Testing
 
  - Use the Playwright MCP server for end-to-end testing.
  - Use the Chrome DevTools for debugging client-side code during testing, checking local storage, and other browser-specific testing.
+ - For comprehensive end-to-end testing, combine test instructions from the page-specific instruction files located at `.github/instructions/page.<page-name>.instructions.md`. Each page has detailed English bullet-point test procedures that can be chained together to create complete user journey tests.
+ - When testing user flows, start with the home page instructions and follow the navigation paths outlined in each page's test instructions to create realistic end-to-end scenarios.
+ - Always verify that new features work correctly by updating and running the relevant page instruction tests.
  - If you learn anything about the application, development process, or testing process that you could benefit from in the future, add it to the relevant section in a new or existing skill file in the `.github/skills/` directory.
+
+ ## Maintenance and Synchronization
+
+ - **CRITICAL**: As features are developed, instructions and skills in the `.github/` directory MUST ALWAYS be updated to stay in sync with the code. This includes:
+   - Adding new page instruction files for any new pages created
+   - Updating existing instruction files when UI elements or functionality changes
+   - Modifying skills when development patterns or best practices evolve
+   - Ensuring test instructions reflect current button/link labels and user flows
+ - When making code changes that affect the user interface or user experience, immediately update the corresponding instruction files to maintain testing accuracy.
+ - Regular review of instruction and skill files should be part of the development process to ensure they remain current and useful for future Copilot sessions.

@@ -31,25 +31,29 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
       .hud {
         position: fixed;
         z-index: 100;
-        width: 600px;
-        height: 83px;
-        bottom: 10px;
+        bottom: var(--size-10);
         left: 50%;
         transform: translateX(-50%);
+        width: var(--size-600);
+        height: var(--size-83);
         display: flex;
-        gap: var(--size-large);
         align-items: center;
         padding: 0 var(--size-medium);
+        background-color: var(--color-primary-surface);
+        border-radius: var(--border-radius-medium);
+        box-shadow: var(--shadow-normal);
         background-image: url("/images/plank-1800x250.png");
         background-size: contain;
         background-repeat: no-repeat;
-        border-radius: var(--radius-medium) var(--radius-medium) 0 0;
+        border-radius: var(--border-radius-medium) var(--border-radius-medium) 0 0;
+        gap: var(--size-large);
+        justify-content: space-around;
       }
 
       .fps {
-        font-size: var(--font-size-large);
+        font-size: var(--font-large);
         font-weight: bold;
-        color: var(--color-text);
+        color: var(--color-primary-text);
       }
 
       .fps.low {
@@ -57,13 +61,13 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
       }
 
       .collected {
-        font-size: var(--font-size-large);
+        font-size: var(--font-large);
         font-weight: bold;
         color: var(--color-primary-text-bold);
       }
 
       .health {
-        font-size: var(--font-size-large);
+        font-size: var(--font-large);
         font-weight: bold;
         color: var(--color-primary-text-bold);
       }

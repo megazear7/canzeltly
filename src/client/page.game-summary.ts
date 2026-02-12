@@ -17,7 +17,7 @@ export class CanzeltlyGameSummaryPage extends CanzeltlyAppProvider {
     globalStyles,
     css`
       main {
-        max-width: 600px;
+        max-width: var(--size-600);
         margin: 0 auto;
         padding: var(--size-large);
         text-align: center;
