@@ -14,6 +14,7 @@ export const RouteName = z.enum([
   "continue_campaign",
   "campaign_games",
   "campaign_upgrade",
+  "achievements",
   "not_found",
 ]);
 export type RouteName = z.infer<typeof RouteName>;

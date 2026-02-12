@@ -29,6 +29,7 @@ export class CanzeltlyHomePage extends CanzeltlyAppProvider {
         <p><a href="/custom-game-modes" class="standalone">Custom Game Modes</a></p>
         <p><a href="/campaigns/start" class="standalone">Start New Campaign</a></p>
         <p><a href="/campaigns/continue" class="standalone">Continue Campaign</a></p>
+        <p><a href="/achievements" class="standalone">Achievements</a></p>
       </main>
     `;
   }

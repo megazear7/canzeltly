@@ -2,6 +2,8 @@ import { html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { parseRouteParams } from "../shared/util.route-params.js";
 import { CanzeltlyAppProvider } from "./provider.app.js";
+import { saveAchievements } from "./util.storage.js";
+import { Achievements } from "../shared/type.achievement.js";
 
 @customElement("canzeltly-play-page")
 export class CanzeltlyPlayPage extends CanzeltlyAppProvider {
@@ -17,7 +19,12 @@ export class CanzeltlyPlayPage extends CanzeltlyAppProvider {
         .playerId="${this.params.playerId}"
         .isNewGame="${this.isNewGame}"
         .instanceId="${this.campaignSlug}"
-        .modeName="${this.modeName}"></canzeltly-play>
+        .modeName="${this.modeName}"
+        .achievements="${this.appContext.achievements}"
+        .onAchievementsUpdate="${(achievements: Achievements) => {
+          this.appContext.achievements = achievements;
+          saveAchievements(achievements);
+        }}"></canzeltly-play>
     `;
   }
 }

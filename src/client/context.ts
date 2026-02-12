@@ -5,9 +5,11 @@ import { AppConfig } from "../shared/type.app.js";
 import { GameState } from "../game/game.js";
 import { CustomGameMode } from "../shared/type.custom-game-mode.js";
 import { Campaign, CampaignInstance } from "../shared/type.campaign.js";
+import { Achievements } from "../shared/type.achievement.js";
 
 export const AppContext = z.object({
   app: AppConfig.optional(),
+  achievements: Achievements.optional(),
   status: LoadingStatus,
   error: z.string().optional(),
 });

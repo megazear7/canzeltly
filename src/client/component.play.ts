@@ -24,6 +24,14 @@ import { getCampaignBySlug } from "../shared/data.campaigns.js";
 import { CampaignGame, CampaignInstance } from "../shared/type.campaign.js";
 import { dispatch } from "./util.events.js";
 import { NavigationEvent } from "./event.navigation.js";
+import { Achievements } from "../shared/type.achievement.js";
+import {
+  updateGamesPlayed,
+  updateGreenCirclesCollected,
+  updateSurvivalTime,
+  updateCampaignsDefeated,
+} from "../shared/util.achievements.js";
+import { BadgeUnlockedEvent } from "./event.badge-unlocked.js";
 import "./component.heads-up-display.js";
 import "./component.game-over-modal.js";
 import "./component.modal.js";
@@ -44,6 +52,12 @@ export class CanzeltlyPlay extends LitElement {
 
   @property({ type: String })
   modeName: string = "";
+
+  @property({ type: Object })
+  achievements: Achievements | undefined;
+
+  @property({ type: Function })
+  onAchievementsUpdate: ((achievements: Achievements) => void) | undefined;
 
   @state()
   isLastGame: boolean = false;
@@ -249,6 +263,9 @@ export class CanzeltlyPlay extends LitElement {
             deleteNewGameState();
           }
 
+          // Update achievements
+          this.updateAchievementsOnGameOver();
+
           if (this.instanceId && this.campaignInstance) {
             this.handleCampaignGameOver();
           } else {
@@ -434,6 +451,24 @@ export class CanzeltlyPlay extends LitElement {
       }
       this.campaignInstance.currentGameIndex = gameIndex + 1;
       saveActiveCampaign(this.campaignInstance);
+
+      // Check if campaign is completed
+      const campaign = getCampaignBySlug(this.campaignInstance.campaignSlug);
+      if (campaign && this.campaignInstance.currentGameIndex >= campaign.games.length) {
+        // Campaign defeated
+        if (this.achievements && this.onAchievementsUpdate) {
+          const updated = updateCampaignsDefeated(this.achievements, 1);
+          const newUnlocks = updated.badges.filter((b) => {
+            if (!b.unlocked) return false;
+            const oldBadge = this.achievements!.badges.find((old) => old.badgeId === b.badgeId);
+            return !oldBadge?.unlocked;
+          });
+          newUnlocks.forEach((badge) => {
+            dispatch(this, BadgeUnlockedEvent({ badgeId: badge.badgeId, unlockedAt: badge.unlockedAt! }));
+          });
+          this.onAchievementsUpdate(updated);
+        }
+      }
     }
 
     this.campaignResult = isWin ? "win" : "lose";
@@ -443,6 +478,35 @@ export class CanzeltlyPlay extends LitElement {
     this.updateComplete.then(() => {
       this.resultModal?.open();
     });
+  }
+
+  private updateAchievementsOnGameOver(): void {
+    if (!this.achievements || !this.onAchievementsUpdate) return;
+
+    let updated = updateGamesPlayed(this.achievements, 1);
+
+    // Green circles collected
+    if (this.game) {
+      updated = updateGreenCirclesCollected(updated, this.game.state.collected);
+    }
+
+    // Survival time
+    if (this.game?.state.mode === GameMode.enum.Survival && this.game.state.started && this.game.state.ended) {
+      const durationMinutes = Math.floor((this.game.state.ended - this.game.state.started) / 60000);
+      updated = updateSurvivalTime(updated, durationMinutes);
+    }
+
+    // Check for new unlocks
+    const newUnlocks = updated.badges.filter((b) => {
+      if (!b.unlocked) return false;
+      const oldBadge = this.achievements!.badges.find((old) => old.badgeId === b.badgeId);
+      return !oldBadge?.unlocked;
+    });
+    newUnlocks.forEach((badge) => {
+      dispatch(this, BadgeUnlockedEvent({ badgeId: badge.badgeId, unlockedAt: badge.unlockedAt! }));
+    });
+
+    this.onAchievementsUpdate(updated);
   }
 
   private continueCampaign = (): void => {

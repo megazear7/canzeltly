@@ -3,12 +3,15 @@ import { GameId } from "../game/type.game.js";
 import { slugify } from "../shared/util.slug.js";
 import { CustomGameMode } from "../shared/type.custom-game-mode.js";
 import { CampaignInstance } from "../shared/type.campaign.js";
+import { Achievements } from "../shared/type.achievement.js";
+import { initializeAchievements } from "../shared/util.achievements.js";
 
 const STORAGE_KEY = "canzeltly_saved_games";
 const PLAYER_ASSIGNMENTS_KEY = "canzeltly_player_assignments";
 const NEW_GAME_KEY = "canzeltly_new_game";
 const CUSTOM_GAME_MODES_KEY = "canzeltly_custom_game_modes";
 const ACTIVE_CAMPAIGNS_KEY = "canzeltly_active_campaigns";
+const ACHIEVEMENTS_KEY = "canzeltly_achievements";
 
 export function saveGameState(gameState: GameState): void {
   const savedGames = getAllGameStates();
@@ -172,4 +175,19 @@ export function saveActiveCampaign(instance: CampaignInstance): void {
 export function deleteCampaignInstance(instanceId: string): void {
   const campaigns = getAllActiveCampaigns().filter((c) => c.id !== instanceId);
   localStorage.setItem(ACTIVE_CAMPAIGNS_KEY, JSON.stringify(campaigns));
+}
+
+export function getAchievements(): Achievements {
+  const stored = localStorage.getItem(ACHIEVEMENTS_KEY);
+  if (!stored) return initializeAchievements();
+  try {
+    return Achievements.parse(JSON.parse(stored));
+  } catch (error) {
+    console.error("Error parsing achievements:", error);
+    return initializeAchievements();
+  }
+}
+
+export function saveAchievements(achievements: Achievements): void {
+  localStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(achievements));
 }

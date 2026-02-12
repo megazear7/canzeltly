@@ -1,0 +1,1 @@
+Add badges that the user gets when he defeats a campaign, plays 10/100/1000 games, survive for 1/10/100/100 minutes in a survival game, collect 10/100/1000 green circles, collect 10/100/1000 badges. Add a percentage bar that shows how many badges of the total you have collected.

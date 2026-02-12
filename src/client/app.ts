@@ -11,6 +11,7 @@ import { SaveEventName } from "./event.save.js";
 import { NavigationEventName } from "./event.navigation.js";
 import { SuccessEventName } from "./event.success.js";
 import { WarningEventName } from "./event.warning.js";
+import { BadgeUnlockedEventName } from "./event.badge-unlocked.js";
 import "./page.home.js";
 import "./page.play.js";
 import "./page.not-found.js";
@@ -22,6 +23,7 @@ import "./page.start-campaign.js";
 import "./page.continue-campaign.js";
 import "./page.campaign-games.js";
 import "./page.campaign-upgrade.js";
+import "./page.achievements.js";
 import "./component.toast.js";
 import "./component.save-indicator.js";
 import "./component.play.js";
@@ -52,6 +54,10 @@ export class CanzeltlyApp extends LitElement {
     document.addEventListener(SuccessEventName.value, (event: Event) => {
       const customEvent = event as CustomEvent;
       this.toast.show(customEvent.detail.message, ToastType.enum.success);
+    });
+    document.addEventListener(BadgeUnlockedEventName.value, (event: Event) => {
+      const customEvent = event as CustomEvent;
+      this.toast.show(`Badge unlocked: ${customEvent.detail.badgeId}`, ToastType.enum.success);
     });
     document.addEventListener(NavigationEventName.value, (event: Event) => {
       const customEvent = event as CustomEvent;
@@ -118,6 +124,10 @@ export class CanzeltlyApp extends LitElement {
             case RouteName.enum.campaign_upgrade:
               return html`
                 <canzeltly-campaign-upgrade-page></canzeltly-campaign-upgrade-page>
+              `;
+            case RouteName.enum.achievements:
+              return html`
+                <canzeltly-achievements-page></canzeltly-achievements-page>
               `;
             default:
               return html`

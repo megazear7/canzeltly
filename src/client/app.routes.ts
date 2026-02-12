@@ -41,4 +41,8 @@ export const routes = [
     name: RouteName.enum.campaign_upgrade,
     path: "/campaigns/:instanceId/upgrade",
   },
+  {
+    name: RouteName.enum.achievements,
+    path: "/achievements",
+  },
 ];
