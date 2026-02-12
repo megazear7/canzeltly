@@ -6,12 +6,12 @@ import { NavigationEvent } from "./event.navigation.js";
 import { dispatch } from "./util.events.js";
 import { getCampaignBySlug } from "../shared/data.campaigns.js";
 import { parseRouteParams } from "../shared/util.route-params.js";
-import { getActiveCampaign, saveActiveCampaign } from "./util.storage.js";
+import { getCampaignInstance, saveActiveCampaign } from "./util.storage.js";
 import { StatUpgradeOption, CampaignInstance } from "../shared/type.campaign.js";
 
 @customElement("canzeltly-campaign-upgrade-page")
 export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
-  params = parseRouteParams("/campaigns/:campaignSlug/upgrade", window.location.pathname);
+  params = parseRouteParams("/campaigns/:instanceId/upgrade", window.location.pathname);
 
   @state()
   private selectedUpgrades: StatUpgradeOption[] = [];
@@ -100,14 +100,14 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
   ];
 
   override async load(): Promise<void> {
-    const slug = this.params.campaignSlug;
-    this.instance = getActiveCampaign(slug);
+    const instanceId = this.params.instanceId;
+    this.instance = getCampaignInstance(instanceId);
   }
 
   override render(): TemplateResult {
-    const slug = this.params.campaignSlug;
-    const campaign = getCampaignBySlug(slug);
+    const instanceId = this.params.instanceId;
     const instance = this.instance;
+    const campaign = instance ? getCampaignBySlug(instance.campaignSlug) : undefined;
 
     if (!campaign || !instance) {
       return html`
@@ -131,7 +131,7 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
       return html`
         <main>
           <h1>No upgrades available</h1>
-          <button class="primary" @click=${() => this.goToCampaign(slug)}>Continue Campaign</button>
+          <button class="primary" @click=${() => this.goToCampaign(instanceId)}>Continue Campaign</button>
         </main>
       `;
     }
@@ -145,6 +145,21 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
           Select ${numSelections} upgrade${numSelections > 1 ? "s" : ""}
           (${this.selectedUpgrades.length}/${numSelections} selected)
         </p>
+        ${this.selectedUpgrades.length === numSelections
+          ? html`
+              <p
+                style="color: var(--color-secondary-text-muted); font-size: var(--font-small); margin-bottom: var(--size-medium);">
+                You have selected the maximum number of upgrades. To change your selection, first deselect one of the
+                upgrades you have already selected.
+              </p>
+            `
+          : html`
+              <p
+                style="color: var(--color-secondary-text-muted); font-size: var(--font-small); margin-bottom: var(--size-medium);">
+                Select up to ${numSelections} upgrade${numSelections > 1 ? "s" : ""} from the below list. After each
+                mission you may have different options available. Choose wisely.
+              </p>
+            `}
 
         <div class="current-stats">
           <h2>Current Stats</h2>
@@ -160,6 +175,10 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
             <div class="stat">
               <div class="stat-value">${instance.heroStats.acceleration.toFixed(2)}</div>
               <div class="stat-label">Acceleration</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">${instance.heroStats.breakSpeed.toFixed(2)}</div>
+              <div class="stat-label">Break Speed</div>
             </div>
           </div>
         </div>
@@ -180,7 +199,7 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
         <button
           class="primary"
           ?disabled=${this.selectedUpgrades.length !== numSelections}
-          @click=${() => this.applyUpgrades(slug)}>
+          @click=${() => this.applyUpgrades(instanceId)}>
           Apply Upgrades
         </button>
       </main>
@@ -199,33 +218,37 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
   private getUpgradeName(option: StatUpgradeOption): string {
     switch (option) {
       case "health":
-        return "Health +1";
+        return "Health +0.5";
       case "maxSpeed":
         return "Max Speed +0.5";
       case "acceleration":
         return "Acceleration +0.1";
+      case "breakSpeed":
+        return "Break Speed +0.05";
     }
   }
 
   private getUpgradeDescription(option: StatUpgradeOption): string {
     switch (option) {
       case "health":
-        return "Increase your maximum health by 1, allowing you to survive more hits.";
+        return "Increase your maximum health by 0.5, allowing you to survive more hits.";
       case "maxSpeed":
         return "Increase your maximum speed by 0.5, allowing you to move faster.";
       case "acceleration":
         return "Increase your acceleration by 0.1, allowing you to change direction faster.";
+      case "breakSpeed":
+        return "Increase your break speed by 0.05, allowing you to stop or slow down faster.";
     }
   }
 
-  private applyUpgrades(slug: string): void {
-    const instance = getActiveCampaign(slug);
+  private applyUpgrades(instanceId: string): void {
+    const instance = getCampaignInstance(instanceId);
     if (!instance) return;
 
     for (const upgrade of this.selectedUpgrades) {
       switch (upgrade) {
         case "health":
-          instance.heroStats.health += 1;
+          instance.heroStats.health += 0.5;
           break;
         case "maxSpeed":
           instance.heroStats.maxSpeed += 0.5;
@@ -233,15 +256,18 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
         case "acceleration":
           instance.heroStats.acceleration += 0.1;
           break;
+        case "breakSpeed":
+          instance.heroStats.breakSpeed += 0.05;
+          break;
       }
     }
 
     saveActiveCampaign(instance);
-    dispatch(this, NavigationEvent({ path: `/campaigns/${slug}` }));
+    dispatch(this, NavigationEvent({ path: `/campaigns/${instanceId}` }));
   }
 
-  private goToCampaign(slug: string): void {
-    dispatch(this, NavigationEvent({ path: `/campaigns/${slug}` }));
+  private goToCampaign(instanceId: string): void {
+    dispatch(this, NavigationEvent({ path: `/campaigns/${instanceId}` }));
   }
 
   private goHome(): void {

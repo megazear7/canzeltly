@@ -305,6 +305,13 @@ export function randomGravityCircles(game: GameState): CircleState {
         loss: 0,
       },
       {
+        category: AffectCategory.enum.ElasticCollision,
+        damage: 1,
+        attackSpeed: 1000,
+        makesAttacks: true,
+        receivesAttacks: true,
+      },
+      {
         category: AffectCategory.enum.OverlappingDamage,
         damage: 1,
         attackSpeed: 1000,
@@ -316,11 +323,16 @@ export function randomGravityCircles(game: GameState): CircleState {
     y: Math.random() * (game.world.height / 2),
     radius,
     mass: radius * radius,
-    color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+    color: `hsl(200, 70%, 50%)`,
   });
 }
 
-export function heroCircle(game: GameState, playerId: string, health: number = 1): CircleState {
+export function heroCircle(
+  game: GameState,
+  playerId: string,
+  health: number = 1,
+  breakSpeed: number = 0.1,
+): CircleState {
   const radius = 15;
   return CircleState.parse({
     category: GameObjectCategory.enum.Circle,
@@ -351,7 +363,7 @@ export function heroCircle(game: GameState, playerId: string, health: number = 1
         category: AffectCategory.enum.Ability,
         acceleration: 0.15,
         maxSpeed: 5.0,
-        brakingAcceleration: 0.1,
+        brakingAcceleration: breakSpeed,
         damage: 0,
       },
       {

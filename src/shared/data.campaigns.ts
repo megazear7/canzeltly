@@ -38,7 +38,12 @@ export const tutorialCampaign: Campaign = {
         text: "I don't know how you lost this one, but try again...",
       },
       upgrades: {
-        options: [StatUpgradeOption.enum.health, StatUpgradeOption.enum.maxSpeed, StatUpgradeOption.enum.acceleration],
+        options: [
+          StatUpgradeOption.enum.health,
+          StatUpgradeOption.enum.maxSpeed,
+          StatUpgradeOption.enum.acceleration,
+          StatUpgradeOption.enum.breakSpeed,
+        ],
         numSelections: 1,
       },
     },
@@ -73,7 +78,12 @@ export const tutorialCampaign: Campaign = {
         text: "Two circles proved too many? Take a breath, regroup, and try again.",
       },
       upgrades: {
-        options: [StatUpgradeOption.enum.health, StatUpgradeOption.enum.maxSpeed, StatUpgradeOption.enum.acceleration],
+        options: [
+          StatUpgradeOption.enum.health,
+          StatUpgradeOption.enum.maxSpeed,
+          StatUpgradeOption.enum.acceleration,
+          StatUpgradeOption.enum.breakSpeed,
+        ],
         numSelections: 1,
       },
     },
@@ -108,7 +118,12 @@ export const tutorialCampaign: Campaign = {
         text: "That bouncy circle got the better of you. Learn its patterns and try again!",
       },
       upgrades: {
-        options: [StatUpgradeOption.enum.health, StatUpgradeOption.enum.maxSpeed, StatUpgradeOption.enum.acceleration],
+        options: [
+          StatUpgradeOption.enum.health,
+          StatUpgradeOption.enum.maxSpeed,
+          StatUpgradeOption.enum.acceleration,
+          StatUpgradeOption.enum.breakSpeed,
+        ],
         numSelections: 1,
       },
     },
@@ -143,7 +158,12 @@ export const tutorialCampaign: Campaign = {
         text: "Trapped between blockades and bouncing circles? Plan your route and try again.",
       },
       upgrades: {
-        options: [StatUpgradeOption.enum.health, StatUpgradeOption.enum.maxSpeed, StatUpgradeOption.enum.acceleration],
+        options: [
+          StatUpgradeOption.enum.health,
+          StatUpgradeOption.enum.maxSpeed,
+          StatUpgradeOption.enum.acceleration,
+          StatUpgradeOption.enum.breakSpeed,
+        ],
         numSelections: 1,
       },
     },
@@ -178,7 +198,12 @@ export const tutorialCampaign: Campaign = {
         text: "The void consumed you. Give those dark circles a wide berth next time!",
       },
       upgrades: {
-        options: [StatUpgradeOption.enum.health, StatUpgradeOption.enum.maxSpeed, StatUpgradeOption.enum.acceleration],
+        options: [
+          StatUpgradeOption.enum.health,
+          StatUpgradeOption.enum.maxSpeed,
+          StatUpgradeOption.enum.acceleration,
+          StatUpgradeOption.enum.breakSpeed,
+        ],
         numSelections: 1,
       },
     },
@@ -213,7 +238,12 @@ export const tutorialCampaign: Campaign = {
         text: "Time's up! You weren't fast enough. Optimize your path and try again.",
       },
       upgrades: {
-        options: [StatUpgradeOption.enum.health, StatUpgradeOption.enum.maxSpeed, StatUpgradeOption.enum.acceleration],
+        options: [
+          StatUpgradeOption.enum.health,
+          StatUpgradeOption.enum.maxSpeed,
+          StatUpgradeOption.enum.acceleration,
+          StatUpgradeOption.enum.breakSpeed,
+        ],
         numSelections: 1,
       },
     },
@@ -288,7 +318,12 @@ export const revengeOfTheRadialMaster: Campaign = {
         text: "The Radial Master's minions proved too much. Regroup and try again!",
       },
       upgrades: {
-        options: [StatUpgradeOption.enum.health, StatUpgradeOption.enum.maxSpeed, StatUpgradeOption.enum.acceleration],
+        options: [
+          StatUpgradeOption.enum.health,
+          StatUpgradeOption.enum.maxSpeed,
+          StatUpgradeOption.enum.acceleration,
+          StatUpgradeOption.enum.breakSpeed,
+        ],
         numSelections: 1,
       },
     },

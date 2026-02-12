@@ -20,10 +20,11 @@ export const HeroStats = z.object({
   health: z.number().default(1),
   maxSpeed: z.number().default(5),
   acceleration: z.number().default(0.5),
+  breakSpeed: z.number().default(0.1),
 });
 export type HeroStats = z.infer<typeof HeroStats>;
 
-export const StatUpgradeOption = z.enum(["health", "maxSpeed", "acceleration"]);
+export const StatUpgradeOption = z.enum(["health", "maxSpeed", "acceleration", "breakSpeed"]);
 export type StatUpgradeOption = z.infer<typeof StatUpgradeOption>;
 
 export const CampaignGameUpgrades = z.object({
@@ -51,6 +52,7 @@ export const Campaign = z.object({
 export type Campaign = z.infer<typeof Campaign>;
 
 export const CampaignInstance = z.object({
+  id: z.string(),
   campaignSlug: z.string(),
   currentGameIndex: z.number().default(0),
   completedGameIndexes: z.array(z.number()).default([]),

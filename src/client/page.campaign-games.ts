@@ -6,12 +6,12 @@ import { NavigationEvent } from "./event.navigation.js";
 import { dispatch } from "./util.events.js";
 import { getCampaignBySlug } from "../shared/data.campaigns.js";
 import { parseRouteParams } from "../shared/util.route-params.js";
-import { getActiveCampaign } from "./util.storage.js";
+import { getCampaignInstance } from "./util.storage.js";
 import { checkIcon } from "./icons.js";
 
 @customElement("canzeltly-campaign-games-page")
 export class CanzeltlyCampaignGamesPage extends CanzeltlyCampaignsProvider {
-  params = parseRouteParams("/campaigns/:campaignSlug", window.location.pathname);
+  params = parseRouteParams("/campaigns/:instanceId", window.location.pathname);
 
   static override styles = [
     globalStyles,
@@ -110,9 +110,9 @@ export class CanzeltlyCampaignGamesPage extends CanzeltlyCampaignsProvider {
   ];
 
   override render(): TemplateResult {
-    const slug = this.params.campaignSlug;
-    const campaign = getCampaignBySlug(slug);
-    const instance = getActiveCampaign(slug);
+    const instanceId = this.params.instanceId;
+    const instance = getCampaignInstance(instanceId);
+    const campaign = instance ? getCampaignBySlug(instance.campaignSlug) : undefined;
 
     if (!campaign || !instance) {
       return html`
@@ -180,7 +180,7 @@ export class CanzeltlyCampaignGamesPage extends CanzeltlyCampaignsProvider {
                 </div>
                 ${isNext
                   ? html`
-                      <button class="primary" @click=${() => this.playGame(slug)}>Play</button>
+                      <button class="primary" @click=${() => this.playGame(instanceId)}>Play</button>
                     `
                   : html``}
               </div>
@@ -191,13 +191,13 @@ export class CanzeltlyCampaignGamesPage extends CanzeltlyCampaignsProvider {
     `;
   }
 
-  private playGame(campaignSlug: string): void {
+  private playGame(instanceId: string): void {
     const randomGameId = "campaign-" + Math.floor(Math.random() * 90000 + 10000);
     const randomPlayerId = crypto.randomUUID();
     dispatch(
       this,
       NavigationEvent({
-        path: `/play/game/${randomGameId}/player/${randomPlayerId}?campaign=${campaignSlug}`,
+        path: `/play/game/${randomGameId}/player/${randomPlayerId}?campaign=${instanceId}`,
       }),
     );
   }

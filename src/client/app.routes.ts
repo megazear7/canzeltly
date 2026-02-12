@@ -35,10 +35,10 @@ export const routes = [
   },
   {
     name: RouteName.enum.campaign_games,
-    path: "/campaigns/:campaignSlug",
+    path: "/campaigns/:instanceId",
   },
   {
     name: RouteName.enum.campaign_upgrade,
-    path: "/campaigns/:campaignSlug/upgrade",
+    path: "/campaigns/:instanceId/upgrade",
   },
 ];

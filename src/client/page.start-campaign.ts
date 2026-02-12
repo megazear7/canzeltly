@@ -5,10 +5,12 @@ import { CanzeltlyCampaignsProvider } from "./provider.campaigns.js";
 import { NavigationEvent } from "./event.navigation.js";
 import { dispatch } from "./util.events.js";
 import { HeroStats } from "../shared/type.campaign.js";
-import { saveActiveCampaign, getActiveCampaign } from "./util.storage.js";
+import { saveActiveCampaign } from "./util.storage.js";
 
 @customElement("canzeltly-start-campaign-page")
 export class CanzeltlyStartCampaignPage extends CanzeltlyCampaignsProvider {
+  preselectedCampaign = new URLSearchParams(window.location.search).get("campaign") || "";
+
   static override styles = [
     globalStyles,
     css`
@@ -42,11 +44,30 @@ export class CanzeltlyStartCampaignPage extends CanzeltlyCampaignsProvider {
     `,
   ];
 
+  override async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    if (this.preselectedCampaign) {
+      this.startCampaign(this.preselectedCampaign);
+    }
+  }
+
   override render(): TemplateResult {
     return html`
       <main>
         <button class="back-button" @click=${this.goHome}>Home</button>
         <h1>Start New Campaign</h1>
+        <p>
+          Are you looking to continue an existing campaign? Then go to the
+          <a
+            href="/campaigns/continue"
+            @click=${(e: Event) => {
+              e.preventDefault();
+              this.goContinueCampaign();
+            }}>
+            continue campaign page
+          </a>
+          .
+        </p>
         <p>Choose a campaign to begin your adventure.</p>
         ${this.campaignsContext.campaigns.map(
           (campaign) => html`
@@ -55,14 +76,7 @@ export class CanzeltlyStartCampaignPage extends CanzeltlyCampaignsProvider {
               <p>${campaign.description}</p>
               <p>${campaign.games.length} games</p>
               <div class="campaign-actions">
-                ${getActiveCampaign(campaign.slug)
-                  ? html`
-                      <button @click=${() => this.continueCampaign(campaign.slug)}>Continue Existing</button>
-                      <button class="warning" @click=${() => this.restartCampaign(campaign.slug)}>Restart</button>
-                    `
-                  : html`
-                      <button class="primary" @click=${() => this.startCampaign(campaign.slug)}>Start</button>
-                    `}
+                <button class="primary" @click=${() => this.startCampaign(campaign.slug)}>Begin Campaign</button>
               </div>
             </div>
           `,
@@ -73,6 +87,7 @@ export class CanzeltlyStartCampaignPage extends CanzeltlyCampaignsProvider {
 
   private startCampaign(slug: string): void {
     const instance = {
+      id: crypto.randomUUID(),
       campaignSlug: slug,
       currentGameIndex: 0,
       completedGameIndexes: [],
@@ -80,15 +95,11 @@ export class CanzeltlyStartCampaignPage extends CanzeltlyCampaignsProvider {
       startedAt: Date.now(),
     };
     saveActiveCampaign(instance);
-    dispatch(this, NavigationEvent({ path: `/campaigns/${slug}` }));
+    dispatch(this, NavigationEvent({ path: `/campaigns/${instance.id}` }));
   }
 
-  private restartCampaign(slug: string): void {
-    this.startCampaign(slug);
-  }
-
-  private continueCampaign(slug: string): void {
-    dispatch(this, NavigationEvent({ path: `/campaigns/${slug}` }));
+  private goContinueCampaign(): void {
+    dispatch(this, NavigationEvent({ path: "/campaigns/continue" }));
   }
 
   private goHome(): void {

@@ -16,7 +16,7 @@ export class CanzeltlyPlayPage extends CanzeltlyAppProvider {
         .gameId="${this.params.gameId}"
         .playerId="${this.params.playerId}"
         .isNewGame="${this.isNewGame}"
-        .campaignSlug="${this.campaignSlug}"
+        .instanceId="${this.campaignSlug}"
         .modeName="${this.modeName}"></canzeltly-play>
     `;
   }

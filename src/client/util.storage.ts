@@ -150,13 +150,17 @@ export function getAllActiveCampaigns(): CampaignInstance[] {
   }
 }
 
+export function getCampaignInstance(instanceId: string): CampaignInstance | undefined {
+  return getAllActiveCampaigns().find((c) => c.id === instanceId);
+}
+
 export function getActiveCampaign(campaignSlug: string): CampaignInstance | undefined {
   return getAllActiveCampaigns().find((c) => c.campaignSlug === campaignSlug);
 }
 
 export function saveActiveCampaign(instance: CampaignInstance): void {
   const campaigns = getAllActiveCampaigns();
-  const existingIndex = campaigns.findIndex((c) => c.campaignSlug === instance.campaignSlug);
+  const existingIndex = campaigns.findIndex((c) => c.id === instance.id);
   if (existingIndex >= 0) {
     campaigns[existingIndex] = instance;
   } else {
@@ -165,7 +169,7 @@ export function saveActiveCampaign(instance: CampaignInstance): void {
   localStorage.setItem(ACTIVE_CAMPAIGNS_KEY, JSON.stringify(campaigns));
 }
 
-export function deleteActiveCampaign(campaignSlug: string): void {
-  const campaigns = getAllActiveCampaigns().filter((c) => c.campaignSlug !== campaignSlug);
+export function deleteCampaignInstance(instanceId: string): void {
+  const campaigns = getAllActiveCampaigns().filter((c) => c.id !== instanceId);
   localStorage.setItem(ACTIVE_CAMPAIGNS_KEY, JSON.stringify(campaigns));
 }

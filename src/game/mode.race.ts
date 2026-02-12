@@ -29,6 +29,7 @@ export function createRaceGame({
   gameName = "Race Game",
   gameId = "race-game",
   health = 1,
+  breakSpeed = 0.1,
 }: {
   width?: number;
   height?: number;
@@ -44,6 +45,7 @@ export function createRaceGame({
   gameName?: string;
   gameId?: string;
   health?: number;
+  breakSpeed?: number;
 } = {}): GameState {
   const circleId = crypto.randomUUID();
 
@@ -104,7 +106,7 @@ export function createRaceGame({
   };
 
   // Create a circle for the player
-  const circle = heroCircle(game, playerId, health);
+  const circle = heroCircle(game, playerId, health, breakSpeed);
   circle.id = circleId;
   circle.color = "#0000FF"; // Blue for player circle
   game.layers[1].push(circle);

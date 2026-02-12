@@ -9,7 +9,7 @@ import {
   saveGameState,
   loadNewGameState,
   deleteNewGameState,
-  getActiveCampaign,
+  getCampaignInstance,
   saveActiveCampaign,
   loadCustomGameMode,
 } from "./util.storage.js";
@@ -40,7 +40,7 @@ export class CanzeltlyPlay extends LitElement {
   isNewGame: boolean = false;
 
   @property({ type: String })
-  campaignSlug: string = "";
+  instanceId: string = "";
 
   @property({ type: String })
   modeName: string = "";
@@ -113,7 +113,7 @@ export class CanzeltlyPlay extends LitElement {
   @query("#campaign-result-modal") private resultModal?: CanzeltlyModal;
 
   override render(): TemplateResult {
-    if (this.campaignSlug) {
+    if (this.instanceId) {
       return html`
         <canvas></canvas>
         <canzeltly-heads-up-display .game=${this.game} .isNewGame=${false}></canzeltly-heads-up-display>
@@ -174,7 +174,7 @@ export class CanzeltlyPlay extends LitElement {
     super.connectedCallback();
     document.body.style.overflow = "hidden";
 
-    if (this.campaignSlug) {
+    if (this.instanceId) {
       await this.initCampaignGame();
       return;
     }
@@ -249,7 +249,7 @@ export class CanzeltlyPlay extends LitElement {
             deleteNewGameState();
           }
 
-          if (this.campaignSlug && this.campaignInstance) {
+          if (this.instanceId && this.campaignInstance) {
             this.handleCampaignGameOver();
           } else {
             this.gameOverModal?.open();
@@ -332,9 +332,11 @@ export class CanzeltlyPlay extends LitElement {
   }
 
   private async initCampaignGame(): Promise<void> {
-    const campaign = getCampaignBySlug(this.campaignSlug);
-    const instance = getActiveCampaign(this.campaignSlug);
-    if (!campaign || !instance) return;
+    const instance = getCampaignInstance(this.instanceId);
+    if (!instance) return;
+
+    const campaign = getCampaignBySlug(instance.campaignSlug);
+    if (!campaign) return;
 
     this.campaignInstance = instance;
     const gameIndex = instance.currentGameIndex;
@@ -347,6 +349,7 @@ export class CanzeltlyPlay extends LitElement {
     // Create the game state from campaign game mode
     const mode = campaignGame.mode;
     const health = instance.heroStats.health;
+    const breakSpeed = instance.heroStats.breakSpeed;
 
     let gameState;
     if (mode.mode === GameMode.enum.Adventure) {
@@ -364,6 +367,7 @@ export class CanzeltlyPlay extends LitElement {
         gameName: campaignGame.name,
         gameId: this.gameId,
         health,
+        breakSpeed,
       });
     } else if (mode.mode === GameMode.enum.Race) {
       gameState = createRaceGame({
@@ -381,6 +385,7 @@ export class CanzeltlyPlay extends LitElement {
         gameName: campaignGame.name,
         gameId: this.gameId,
         health,
+        breakSpeed,
       });
     } else {
       gameState = createSurvivalGame({
@@ -395,6 +400,7 @@ export class CanzeltlyPlay extends LitElement {
         numVoid: mode.numVoid,
         numGhost: mode.numGhost,
         health,
+        breakSpeed,
       });
       gameState.id = this.gameId;
     }
@@ -441,9 +447,9 @@ export class CanzeltlyPlay extends LitElement {
 
   private continueCampaign = (): void => {
     if (!this.campaignGame?.upgrades) {
-      dispatch(this, NavigationEvent({ path: `/campaigns/${this.campaignSlug}` }));
+      dispatch(this, NavigationEvent({ path: `/campaigns/${this.instanceId}` }));
     } else {
-      dispatch(this, NavigationEvent({ path: `/campaigns/${this.campaignSlug}/upgrade` }));
+      dispatch(this, NavigationEvent({ path: `/campaigns/${this.instanceId}/upgrade` }));
     }
   };
 
@@ -509,7 +515,7 @@ export class CanzeltlyPlay extends LitElement {
   private retryCampaignGame = (): void => {
     const randomGameId = "campaign-" + Math.floor(Math.random() * 90000 + 10000);
     const randomPlayerId = crypto.randomUUID();
-    const path = `/play/game/${randomGameId}/player/${randomPlayerId}?campaign=${this.campaignSlug}`;
+    const path = `/play/game/${randomGameId}/player/${randomPlayerId}?campaign=${this.instanceId}`;
     window.location.assign(path);
   };
   private goHome = (): void => {
