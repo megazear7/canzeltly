@@ -4,8 +4,10 @@ description: Refactor and simplify code
 ---
 
 ---
+
 name: refactor-code
 description: Refactor and simplify code
+
 ---
 
 # Instructions for Refactoring and Simplifying Code
@@ -22,30 +24,36 @@ When refactoring code in the Canzeltly project, follow these guidelines to impro
 ## Common Refactoring Techniques
 
 ### 1. Extract Functions
+
 - Break down large functions into smaller, focused functions.
 - Move repeated code blocks into reusable utility functions in `src/shared/util.*.ts`.
 - Example: If multiple components parse route parameters, extract to a utility.
 
 ### 2. Simplify Conditionals
+
 - Replace complex if-else chains with early returns or switch statements.
 - Use ternary operators for simple conditions.
 - Leverage Zod enums instead of string comparisons.
 
 ### 3. Remove Dead Code
+
 - Delete unused imports, variables, functions, or files.
 - Use tools like `npm run build` to identify unused code.
 
 ### 4. Improve Type Safety
+
 - Add proper TypeScript types where `any` is used.
 - Use Zod schemas for validation and type inference.
 - Extend existing types in `src/shared/type.*.ts` rather than creating new ones unnecessarily.
 
 ### 5. Optimize Performance
+
 - Avoid unnecessary re-renders in Lit components by using appropriate property decorators.
 - Use memoization for expensive computations.
 - Batch DOM updates where possible.
 
 ### 6. Enhance Error Handling
+
 - Add try-catch blocks for async operations.
 - Provide meaningful error messages.
 - Use the toast component for user-facing errors.

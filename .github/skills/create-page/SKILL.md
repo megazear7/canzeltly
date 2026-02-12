@@ -10,6 +10,7 @@ This skill covers the process of adding a new page to the Canzeltly application.
 ## Overview
 
 Pages are organized as follows:
+
 - **Page Components**: Located in `src/client/page.<page-name>.ts`
 - **Providers**: Located in `src/client/provider.<provider-name>.ts` (provide context to pages)
 - **Routes**: Defined in `src/client/app.routes.ts` and `src/shared/type.routes.ts`
@@ -22,6 +23,7 @@ Pages are organized as follows:
 If your page needs specific context or data loading, create a provider that extends `CanzeltlyAbstractProvider` or `CanzeltlyAppProvider`.
 
 **Example Provider** (`src/client/provider.my-page.ts`):
+
 ```typescript
 import { provide } from "@lit/context";
 import { property } from "lit/decorators.js";
@@ -33,7 +35,7 @@ export abstract class CanzeltlyMyPageProvider extends CanzeltlyAbstractProvider 
   @property({ attribute: false })
   myPageContext: MyPageContext = {
     data: null,
-    status: 'idle',
+    status: "idle",
   };
 
   override async connectedCallback(): Promise<void> {
@@ -45,7 +47,7 @@ export abstract class CanzeltlyMyPageProvider extends CanzeltlyAbstractProvider 
     // Load your page-specific data here
     this.myPageContext = {
       data: await fetchMyData(),
-      status: 'loaded',
+      status: "loaded",
     };
   }
 }
@@ -56,6 +58,7 @@ export abstract class CanzeltlyMyPageProvider extends CanzeltlyAbstractProvider 
 Create a page component that extends your provider (or `CanzeltlyAppProvider` for basic pages).
 
 **Example Page** (`src/client/page.my-page.ts`):
+
 ```typescript
 import { css, html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
@@ -106,6 +109,7 @@ export class CanzeltlyExamplePage extends CanzeltlyAppProvider {
 ### 3. Add Route Configuration
 
 #### Update Route Names
+
 Add your new route name to the `RouteName` enum in `src/shared/type.routes.ts`:
 
 ```typescript
@@ -113,6 +117,7 @@ export const RouteName = z.enum(["home", "example", "my_page", "not_found"]);
 ```
 
 #### Add Route Config
+
 Add your route to the `routes` array in `src/client/app.routes.ts`:
 
 ```typescript
@@ -135,6 +140,7 @@ export const routes = [
 ### 4. Integrate into App Component
 
 #### Import the Page
+
 Add the import to `src/client/app.ts`:
 
 ```typescript
@@ -142,6 +148,7 @@ import "./page.my-page.js";
 ```
 
 #### Add Render Case
+
 Add a case for your page in the `render()` method's switch statement:
 
 ```typescript
@@ -178,6 +185,7 @@ switch (this.currentRoute!.name) {
 Following the steps above, here's what files you'd create/modify for a new "About" page:
 
 1. **src/client/page.about.ts**:
+
 ```typescript
 import { css, html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
@@ -210,11 +218,13 @@ export class CanzeltlyAboutPage extends CanzeltlyAppProvider {
 ```
 
 2. **Update src/shared/type.routes.ts**:
+
 ```typescript
 export const RouteName = z.enum(["home", "example", "about", "not_found"]);
 ```
 
 3. **Update src/shared/service.client.ts**:
+
 ```typescript
 export const routes = [
   // ... existing routes
@@ -226,6 +236,7 @@ export const routes = [
 ```
 
 4. **Update src/client/app.ts**:
+
 ```typescript
 import "./page.about.js";
 

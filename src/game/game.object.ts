@@ -13,6 +13,8 @@ import { collection } from "./affect.collection.js";
 import { impermeable } from "./affect.impermeable.js";
 import { overlappingDamage } from "./affect.overlapping-damage.js";
 import { elasticCollision } from "./affect.elastic-collision.js";
+import { collectable } from "./affect.collectable.js";
+import { collector } from "./affect.collector.js";
 
 export abstract class GameObject<T extends GameObjectState> {
   game: Game;
@@ -56,6 +58,8 @@ export abstract class GameObject<T extends GameObjectState> {
       if (affect.category === AffectCategory.enum.Collection) collection(this);
       if (affect.category === AffectCategory.enum.OverlappingDamage) overlappingDamage(this);
       if (affect.category === AffectCategory.enum.ElasticCollision) elasticCollision(this);
+      if (affect.category === AffectCategory.enum.Collectable) collectable(this);
+      if (affect.category === AffectCategory.enum.Collector) collector(this);
       if (affect.category === AffectCategory.enum.GameOver) gameOver(this);
     });
   }

@@ -19,6 +19,7 @@ description: Create and update instructions, skills, and prompts for GitHub Copi
 # Page-Specific Instructions
 
 When creating new pages, also create corresponding instruction files at `.github/instructions/page.<page-name>.instructions.md` with:
+
 - Frontmatter specifying the applyTo path (e.g., `src/client/page.my-page.ts`)
 - Clear English bullet-point test instructions for Playwright MCP testing
 - Exact button and link text labels for autonomous testing

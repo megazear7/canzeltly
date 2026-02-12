@@ -16,8 +16,19 @@ export const AffectCategory = z.enum([
   "Impermeable",
   "OverlappingDamage",
   "ElasticCollision",
+  "Collectable",
+  "Collector",
 ]);
 export type AffectCategory = z.infer<typeof AffectCategory>;
+
+export const OccurrenceCategory = z.enum(["SpawnFood", "SpawnShield", "SpawnIce"]);
+export type OccurrenceCategory = z.infer<typeof OccurrenceCategory>;
+
+export const OccurrenceState = z.object({
+  category: OccurrenceCategory,
+  chance: z.number(),
+});
+export type OccurrenceState = z.infer<typeof OccurrenceState>;
 
 export const AffectState = z.object({
   category: AffectCategory,

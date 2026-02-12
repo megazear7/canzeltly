@@ -30,7 +30,7 @@ export const overlappingDamage: affect = function <T extends GameObjectState>(ob
           const otherHealth = otherObj.state.affects.find((a) => a.category === AffectCategory.enum.Health) as
             | HealthState
             | undefined;
-          if (otherHealth) {
+          if (otherHealth && (!otherHealth.immuneUntil || otherHealth.immuneUntil <= now)) {
             otherHealth.health -= damageState.damage;
           }
           damageState.lastAttack = now;

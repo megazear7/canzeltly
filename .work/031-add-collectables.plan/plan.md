@@ -1,0 +1,12 @@
+- Add a "collectable" and "collector" affects. The collectable affect state has an enum that specifies what affect is applied. When an object with the "collector" affect impacts an object with the "collector" affect, it is removed from the game world and an affect is applied based upon the enum on the collectable affect state. This includes:
+    - Food: When collected by the hero, gives health back, but not above your starting health.
+    - Shield: When collected by the hero, makes the hero immune to damage for a number of seconds (random but about 10 seconds)
+    - Ice: When collected by the hero, red circles, hunters, and ghosts stop moving for a random amount of time (about 5 seconds)
+- Create new object functions for food, shield, and ice have the needed collectable affect with the right enum. Add the collector affect to the hero circle.
+- Add a concept called "occurrence" which is similar to affects for objects but is instead applied to the game world itself. Occurrence have an OccurrenceState and a function which executes on every major update. Add occurrences for the following. Each of these occurrence states include chance property which is a percentage change to randomly spawn the corresponding object on each major update.
+    - Spawn food
+    - Spawn shield
+    - Spawn ice
+- Add "Spawn food" and "spawns shield" and "spawn ice" to the create game page which is a number slider from 0 to 100 that defaults to 0. When these sliders are above 0, the corresponding occurrence is added to the game state.
+- The survival game also has a "spawns green circles" option that follow the same pattern.
+- Add a third campaign called "The Flattened Spherion" with 25 games of increasing difficulty that uses these spawn options.

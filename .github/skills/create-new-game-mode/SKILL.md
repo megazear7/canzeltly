@@ -1,6 +1,7 @@
 # Creating New Game Modes
 
 ## Overview
+
 This skill guide explains how to add new game modes to the Canzeltly game engine. Game modes define the rules, objectives, and initial game state for different play styles.
 
 ## Steps to Add a New Game Mode
@@ -31,12 +32,14 @@ This skill guide explains how to add new game modes to the Canzeltly game engine
    - Ensure mode persists in saved games
 
 ## Example: Adding a "TimeAttack" Mode
+
 - Add "TimeAttack" to `GameMode` enum
 - Create `mode.time-attack.ts` with time-based setup
 - Update affects for time-based game over
 - Add UI for time display
 
 ## Best Practices
+
 - Follow existing patterns for consistency
 - Use descriptive function and file names
 - Test thoroughly to avoid breaking existing modes

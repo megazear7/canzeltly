@@ -34,6 +34,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   @state() numBlockade = 0;
   @state() numVoid = 0;
   @state() numGhost = 0;
+  @state() spawnFoodChance = 0;
+  @state() spawnShieldChance = 0;
+  @state() spawnIceChance = 0;
 
   @state() modalContent: TemplateResult | null = null;
 
@@ -115,6 +118,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         this.numBlockade = customMode.numBlockade;
         this.numVoid = customMode.numVoid;
         this.numGhost = customMode.numGhost;
+        this.spawnFoodChance = customMode.spawnFoodChance ?? 0;
+        this.spawnShieldChance = customMode.spawnShieldChance ?? 0;
+        this.spawnIceChance = customMode.spawnIceChance ?? 0;
       }
     }
   }
@@ -128,6 +134,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       this.numBlockade = 3;
       this.numVoid = 0;
       this.numGhost = 0;
+      this.spawnFoodChance = 0;
+      this.spawnShieldChance = 0;
+      this.spawnIceChance = 0;
     } else if (this.mode === GameMode.enum.Survival) {
       this.numGreenCircles = 0;
       this.numBouncy = 6;
@@ -136,6 +145,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       this.numBlockade = 0;
       this.numVoid = 0;
       this.numGhost = 0;
+      this.spawnFoodChance = 0;
+      this.spawnShieldChance = 0;
+      this.spawnIceChance = 0;
     } else if (this.mode === GameMode.enum.Race) {
       this.numGreenCircles = 5;
       this.numBouncy = 1;
@@ -144,6 +156,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       this.numBlockade = 0;
       this.numVoid = 0;
       this.numGhost = 0;
+      this.spawnFoodChance = 0;
+      this.spawnShieldChance = 0;
+      this.spawnIceChance = 0;
     }
   }
 
@@ -262,6 +277,30 @@ export class CanzeltlyCreateGameComponent extends LitElement {
               (this.numGreenCircles = Number((e.detail as { value: number }).value))}"></canzeltly-input>
           <canzeltly-input
             type="slider"
+            label="Spawn Food Chance (${this.spawnFoodChance}%)"
+            .value="${this.spawnFoodChance}"
+            .min="${0}"
+            .max="${100}"
+            @input-change="${(e: CustomEvent) =>
+              (this.spawnFoodChance = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+          <canzeltly-input
+            type="slider"
+            label="Spawn Shield Chance (${this.spawnShieldChance}%)"
+            .value="${this.spawnShieldChance}"
+            .min="${0}"
+            .max="${100}"
+            @input-change="${(e: CustomEvent) =>
+              (this.spawnShieldChance = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+          <canzeltly-input
+            type="slider"
+            label="Spawn Ice Chance (${this.spawnIceChance}%)"
+            .value="${this.spawnIceChance}"
+            .min="${0}"
+            .max="${100}"
+            @input-change="${(e: CustomEvent) =>
+              (this.spawnIceChance = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+          <canzeltly-input
+            type="slider"
             label="Number of Bouncy Circles (${this.numBouncy})"
             .value="${this.numBouncy}"
             .min="${0}"
@@ -349,6 +388,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         numVoid: this.numVoid,
         numGhost: this.numGhost,
         health: this.health,
+        spawnFoodChance: this.spawnFoodChance,
+        spawnShieldChance: this.spawnShieldChance,
+        spawnIceChance: this.spawnIceChance,
       });
       gameState.name = this.gameName;
       gameState.id = id;
@@ -367,6 +409,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         gameName: this.gameName,
         gameId: id,
         health: this.health,
+        spawnFoodChance: this.spawnFoodChance,
+        spawnShieldChance: this.spawnShieldChance,
+        spawnIceChance: this.spawnIceChance,
       });
     } else if (this.mode === GameMode.enum.Race) {
       gameState = createRaceGame({
@@ -384,6 +429,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         gameName: this.gameName,
         gameId: id,
         health: this.health,
+        spawnFoodChance: this.spawnFoodChance,
+        spawnShieldChance: this.spawnShieldChance,
+        spawnIceChance: this.spawnIceChance,
       });
     } else {
       throw new Error(`Unknown mode: ${this.mode}`);
@@ -455,6 +503,9 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       numBlockade: this.numBlockade,
       numVoid: this.numVoid,
       numGhost: this.numGhost,
+      spawnFoodChance: this.spawnFoodChance,
+      spawnShieldChance: this.spawnShieldChance,
+      spawnIceChance: this.spawnIceChance,
     };
     saveCustomGameMode(mode);
     this.modal.close();

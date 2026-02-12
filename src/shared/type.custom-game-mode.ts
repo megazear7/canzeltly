@@ -16,5 +16,8 @@ export const CustomGameMode = z.object({
   numBlockade: z.number(),
   numVoid: z.number(),
   numGhost: z.number(),
+  spawnFoodChance: z.number().optional(),
+  spawnShieldChance: z.number().optional(),
+  spawnIceChance: z.number().optional(),
 });
 export type CustomGameMode = z.infer<typeof CustomGameMode>;

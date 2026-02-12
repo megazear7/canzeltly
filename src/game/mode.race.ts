@@ -2,7 +2,7 @@ import { GameState, GameStatus } from "./game.js";
 import { GameMode } from "./type.game.js";
 import { GameObjectCategory, GameObjectLabel } from "./type.object.js";
 import { RectangleState, CircleState } from "./type.object.js";
-import { AffectCategory } from "./game.affect.js";
+import { AffectCategory, OccurrenceCategory } from "./game.affect.js";
 import {
   heroCircle,
   randomBouncingCircleState,
@@ -30,6 +30,9 @@ export function createRaceGame({
   gameId = "race-game",
   health = 1,
   breakSpeed = 0.1,
+  spawnFoodChance = 0,
+  spawnShieldChance = 0,
+  spawnIceChance = 0,
 }: {
   width?: number;
   height?: number;
@@ -46,6 +49,9 @@ export function createRaceGame({
   gameId?: string;
   health?: number;
   breakSpeed?: number;
+  spawnFoodChance?: number;
+  spawnShieldChance?: number;
+  spawnIceChance?: number;
 } = {}): GameState {
   const circleId = crypto.randomUUID();
 
@@ -103,7 +109,19 @@ export function createRaceGame({
     collected: 0,
     totalCollectibles: numGreenCircles,
     timeLimit: timeLimit,
+    occurrences: [],
   };
+
+  // Add occurrences
+  if (spawnFoodChance > 0) {
+    game.occurrences.push({ category: OccurrenceCategory.enum.SpawnFood, chance: spawnFoodChance });
+  }
+  if (spawnShieldChance > 0) {
+    game.occurrences.push({ category: OccurrenceCategory.enum.SpawnShield, chance: spawnShieldChance });
+  }
+  if (spawnIceChance > 0) {
+    game.occurrences.push({ category: OccurrenceCategory.enum.SpawnIce, chance: spawnIceChance });
+  }
 
   // Create a circle for the player
   const circle = heroCircle(game, playerId, health, breakSpeed);
@@ -121,6 +139,7 @@ export function createRaceGame({
         {
           category: AffectCategory.enum.Health,
           health: 1,
+          maxHealth: 1,
         },
         {
           category: AffectCategory.enum.Impermeable,

@@ -1,9 +1,11 @@
 # Prompt: Create a New Game Mode
 
 ## Instructions
+
 Follow the steps below to implement a new game mode for the Canzeltly game engine. Replace placeholders with the specific mode details.
 
 ## User Input
+
 - Mode Name: [e.g., "BossFight"]
 - Description: [Brief description of the mode's rules and objectives]
 - Special Rules: [Any unique mechanics, e.g., "Player must defeat a boss enemy"]
@@ -38,6 +40,7 @@ Follow the steps below to implement a new game mode for the Canzeltly game engin
    - Check saved games retain mode
 
 ## Validation Checklist
+
 - [ ] Mode appears in create-game UI
 - [ ] Game starts with correct initial state
 - [ ] Special rules/mechanics work as expected
@@ -46,6 +49,7 @@ Follow the steps below to implement a new game mode for the Canzeltly game engin
 - [ ] No build errors or runtime issues
 
 ## Notes
+
 - Reference existing modes (`mode.survival.ts`, `mode.adventure.ts`) for patterns
 - Use Zod schemas for type safety
 - Follow the project's coding conventions

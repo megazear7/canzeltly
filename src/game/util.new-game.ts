@@ -69,6 +69,7 @@ export function newGame({
     mode: GameMode.enum.Survival,
     collected: 0,
     totalCollectibles: undefined,
+    occurrences: [],
   };
 
   // Create a circle for the player

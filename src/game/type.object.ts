@@ -25,6 +25,7 @@ export const VelocityState = AffectState.extend({
   category: z.literal(AffectCategory.enum.Velocity),
   dx: z.number(),
   dy: z.number(),
+  frozenUntil: z.number().optional(),
 });
 export type VelocityState = z.infer<typeof VelocityState>;
 
@@ -52,6 +53,8 @@ export type GravityState = z.infer<typeof GravityState>;
 export const HealthState = AffectState.extend({
   category: z.literal(AffectCategory.enum.Health),
   health: z.number(),
+  maxHealth: z.number(),
+  immuneUntil: z.number().optional(),
 });
 export type HealthState = z.infer<typeof HealthState>;
 
@@ -106,6 +109,19 @@ export const ElasticCollisionState = AffectState.extend({
 });
 export type ElasticCollisionState = z.infer<typeof ElasticCollisionState>;
 
+export const CollectableState = AffectState.extend({
+  category: z.literal(AffectCategory.enum.Collectable),
+  type: z.enum(["Food", "Shield", "Ice"]),
+});
+export type CollectableState = z.infer<typeof CollectableState>;
+
+export const CollectorState = AffectState.extend({
+  category: z.literal(AffectCategory.enum.Collector),
+  shieldUntil: z.number().optional(),
+  iceUntil: z.number().optional(),
+});
+export type CollectorState = z.infer<typeof CollectorState>;
+
 export const AnyAffectState = z.union([
   BounceState,
   VelocityState,
@@ -120,6 +136,8 @@ export const AnyAffectState = z.union([
   ImpermeableState,
   OverlappingDamageState,
   ElasticCollisionState,
+  CollectableState,
+  CollectorState,
 ]);
 export type AnyAffectState = z.infer<typeof AnyAffectState>;
 

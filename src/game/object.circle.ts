@@ -66,6 +66,7 @@ export function randomBouncingCircleState(game: GameState): CircleState {
       {
         category: AffectCategory.enum.Health,
         health: 1,
+        maxHealth: 1,
       },
       {
         category: AffectCategory.enum.Velocity,
@@ -118,6 +119,7 @@ export function randomBlockadeCircleState(game: GameState): CircleState {
       {
         category: AffectCategory.enum.Health,
         health: 1,
+        maxHealth: 1,
       },
       {
         category: AffectCategory.enum.Velocity,
@@ -149,6 +151,7 @@ export function randomVoidCircleState(game: GameState): CircleState {
       {
         category: AffectCategory.enum.Health,
         health: 1,
+        maxHealth: 1,
       },
       {
         category: AffectCategory.enum.OverlappingDamage,
@@ -181,6 +184,7 @@ export function randomHunterCircleState(game: GameState, playerId: string): Circ
       {
         category: AffectCategory.enum.Health,
         health: 1,
+        maxHealth: 1,
       },
       {
         category: AffectCategory.enum.Velocity,
@@ -240,6 +244,7 @@ export function randomGhostCircleState(game: GameState, playerId: string): Circl
       {
         category: AffectCategory.enum.Health,
         health: 1,
+        maxHealth: 1,
       },
       {
         category: AffectCategory.enum.Velocity,
@@ -290,6 +295,7 @@ export function randomGravityCircles(game: GameState): CircleState {
       {
         category: AffectCategory.enum.Health,
         health: 1,
+        maxHealth: 1,
       },
       {
         category: AffectCategory.enum.Gravity,
@@ -341,6 +347,7 @@ export function heroCircle(
       {
         category: AffectCategory.enum.Health,
         health,
+        maxHealth: health,
       },
       {
         category: AffectCategory.enum.GameOver,
@@ -349,6 +356,9 @@ export function heroCircle(
       },
       {
         category: AffectCategory.enum.Collection,
+      },
+      {
+        category: AffectCategory.enum.Collector,
       },
       {
         category: AffectCategory.enum.Velocity,
@@ -386,5 +396,71 @@ export function heroCircle(
     radius,
     mass: radius * radius,
     color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+  });
+}
+
+export function foodCircle(game: GameState): CircleState {
+  const radius = 10;
+  return CircleState.parse({
+    category: GameObjectCategory.enum.Circle,
+    id: crypto.randomUUID(),
+    affects: [
+      {
+        category: AffectCategory.enum.Collectable,
+        type: "Food",
+      },
+      {
+        category: AffectCategory.enum.Impermeable,
+      },
+    ],
+    radius,
+    mass: radius * radius,
+    x: Math.random() * game.world.width,
+    y: Math.random() * game.world.height,
+    color: "#FFA500", // Orange for food
+  });
+}
+
+export function shieldCircle(game: GameState): CircleState {
+  const radius = 10;
+  return CircleState.parse({
+    category: GameObjectCategory.enum.Circle,
+    id: crypto.randomUUID(),
+    affects: [
+      {
+        category: AffectCategory.enum.Collectable,
+        type: "Shield",
+      },
+      {
+        category: AffectCategory.enum.Impermeable,
+      },
+    ],
+    radius,
+    mass: radius * radius,
+    x: Math.random() * game.world.width,
+    y: Math.random() * game.world.height,
+    color: "#0000FF", // Blue for shield
+  });
+}
+
+export function iceCircle(game: GameState): CircleState {
+  const radius = 10;
+  return CircleState.parse({
+    category: GameObjectCategory.enum.Circle,
+    id: crypto.randomUUID(),
+    affects: [
+      {
+        category: AffectCategory.enum.Collectable,
+        type: "Ice",
+      },
+      {
+        category: AffectCategory.enum.Impermeable,
+      },
+    ],
+    radius,
+    mass: radius * radius,
+    x: Math.random() * game.world.width,
+    y: Math.random() * game.world.height,
+    color: "#00FFFF", // Cyan for ice
   });
 }

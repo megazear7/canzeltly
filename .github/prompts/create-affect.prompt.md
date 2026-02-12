@@ -1,8 +1,8 @@
 ---
-agent: 'agent'
+agent: "agent"
 model: Grok Code Fast 1
-tools: ['vscode', 'execute', 'read', 'edit', 'search', 'agent', 'todo']
-description: 'Create new game affect'
+tools: ["vscode", "execute", "read", "edit", "search", "agent", "todo"]
+description: "Create new game affect"
 ---
 
 # User Instructions

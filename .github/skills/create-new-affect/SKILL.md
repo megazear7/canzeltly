@@ -10,8 +10,8 @@ Affects are functions that update an objects state. Examples include velocity, w
 # Creating a new affect
 
 - Review the circle game object's velocity affect as an example:
-    - Definition: `src/game/affect.velocity.ts`
-    - Usage: `src/game/object.circle.ts`
+  - Definition: `src/game/affect.velocity.ts`
+  - Usage: `src/game/object.circle.ts`
 - The affect should define a state object in `src/game/type.object.ts` which extends `AffectState` and sets the `category` property to the `z.literal` of the newly defined category.
 - Choose a name for the game affect based on the it's behavior.
 - Add the name to the `AffectCategory` enum in `src/game/game.affect.ts`

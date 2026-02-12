@@ -1,8 +1,8 @@
 ---
-agent: 'agent'
+agent: "agent"
 model: Grok Code Fast 1
-tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'agent', 'chrome-devtools/*', 'todo']
-description: 'Create new event'
+tools: ["vscode", "execute", "read", "edit", "search", "web", "agent", "chrome-devtools/*", "todo"]
+description: "Create new event"
 ---
 
 # User instructions
@@ -18,4 +18,4 @@ description: 'Create new event'
 - Create the event as described in the user instructions.
 - Ensure the event follows best practices for code quality, readability, and maintainability and is properly integrated into the application
 - Run `npm run fix` to auto-format and fix any linting issues
-- Use the #chrome-devtools/* tools to test and debug the new event in a browser environment
+- Use the #chrome-devtools/\* tools to test and debug the new event in a browser environment

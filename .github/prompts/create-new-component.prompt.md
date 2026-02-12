@@ -1,8 +1,8 @@
 ---
-agent: 'agent'
+agent: "agent"
 model: Grok Code Fast 1
-tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'agent', 'todo']
-description: 'Create new component'
+tools: ["vscode", "execute", "read", "edit", "search", "web", "agent", "todo"]
+description: "Create new component"
 ---
 
 # User Instructions
@@ -17,13 +17,13 @@ Note: If the user said "review your work", then compare the current changes repo
 
 2. **Create the Component File**: Create a new file at `src/client/component.<component-name>.ts`. Import necessary modules from Lit (e.g., `LitElement`, `html`, `css`, `customElement`, `property`).
 
-3. **Define the Component Class**: 
+3. **Define the Component Class**:
    - Extend `LitElement`.
    - Use the `@customElement("canzeltly-<component-name>")` decorator.
    - Add properties using `@property()` for any configurable attributes (e.g., strings, booleans, numbers).
    - If the component needs to consume context from a provider, import the context and use `@consume()` or `@property()` with context injection.
 
-4. **Implement the Render Method**: 
+4. **Implement the Render Method**:
    - Use the `render()` method to return a `TemplateResult` with `html` templates.
    - Keep logic minimal; delegate complex behavior to utilities or events.
 

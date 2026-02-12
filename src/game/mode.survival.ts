@@ -3,6 +3,7 @@ import { GameMode } from "./type.game.js";
 import { GameObjectCategory } from "./type.object.js";
 import { RectangleState, CircleState } from "./type.object.js";
 import { AffectCategory } from "./game.affect.js";
+import { OccurrenceCategory } from "./game.affect.js";
 import {
   randomBouncingCircleState,
   heroCircle,
@@ -27,6 +28,9 @@ export function createSurvivalGame({
   numGhost = 0,
   health = 1,
   breakSpeed = 0.1,
+  spawnFoodChance = 0,
+  spawnShieldChance = 0,
+  spawnIceChance = 0,
 }: {
   width?: number;
   height?: number;
@@ -40,6 +44,9 @@ export function createSurvivalGame({
   numGhost?: number;
   health?: number;
   breakSpeed?: number;
+  spawnFoodChance?: number;
+  spawnShieldChance?: number;
+  spawnIceChance?: number;
 } = {}): GameState {
   const circleId = crypto.randomUUID();
 
@@ -96,7 +103,19 @@ export function createSurvivalGame({
     mode: GameMode.enum.Survival,
     collected: 0,
     totalCollectibles: numGreenCircles > 0 ? numGreenCircles : undefined,
+    occurrences: [],
   };
+
+  // Add occurrences
+  if (spawnFoodChance > 0) {
+    game.occurrences.push({ category: OccurrenceCategory.enum.SpawnFood, chance: spawnFoodChance });
+  }
+  if (spawnShieldChance > 0) {
+    game.occurrences.push({ category: OccurrenceCategory.enum.SpawnShield, chance: spawnShieldChance });
+  }
+  if (spawnIceChance > 0) {
+    game.occurrences.push({ category: OccurrenceCategory.enum.SpawnIce, chance: spawnIceChance });
+  }
 
   // Create a circle for the player
   const circle = heroCircle(game, playerId, health, breakSpeed);

@@ -21,7 +21,7 @@ export const MyProviderContext = z.object({
 });
 export type MyProviderContext = z.infer<typeof MyProviderContext>;
 
-export const myProviderContext = createContext<MyProviderContext>('myProviderContext');
+export const myProviderContext = createContext<MyProviderContext>("myProviderContext");
 ```
 
 - In the provider file, import necessary modules:

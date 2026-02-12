@@ -6,6 +6,10 @@ import { GameInput } from "./game.input.js";
 import { GameId, GameName, GameObjectLayer, GameMode } from "./type.game.js";
 import { AnyGameObjectState } from "./type.object.js";
 import { Player } from "../shared/type.player.js";
+import { OccurrenceState } from "./game.affect.js";
+import { spawnFood } from "./occurrence.spawn-food.js";
+import { spawnShield } from "./occurrence.spawn-shield.js";
+import { spawnIce } from "./occurrence.spawn-ice.js";
 
 export const BACKGROUND_ENVIRONMENT_LAYER_INDEX = 0;
 export const MAIN_OBJECT_LAYER_INDEX = 1;
@@ -52,6 +56,7 @@ export const GameState = z.object({
   totalCollectibles: z.number().optional(),
   timeLimit: z.number().optional(),
   startTime: z.number().optional(),
+  occurrences: OccurrenceState.array().default([]),
 });
 export type GameState = z.infer<typeof GameState>;
 
@@ -82,6 +87,23 @@ export class Game {
         obj.majorUpdates();
       });
     });
+    this.runOccurrences();
+  }
+
+  runOccurrences(): void {
+    this.state.occurrences.forEach((occurrence) => {
+      switch (occurrence.category) {
+        case "SpawnFood":
+          spawnFood(occurrence, this);
+          break;
+        case "SpawnShield":
+          spawnShield(occurrence, this);
+          break;
+        case "SpawnIce":
+          spawnIce(occurrence, this);
+          break;
+      }
+    });
   }
 
   alignViewport(targetAspectRatio: number): void {
@@ -104,6 +126,11 @@ export class Game {
         }
       }
     }
+  }
+
+  addObject(state: AnyGameObjectState, layerIndex: number = MAIN_OBJECT_LAYER_INDEX): void {
+    const hydrated = hydrateObjects(this, [[state]]);
+    this.layers[layerIndex].push(...hydrated[0]);
   }
 
   serializeState(): void {

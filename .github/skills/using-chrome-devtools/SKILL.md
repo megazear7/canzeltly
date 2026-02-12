@@ -31,7 +31,6 @@ Use the chrome-devtools MCP server tools to automate browser interactions, inspe
 ### Key Tools for Debugging
 
 - **take_snapshot**: Capture the accessibility tree of the page to inspect UI elements. Use this to identify elements by their unique `uid` for further actions. Prefer this over screenshots for element selection.
-  
 - **evaluate_script**: Run JavaScript code in the page context to inspect or modify the application state. For example, execute `() => { return document.title; }` to get the page title, or interact with the game's internal state.
 
 - **list_console_messages**: Retrieve console logs, errors, and warnings from the browser. Filter by type (e.g., 'error', 'warn') to focus on issues. Use this to check for JavaScript errors during gameplay or page loads.

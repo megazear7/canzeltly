@@ -12,11 +12,13 @@ This skill covers the styling conventions and best practices for the Canzeltly a
 All styling in the Canzeltly application uses CSS custom properties (variables) defined in `static/app.css`. These variables ensure consistent theming and easy maintenance.
 
 ### Important Warning
+
 **Never use CSS variables that do not exist in `static/app.css`.** Always check the file for available variables before using them. Using non-existent variables will result in undefined styling and potential layout issues.
 
 ### Available CSS Variables
 
 #### Colors
+
 - **Primary Colors**: `--color-1`, `--color-1-light`, `--color-1-dark`, `--color-2`, `--color-2-light`, `--color-2-dark`
 - **Surface Colors**:
   - Primary: `--color-primary-surface`, `--color-primary-text`, `--color-primary-text-muted`, `--color-primary-text-bold`
@@ -24,19 +26,23 @@ All styling in the Canzeltly application uses CSS custom properties (variables) 
 - **Semantic Colors**: `--color-accent`, `--color-error`, `--color-danger`, `--color-warning`, `--color-success`
 
 #### Sizes
+
 - Spacing: `--size-nano`, `--size-tiny`, `--size-small`, `--size-medium`, `--size-large`, `--size-xl`, `--size-2x`, `--size-3x`, `--size-4x`, `--size-5x`, `--size-6x`, `--size-7x`, `--size-8x`
 - Font sizes: `--font-tiny`, `--font-small`, `--font-medium`, `--font-large`, `--font-xl`
 
 #### Typography
+
 - `--font-family`: The primary font family (Inter, sans-serif)
 - `--line-height`: Standard line height (1.6)
 
 #### Layout
+
 - `--content-width`: Maximum content width (1280px)
 - `--border-radius-medium`, `--border-radius-large`: Border radius values
 - `--border-normal`, `--border-active`: Border styles
 
 #### Effects
+
 - Shadows: `--shadow-normal`, `--shadow-active`, `--shadow-hover`, `--shadow-inverse-normal`, `--shadow-inverse-active`, `--shadow-inverse-hover`
 - Transitions: `--time-normal`, `--transition-all`, `--transition-shadow`
 - Transforms: `--transform-hover`
@@ -64,6 +70,7 @@ All styling in the Canzeltly application uses CSS custom properties (variables) 
 Global styles for common HTML elements are defined in `src/client/styles.global.ts`. This file contains styles for elements like `<button>`, `<a>`, `<h1>`, `<p>`, etc.
 
 ### Key Rules
+
 - **Component-Level Overrides**: For `<button>`, `<a>`, and other common HTML elements, styling must be done in `src/client/styles.global.ts` rather than in individual components, unless there is a specific need for component-level overrides.
 - **Consistency**: All components should use the global styles as a base and only add specific styles when necessary.
 

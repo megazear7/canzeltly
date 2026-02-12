@@ -1,8 +1,8 @@
 ---
-agent: 'agent'
+agent: "agent"
 model: Grok Code Fast 1
-tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'agent', 'todo']
-description: 'Refactor code based on guidelines'
+tools: ["vscode", "execute", "read", "edit", "search", "web", "agent", "todo"]
+description: "Refactor code based on guidelines"
 ---
 
 # User Instructions

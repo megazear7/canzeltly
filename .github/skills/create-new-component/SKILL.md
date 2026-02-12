@@ -1,4 +1,4 @@
-```skill
+````skill
 ---
 name: create-new-component
 description: How to create a new component in the Canzeltly application.
@@ -63,7 +63,7 @@ export class Canzeltly<ComponentName> extends LitElement {
     `;
   }
 }
-```
+````
 
 ### 3. Add Properties and Attributes
 
@@ -227,10 +227,13 @@ export class CanzeltlyInfoCard extends LitElement {
 ```
 
 Usage:
+
 ```html
 <canzeltly-info-card title="Information">
   <p>This is some information content.</p>
 </canzeltly-info-card>
 ```
+
 ```</content>
 <parameter name="filePath">/Users/alexlockhart/src/canzeltly/.github/skills/create-new-component/SKILL.md
+```

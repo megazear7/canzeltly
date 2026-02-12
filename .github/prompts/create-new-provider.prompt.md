@@ -1,8 +1,8 @@
 ---
-agent: 'agent'
+agent: "agent"
 model: Grok Code Fast 1
-tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'agent', 'chrome-devtools/*', 'todo']
-description: 'Create new provider'
+tools: ["vscode", "execute", "read", "edit", "search", "web", "agent", "chrome-devtools/*", "todo"]
+description: "Create new provider"
 ---
 
 # User instructions
@@ -18,4 +18,4 @@ description: 'Create new provider'
 - Create the provider as described in the user instructions.
 - Ensure the provider follows best practices for code quality, readability, and maintainability and is properly integrated into the application
 - Run `npm run fix` to auto-format and fix any linting issues
-- Use the #chrome-devtools/* tools to test and debug the new provider in a browser environment
+- Use the #chrome-devtools/\* tools to test and debug the new provider in a browser environment
