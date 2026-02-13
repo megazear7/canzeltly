@@ -1,16 +1,16 @@
 import { GameState, GameStatus } from "./game.js";
 import { GameMode } from "./type.game.js";
-import { GameObjectCategory, GameObjectLabel, DrawCategory } from "./type.object.js";
-import { RectangleState, CircleState } from "./type.object.js";
-import { AffectCategory, OccurrenceCategory } from "./game.affect.js";
+import { DrawCategory, RectangleState, GameObjectCategory } from "./type.object.js";
+import { OccurrenceCategory } from "./game.affect.js";
 import {
   heroCircle,
-  randomBouncingCircleState,
+  gremlakShip,
   randomGravityCircles,
   randomHunterCircleState,
   randomBlockadeCircleState,
   randomVoidCircleState,
   randomGhostCircleState,
+  coin,
 } from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
 
@@ -68,7 +68,7 @@ export function createRaceGame({
       y: 0,
       draw: {
         category: DrawCategory.enum.square,
-        color: "#53744c",
+        color: "#111111",
       },
     }),
   ];
@@ -133,36 +133,12 @@ export function createRaceGame({
 
   // Add green collectible circles
   for (let i = 0; i < numGreenCircles; i++) {
-    const radius = 10;
-    const collectible = CircleState.parse({
-      category: GameObjectCategory.enum.Circle,
-      id: crypto.randomUUID(),
-      affects: [
-        {
-          category: AffectCategory.enum.Health,
-          health: 1,
-          maxHealth: 1,
-        },
-        {
-          category: AffectCategory.enum.Impermeable,
-        },
-      ],
-      radius,
-      mass: radius * radius,
-      labels: [GameObjectLabel.enum.Collectable],
-      x: Math.random() * width,
-      y: Math.random() * height,
-      draw: {
-        category: DrawCategory.enum.circle,
-        color: "#00FF00", // Green for collectibles
-      },
-    });
-    game.layers[1].push(collectible);
+    game.layers[1].push(coin(game));
   }
 
   // Add enemy circles
   for (let i = 0; i < numBouncy; i++) {
-    game.layers[1].push(randomBouncingCircleState(game));
+    game.layers[1].push(gremlakShip(game));
   }
   for (let i = 0; i < numGravity; i++) {
     game.layers[1].push(randomGravityCircles(game));

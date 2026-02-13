@@ -5,7 +5,7 @@ import { RectangleState, CircleState } from "./type.object.js";
 import { AffectCategory } from "./game.affect.js";
 import { OccurrenceCategory } from "./game.affect.js";
 import {
-  randomBouncingCircleState,
+  gremlakShip,
   heroCircle,
   randomGravityCircles,
   randomHunterCircleState,
@@ -63,7 +63,7 @@ export function createSurvivalGame({
       y: 0,
       draw: {
         category: DrawCategory.enum.square,
-        color: "#53744c",
+        color: "#111111",
       },
     }),
   ];
@@ -141,8 +141,8 @@ export function createSurvivalGame({
       x: Math.random() * width,
       y: Math.random() * height,
       draw: {
-        category: DrawCategory.enum.circle,
-        color: "#00FF00", // Green for collectibles
+        category: DrawCategory.enum.image,
+        image: "/images/coin/coin.png",
       },
     });
     game.layers[1].push(collectible);
@@ -150,7 +150,7 @@ export function createSurvivalGame({
 
   // Add initial enemy circles
   for (let i = 0; i < numBouncy; i++) {
-    game.layers[1].push(randomBouncingCircleState(game));
+    game.layers[1].push(gremlakShip(game));
   }
   for (let i = 0; i < numGravity; i++) {
     game.layers[1].push(randomGravityCircles(game));

@@ -2,7 +2,7 @@ import { GameState, GameStatus } from "./game.js";
 import { GameMode } from "./type.game.js";
 import { GameObjectCategory, DrawCategory } from "./type.object.js";
 import { RectangleState } from "./type.object.js";
-import { randomBouncingCircleState, heroCircle } from "./object.circle.js";
+import { gremlakShip, heroCircle } from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
 
 export function newGame({
@@ -29,7 +29,7 @@ export function newGame({
       y: 0,
       draw: {
         category: DrawCategory.enum.square,
-        color: "#53744c",
+        color: "#000000",
       },
     }),
   ];
@@ -81,7 +81,7 @@ export function newGame({
   game.layers[1].push(circle);
 
   for (let i = 0; i < 6; i++) {
-    game.layers[1].push(randomBouncingCircleState(game));
+    game.layers[1].push(gremlakShip(game));
   }
   return game;
 }

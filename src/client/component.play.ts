@@ -7,8 +7,8 @@ import { globalStyles } from "./styles.global.js";
 import { draw } from "../canvas/draw.canvas.js";
 import {
   loadGameState,
-  saveGameState,
   loadNewGameState,
+  saveGameState,
   deleteNewGameState,
   getCampaignInstance,
   saveActiveCampaign,
@@ -19,6 +19,7 @@ import { mapFromCanvas } from "../canvas/util.map-to-canvas.js";
 import { createSurvivalGame } from "../game/mode.survival.js";
 import { createAdventureGame } from "../game/mode.adventure.js";
 import { createRaceGame } from "../game/mode.race.js";
+import { newGame } from "../game/util.new-game.js";
 import { ProfileContext, profileContext } from "./context.js";
 import { CanzeltlyGameOverModal } from "./component.game-over-modal.js";
 import { CanzeltlyModal } from "./component.modal.js";
@@ -208,7 +209,7 @@ export class CanzeltlyPlay extends LitElement {
 
     let gameState;
     if (this.isNewGame) {
-      gameState = loadNewGameState(this.profileContext.currentProfile!.id);
+      gameState = loadNewGameState(this.profileContext.currentProfile!.id) ?? newGame({ playerId: this.playerId });
     } else {
       gameState = loadGameState(this.gameId, this.profileContext.currentProfile!.id);
     }

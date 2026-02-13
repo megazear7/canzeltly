@@ -1,7 +1,7 @@
 import { AffectCategory } from "./game.affect.js";
 import { Game, GameState } from "./game.js";
 import { GameObject } from "./game.object.js";
-import { CircleState, GameObjectCategory, DrawCategory } from "./type.object.js";
+import { CircleState, GameObjectCategory, DrawCategory, GameObjectLabel } from "./type.object.js";
 
 export class Circle extends GameObject<CircleState> {
   override state: CircleState;
@@ -30,40 +30,7 @@ export function randomCircleState(game: Game): CircleState {
   });
 }
 
-export function randomMovingCircleState(game: GameState): CircleState {
-  const radius = 10 + Math.random() * 20;
-  return CircleState.parse({
-    category: GameObjectCategory.enum.Circle,
-    id: crypto.randomUUID(),
-    affects: [
-      {
-        category: AffectCategory.enum.Velocity,
-        dx: (Math.random() - 0.5) * 4,
-        dy: (Math.random() - 0.5) * 4,
-      },
-      {
-        category: AffectCategory.enum.Target,
-        x: Math.random() * game.world.width,
-        y: Math.random() * game.world.height,
-        acceleration: 0.2 + Math.random() * 0.1,
-      },
-      {
-        category: AffectCategory.enum.Bounce,
-        loss: 0,
-      },
-    ],
-    x: Math.random() * game.world.width,
-    y: Math.random() * (game.world.height / 2),
-    radius,
-    mass: radius * radius,
-    draw: {
-      category: DrawCategory.enum.circle,
-      color: `hsl(${Math.random() * 360}, 70%, 50%)`,
-    },
-  });
-}
-
-export function randomBouncingCircleState(game: GameState): CircleState {
+export function gremlakShip(game: GameState): CircleState {
   const radius = 30 + Math.random() * 10;
   return CircleState.parse({
     category: GameObjectCategory.enum.Circle,
@@ -113,8 +80,8 @@ export function randomBouncingCircleState(game: GameState): CircleState {
     radius,
     mass: radius * radius,
     draw: {
-      category: DrawCategory.enum.circle,
-      color: `#FF0000`,
+      category: DrawCategory.enum.image,
+      image: "/images/gremlak/ship.png",
     },
   });
 }
@@ -480,15 +447,16 @@ export function shieldCircle(game: GameState): CircleState {
   });
 }
 
-export function iceCircle(game: GameState): CircleState {
+export function coin(game: GameState): CircleState {
   const radius = 10;
   return CircleState.parse({
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
     affects: [
       {
-        category: AffectCategory.enum.Collectable,
-        type: "Ice",
+        category: AffectCategory.enum.Health,
+        health: 1,
+        maxHealth: 1,
       },
       {
         category: AffectCategory.enum.Impermeable,
@@ -496,11 +464,47 @@ export function iceCircle(game: GameState): CircleState {
     ],
     radius,
     mass: radius * radius,
+    labels: [GameObjectLabel.enum.Collectable],
     x: Math.random() * game.world.width,
     y: Math.random() * game.world.height,
     draw: {
+      category: DrawCategory.enum.image,
+      image: "/images/coin/coin.png",
+    },
+  });
+}
+
+export function iceCircle(game: GameState): CircleState {
+  const radius = 20 + Math.random() * 20;
+  return CircleState.parse({
+    category: GameObjectCategory.enum.Circle,
+    id: crypto.randomUUID(),
+    affects: [
+      {
+        category: AffectCategory.enum.Health,
+        health: 1,
+        maxHealth: 1,
+      },
+      {
+        category: AffectCategory.enum.Velocity,
+        dx: 0,
+        dy: 0,
+      },
+      {
+        category: AffectCategory.enum.ElasticCollision,
+        damage: 0,
+        attackSpeed: 1000,
+        makesAttacks: false,
+        receivesAttacks: false,
+      },
+    ],
+    x: Math.random() * game.world.width,
+    y: Math.random() * game.world.height,
+    radius,
+    mass: Number.MAX_SAFE_INTEGER, // Infinite mass - immovable
+    draw: {
       category: DrawCategory.enum.circle,
-      color: "#00FFFF", // Cyan for ice
+      color: `#ADD8E6`, // Light blue for ice
     },
   });
 }
