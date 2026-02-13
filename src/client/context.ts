@@ -6,6 +6,7 @@ import { GameState } from "../game/game.js";
 import { CustomGameMode } from "../shared/type.custom-game-mode.js";
 import { Campaign, CampaignInstance } from "../shared/type.campaign.js";
 import { Achievements } from "../shared/type.achievement.js";
+import { Profile } from "../shared/type.profile.js";
 
 export const AppContext = z.object({
   app: AppConfig.optional(),
@@ -37,3 +38,13 @@ export const CampaignsContext = z.object({
 });
 export type CampaignsContext = z.infer<typeof CampaignsContext>;
 export const campaignsContext = createContext<CampaignsContext>("campaigns");
+
+export const ProfileContext = z.object({
+  status: LoadingStatus,
+  currentProfile: Profile.optional(),
+  profiles: z.array(Profile),
+  showCreateProfileModal: z.boolean(),
+  showProfileModal: z.boolean(),
+});
+export type ProfileContext = z.infer<typeof ProfileContext>;
+export const profileContext = createContext<ProfileContext>("profile");

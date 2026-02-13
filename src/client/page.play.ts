@@ -23,7 +23,7 @@ export class CanzeltlyPlayPage extends CanzeltlyAppProvider {
         .achievements="${this.appContext.achievements}"
         .onAchievementsUpdate="${(achievements: Achievements) => {
           this.appContext.achievements = achievements;
-          saveAchievements(achievements);
+          saveAchievements(achievements, this.profileContext.currentProfile!.id);
         }}"></canzeltly-play>
     `;
   }

@@ -1,5 +1,6 @@
 import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
+import { consume } from "@lit/context";
 import { Game, GameStatus, Victory } from "../game/game.js";
 import { GameMode } from "../game/type.game.js";
 import { globalStyles } from "./styles.global.js";
@@ -18,6 +19,7 @@ import { mapFromCanvas } from "../canvas/util.map-to-canvas.js";
 import { createSurvivalGame } from "../game/mode.survival.js";
 import { createAdventureGame } from "../game/mode.adventure.js";
 import { createRaceGame } from "../game/mode.race.js";
+import { ProfileContext, profileContext } from "./context.js";
 import { CanzeltlyGameOverModal } from "./component.game-over-modal.js";
 import { CanzeltlyModal } from "./component.modal.js";
 import { getCampaignBySlug } from "../shared/data.campaigns.js";
@@ -38,6 +40,10 @@ import "./component.modal.js";
 
 @customElement("canzeltly-play")
 export class CanzeltlyPlay extends LitElement {
+  @consume({ context: profileContext, subscribe: true })
+  @property({ attribute: false })
+  profileContext!: ProfileContext;
+
   @property({ type: String })
   gameId: string = "";
 
@@ -200,9 +206,9 @@ export class CanzeltlyPlay extends LitElement {
 
     let gameState;
     if (this.isNewGame) {
-      gameState = loadNewGameState();
+      gameState = loadNewGameState(this.profileContext.currentProfile!.id);
     } else {
-      gameState = loadGameState(this.gameId);
+      gameState = loadGameState(this.gameId, this.profileContext.currentProfile!.id);
     }
     if (gameState) {
       this.game = new Game(gameState);
@@ -258,9 +264,9 @@ export class CanzeltlyPlay extends LitElement {
             this.animationId = undefined;
           }
           this.requestUpdate();
-          saveGameState(this.game.state);
+          saveGameState(this.game.state, this.profileContext.currentProfile!.id);
           if (this.isNewGame) {
-            deleteNewGameState();
+            deleteNewGameState(this.profileContext.currentProfile!.id);
           }
 
           // Update achievements
@@ -349,7 +355,7 @@ export class CanzeltlyPlay extends LitElement {
   }
 
   private async initCampaignGame(): Promise<void> {
-    const instance = getCampaignInstance(this.instanceId);
+    const instance = getCampaignInstance(this.instanceId, this.profileContext.currentProfile!.id);
     if (!instance) return;
 
     const campaign = getCampaignBySlug(instance.campaignSlug);
@@ -450,7 +456,7 @@ export class CanzeltlyPlay extends LitElement {
         this.campaignInstance.completedGameIndexes.push(gameIndex);
       }
       this.campaignInstance.currentGameIndex = gameIndex + 1;
-      saveActiveCampaign(this.campaignInstance);
+      saveActiveCampaign(this.campaignInstance, this.profileContext.currentProfile!.id);
 
       // Check if campaign is completed
       const campaign = getCampaignBySlug(this.campaignInstance.campaignSlug);
@@ -518,7 +524,7 @@ export class CanzeltlyPlay extends LitElement {
   };
 
   private async initCustomGame(): Promise<void> {
-    const customMode = loadCustomGameMode(this.modeName);
+    const customMode = loadCustomGameMode(this.modeName, this.profileContext.currentProfile!.id);
     if (!customMode) return;
 
     let gameState;

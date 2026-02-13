@@ -1,12 +1,15 @@
-import { html, LitElement, PropertyValues, TemplateResult } from "lit";
+import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { RouteConfig, RouteName } from "../shared/type.routes.js";
 import { parseRouteParams } from "../shared/util.route-params.js";
 import { routes } from "./app.routes.js";
 import { CanzeltlyAbstractProvider } from "./provider.abstract.js";
+import { CanzeltlyProfileProvider } from "./provider.profile.js";
 import { CanzeltlyToast } from "./component.toast.js";
 import { ToastType } from "./component.toast.js";
 import { CanzeltlySaveIndicator } from "./component.save-indicator.js";
+import { CanzeltlyProfileModal } from "./component.profile-modal.js";
+import { CanzeltlyCreateProfileModal } from "./component.create-profile-modal.js";
 import { SaveEventName } from "./event.save.js";
 import { NavigationEventName } from "./event.navigation.js";
 import { SuccessEventName } from "./event.success.js";
@@ -27,9 +30,11 @@ import "./page.achievements.js";
 import "./component.toast.js";
 import "./component.save-indicator.js";
 import "./component.play.js";
+import "./component.profile-modal.js";
+import "./component.create-profile-modal.js";
 
 @customElement("canzeltly-app")
-export class CanzeltlyApp extends LitElement {
+export class CanzeltlyApp extends CanzeltlyProfileProvider {
   static override styles = [];
   routes: RouteConfig[] = routes;
 
@@ -41,11 +46,13 @@ export class CanzeltlyApp extends LitElement {
   @property({ type: Boolean }) toastVisible = false;
   @query("canzeltly-toast") toast!: CanzeltlyToast;
   @query("canzeltly-save-indicator") saveIndicator!: CanzeltlySaveIndicator;
+  @query("canzeltly-profile-modal") profileModal!: CanzeltlyProfileModal;
+  @query("canzeltly-create-profile-modal") createProfileModal!: CanzeltlyCreateProfileModal;
 
   private boundHandlePopState: (() => void) | null = null;
 
-  override connectedCallback(): void {
-    super.connectedCallback();
+  override async connectedCallback(): Promise<void> {
+    await super.connectedCallback();
     document.addEventListener("click", this.navigate.bind(this));
     document.addEventListener(WarningEventName.value, (event: Event) => {
       const customEvent = event as CustomEvent;
@@ -64,6 +71,24 @@ export class CanzeltlyApp extends LitElement {
       window.history.pushState({}, "", customEvent.detail.path);
       this.currentRoute = this.determineRouteName();
       this.requestUpdate();
+    });
+
+    // Profile event listeners
+    document.addEventListener("show-profile-modal", () => this.showProfileModal());
+    document.addEventListener("hide-profile-modal", () => this.hideProfileModal());
+    document.addEventListener("show-create-profile-modal", () => this.showCreateProfileModal());
+    document.addEventListener("hide-create-profile-modal", () => this.hideCreateProfileModal());
+    document.addEventListener("create-profile", (event: Event) => {
+      const customEvent = event as CustomEvent;
+      this.createProfile(customEvent.detail.name);
+    });
+    document.addEventListener("switch-profile", (event: Event) => {
+      const customEvent = event as CustomEvent;
+      this.switchProfile(customEvent.detail.profileId);
+    });
+    document.addEventListener("delete-profile", (event: Event) => {
+      const customEvent = event as CustomEvent;
+      this.deleteProfile(customEvent.detail.profileId);
     });
 
     this.addEventListener(SaveEventName.value, this.handleSaveEvent);
@@ -148,6 +173,16 @@ export class CanzeltlyApp extends LitElement {
         @close=${this.handleToastClose}></canzeltly-toast>
       <canzeltly-save-indicator></canzeltly-save-indicator>
       <canzeltly-notification-manager></canzeltly-notification-manager>
+      ${this.profileContext.showProfileModal
+        ? html`
+            <canzeltly-profile-modal></canzeltly-profile-modal>
+          `
+        : ""}
+      ${this.profileContext.showCreateProfileModal
+        ? html`
+            <canzeltly-create-profile-modal></canzeltly-create-profile-modal>
+          `
+        : ""}
     `;
   }
 

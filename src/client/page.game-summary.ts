@@ -51,7 +51,7 @@ export class CanzeltlyGameSummaryPage extends CanzeltlyAppProvider {
 
   override async connectedCallback(): Promise<void> {
     super.connectedCallback();
-    this.gameState = loadGameState(this.params.gameId) || null;
+    this.gameState = loadGameState(this.params.gameId, this.profileContext.currentProfile!.id) || null;
   }
 
   override render(): TemplateResult {

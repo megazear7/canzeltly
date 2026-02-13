@@ -5,32 +5,33 @@ import { CustomGameMode } from "../shared/type.custom-game-mode.js";
 import { CampaignInstance } from "../shared/type.campaign.js";
 import { Achievements } from "../shared/type.achievement.js";
 import { initializeAchievements } from "../shared/util.achievements.js";
+import { Profile, ProfileId } from "../shared/type.profile.js";
 
-const STORAGE_KEY = "canzeltly_saved_games";
-const PLAYER_ASSIGNMENTS_KEY = "canzeltly_player_assignments";
-const NEW_GAME_KEY = "canzeltly_new_game";
-const CUSTOM_GAME_MODES_KEY = "canzeltly_custom_game_modes";
-const ACTIVE_CAMPAIGNS_KEY = "canzeltly_active_campaigns";
-const ACHIEVEMENTS_KEY = "canzeltly_achievements";
+const PROFILES_KEY = "canzeltly_profiles";
+const ACTIVE_PROFILE_KEY = "canzeltly_active_profile";
 
-export function saveGameState(gameState: GameState): void {
-  const savedGames = getAllGameStates();
+function getProfileKey(profileId: ProfileId, baseKey: string): string {
+  return `${profileId}_${baseKey}`;
+}
+
+export function saveGameState(gameState: GameState, profileId: ProfileId): void {
+  const savedGames = getAllGameStates(profileId);
   const existingIndex = savedGames.findIndex((g) => g.id === gameState.id);
   if (existingIndex >= 0) {
     savedGames[existingIndex] = gameState;
   } else {
     savedGames.push(gameState);
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(savedGames));
+  localStorage.setItem(getProfileKey(profileId, "saved_games"), JSON.stringify(savedGames));
 }
 
-export function loadGameState(id: GameId): GameState | undefined {
-  const savedGames = getAllGameStates();
+export function loadGameState(id: GameId, profileId: ProfileId): GameState | undefined {
+  const savedGames = getAllGameStates(profileId);
   return savedGames.find((g) => g.id === id);
 }
 
-export function getAllGameStates(): GameState[] {
-  const stored = localStorage.getItem(STORAGE_KEY);
+export function getAllGameStates(profileId: ProfileId): GameState[] {
+  const stored = localStorage.getItem(getProfileKey(profileId, "saved_games"));
   if (!stored) return [];
   try {
     const parsed = JSON.parse(stored);
@@ -41,22 +42,22 @@ export function getAllGameStates(): GameState[] {
   }
 }
 
-export function deleteGameState(id: GameId): void {
-  const savedGames = getAllGameStates().filter((g) => g.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(savedGames));
+export function deleteGameState(id: GameId, profileId: ProfileId): void {
+  const savedGames = getAllGameStates(profileId).filter((g) => g.id !== id);
+  localStorage.setItem(getProfileKey(profileId, "saved_games"), JSON.stringify(savedGames));
 }
 
-export function deleteMultipleGameStates(ids: GameId[]): void {
-  const savedGames = getAllGameStates().filter((g) => !ids.includes(g.id));
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(savedGames));
+export function deleteMultipleGameStates(ids: GameId[], profileId: ProfileId): void {
+  const savedGames = getAllGameStates(profileId).filter((g) => !ids.includes(g.id));
+  localStorage.setItem(getProfileKey(profileId, "saved_games"), JSON.stringify(savedGames));
 }
 
-export function saveNewGameState(gameState: GameState): void {
-  localStorage.setItem(NEW_GAME_KEY, JSON.stringify(gameState));
+export function saveNewGameState(gameState: GameState, profileId: ProfileId): void {
+  localStorage.setItem(getProfileKey(profileId, "new_game"), JSON.stringify(gameState));
 }
 
-export function loadNewGameState(): GameState | undefined {
-  const stored = localStorage.getItem(NEW_GAME_KEY);
+export function loadNewGameState(profileId: ProfileId): GameState | undefined {
+  const stored = localStorage.getItem(getProfileKey(profileId, "new_game"));
   if (!stored) return undefined;
   try {
     const parsed = JSON.parse(stored);
@@ -67,33 +68,33 @@ export function loadNewGameState(): GameState | undefined {
   }
 }
 
-export function deleteNewGameState(): void {
-  localStorage.removeItem(NEW_GAME_KEY);
+export function deleteNewGameState(profileId: ProfileId): void {
+  localStorage.removeItem(getProfileKey(profileId, "new_game"));
 }
 
-export function renameGameState(oldId: GameId, newName: string): void {
-  const savedGames = getAllGameStates();
+export function renameGameState(oldId: GameId, newName: string, profileId: ProfileId): void {
+  const savedGames = getAllGameStates(profileId);
   const game = savedGames.find((g) => g.id === oldId);
   if (!game) return;
-  deleteGameState(oldId);
+  deleteGameState(oldId, profileId);
   const newId = slugify(newName);
   const newGame = { ...game, name: newName, id: newId };
-  saveGameState(newGame);
+  saveGameState(newGame, profileId);
 }
 
-export function getPlayerAssignment(gameId: GameId): string | undefined {
-  const assignments = getAllPlayerAssignments();
+export function getPlayerAssignment(gameId: GameId, profileId: ProfileId): string | undefined {
+  const assignments = getAllPlayerAssignments(profileId);
   return assignments[gameId];
 }
 
-export function setPlayerAssignment(gameId: GameId, playerId: string): void {
-  const assignments = getAllPlayerAssignments();
+export function setPlayerAssignment(gameId: GameId, playerId: string, profileId: ProfileId): void {
+  const assignments = getAllPlayerAssignments(profileId);
   assignments[gameId] = playerId;
-  localStorage.setItem(PLAYER_ASSIGNMENTS_KEY, JSON.stringify(assignments));
+  localStorage.setItem(getProfileKey(profileId, "player_assignments"), JSON.stringify(assignments));
 }
 
-export function getAllPlayerAssignments(): Record<string, string> {
-  const stored = localStorage.getItem(PLAYER_ASSIGNMENTS_KEY);
+export function getAllPlayerAssignments(profileId: ProfileId): Record<string, string> {
+  const stored = localStorage.getItem(getProfileKey(profileId, "player_assignments"));
   if (!stored) return {};
   try {
     const parsed = JSON.parse(stored);
@@ -104,24 +105,24 @@ export function getAllPlayerAssignments(): Record<string, string> {
   }
 }
 
-export function saveCustomGameMode(mode: CustomGameMode): void {
-  const modes = getAllCustomGameModes();
+export function saveCustomGameMode(mode: CustomGameMode, profileId: ProfileId): void {
+  const modes = getAllCustomGameModes(profileId);
   const existingIndex = modes.findIndex((m) => m.name === mode.name);
   if (existingIndex >= 0) {
     modes[existingIndex] = mode;
   } else {
     modes.push(mode);
   }
-  localStorage.setItem(CUSTOM_GAME_MODES_KEY, JSON.stringify(modes));
+  localStorage.setItem(getProfileKey(profileId, "custom_game_modes"), JSON.stringify(modes));
 }
 
-export function loadCustomGameMode(name: string): CustomGameMode | undefined {
-  const modes = getAllCustomGameModes();
+export function loadCustomGameMode(name: string, profileId: ProfileId): CustomGameMode | undefined {
+  const modes = getAllCustomGameModes(profileId);
   return modes.find((m) => m.name === name);
 }
 
-export function getAllCustomGameModes(): CustomGameMode[] {
-  const stored = localStorage.getItem(CUSTOM_GAME_MODES_KEY);
+export function getAllCustomGameModes(profileId: ProfileId): CustomGameMode[] {
+  const stored = localStorage.getItem(getProfileKey(profileId, "custom_game_modes"));
   if (!stored) return [];
   try {
     const parsed = JSON.parse(stored);
@@ -132,18 +133,18 @@ export function getAllCustomGameModes(): CustomGameMode[] {
   }
 }
 
-export function deleteCustomGameMode(name: string): void {
-  const modes = getAllCustomGameModes().filter((m) => m.name !== name);
-  localStorage.setItem(CUSTOM_GAME_MODES_KEY, JSON.stringify(modes));
+export function deleteCustomGameMode(name: string, profileId: ProfileId): void {
+  const modes = getAllCustomGameModes(profileId).filter((m) => m.name !== name);
+  localStorage.setItem(getProfileKey(profileId, "custom_game_modes"), JSON.stringify(modes));
 }
 
-export function deleteMultipleCustomGameModes(names: string[]): void {
-  const modes = getAllCustomGameModes().filter((m) => !names.includes(m.name));
-  localStorage.setItem(CUSTOM_GAME_MODES_KEY, JSON.stringify(modes));
+export function deleteMultipleCustomGameModes(names: string[], profileId: ProfileId): void {
+  const modes = getAllCustomGameModes(profileId).filter((m) => !names.includes(m.name));
+  localStorage.setItem(getProfileKey(profileId, "custom_game_modes"), JSON.stringify(modes));
 }
 
-export function getAllActiveCampaigns(): CampaignInstance[] {
-  const stored = localStorage.getItem(ACTIVE_CAMPAIGNS_KEY);
+export function getAllActiveCampaigns(profileId: ProfileId): CampaignInstance[] {
+  const stored = localStorage.getItem(getProfileKey(profileId, "active_campaigns"));
   if (!stored) return [];
   try {
     return JSON.parse(stored);
@@ -153,32 +154,32 @@ export function getAllActiveCampaigns(): CampaignInstance[] {
   }
 }
 
-export function getCampaignInstance(instanceId: string): CampaignInstance | undefined {
-  return getAllActiveCampaigns().find((c) => c.id === instanceId);
+export function getCampaignInstance(instanceId: string, profileId: ProfileId): CampaignInstance | undefined {
+  return getAllActiveCampaigns(profileId).find((c) => c.id === instanceId);
 }
 
-export function getActiveCampaign(campaignSlug: string): CampaignInstance | undefined {
-  return getAllActiveCampaigns().find((c) => c.campaignSlug === campaignSlug);
+export function getActiveCampaign(campaignSlug: string, profileId: ProfileId): CampaignInstance | undefined {
+  return getAllActiveCampaigns(profileId).find((c) => c.campaignSlug === campaignSlug);
 }
 
-export function saveActiveCampaign(instance: CampaignInstance): void {
-  const campaigns = getAllActiveCampaigns();
+export function saveActiveCampaign(instance: CampaignInstance, profileId: ProfileId): void {
+  const campaigns = getAllActiveCampaigns(profileId);
   const existingIndex = campaigns.findIndex((c) => c.id === instance.id);
   if (existingIndex >= 0) {
     campaigns[existingIndex] = instance;
   } else {
     campaigns.push(instance);
   }
-  localStorage.setItem(ACTIVE_CAMPAIGNS_KEY, JSON.stringify(campaigns));
+  localStorage.setItem(getProfileKey(profileId, "active_campaigns"), JSON.stringify(campaigns));
 }
 
-export function deleteCampaignInstance(instanceId: string): void {
-  const campaigns = getAllActiveCampaigns().filter((c) => c.id !== instanceId);
-  localStorage.setItem(ACTIVE_CAMPAIGNS_KEY, JSON.stringify(campaigns));
+export function deleteCampaignInstance(instanceId: string, profileId: ProfileId): void {
+  const campaigns = getAllActiveCampaigns(profileId).filter((c) => c.id !== instanceId);
+  localStorage.setItem(getProfileKey(profileId, "active_campaigns"), JSON.stringify(campaigns));
 }
 
-export function getAchievements(): Achievements {
-  const stored = localStorage.getItem(ACHIEVEMENTS_KEY);
+export function getAchievements(profileId: ProfileId): Achievements {
+  const stored = localStorage.getItem(getProfileKey(profileId, "achievements"));
   if (!stored) return initializeAchievements();
   try {
     return Achievements.parse(JSON.parse(stored));
@@ -188,6 +189,68 @@ export function getAchievements(): Achievements {
   }
 }
 
-export function saveAchievements(achievements: Achievements): void {
-  localStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(achievements));
+export function saveAchievements(achievements: Achievements, profileId: ProfileId): void {
+  localStorage.setItem(getProfileKey(profileId, "achievements"), JSON.stringify(achievements));
+}
+
+// Profile management functions
+export function saveProfile(profile: Profile): void {
+  const profiles = getAllProfiles();
+  const existingIndex = profiles.findIndex((p) => p.id === profile.id);
+  if (existingIndex >= 0) {
+    profiles[existingIndex] = profile;
+  } else {
+    profiles.push(profile);
+  }
+  localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
+}
+
+export function getAllProfiles(): Profile[] {
+  const stored = localStorage.getItem(PROFILES_KEY);
+  if (!stored) return [];
+  try {
+    const parsed = JSON.parse(stored) as {
+      createdAt: string;
+      name: string;
+      primaryColor: string;
+      secondaryColor: string;
+      id: string;
+    }[];
+    return parsed.map((p) => ({
+      ...p,
+      createdAt: new Date(p.createdAt),
+    })) as Profile[];
+  } catch (error) {
+    console.error("Error parsing profiles:", error);
+    return [];
+  }
+}
+
+export function getProfile(profileId: ProfileId): Profile | undefined {
+  return getAllProfiles().find((p) => p.id === profileId);
+}
+
+export function deleteProfile(profileId: ProfileId): void {
+  const profiles = getAllProfiles().filter((p) => p.id !== profileId);
+  localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
+
+  // Clean up profile-specific data
+  const keysToRemove = [
+    getProfileKey(profileId, "saved_games"),
+    getProfileKey(profileId, "player_assignments"),
+    getProfileKey(profileId, "new_game"),
+    getProfileKey(profileId, "custom_game_modes"),
+    getProfileKey(profileId, "active_campaigns"),
+    getProfileKey(profileId, "achievements"),
+  ];
+  keysToRemove.forEach((key) => localStorage.removeItem(key));
+}
+
+export function setActiveProfile(profileId: ProfileId): void {
+  localStorage.setItem(ACTIVE_PROFILE_KEY, profileId);
+}
+
+export function getActiveProfile(): ProfileId | undefined {
+  const stored = localStorage.getItem(ACTIVE_PROFILE_KEY);
+  return stored || undefined;
 }

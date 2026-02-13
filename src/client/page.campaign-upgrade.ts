@@ -101,7 +101,7 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
 
   override async load(): Promise<void> {
     const instanceId = this.params.instanceId;
-    this.instance = getCampaignInstance(instanceId);
+    this.instance = getCampaignInstance(instanceId, this.profileContext.currentProfile!.id);
   }
 
   override render(): TemplateResult {
@@ -242,7 +242,7 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
   }
 
   private applyUpgrades(instanceId: string): void {
-    const instance = getCampaignInstance(instanceId);
+    const instance = getCampaignInstance(instanceId, this.profileContext.currentProfile!.id);
     if (!instance) return;
 
     for (const upgrade of this.selectedUpgrades) {
@@ -262,7 +262,7 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
       }
     }
 
-    saveActiveCampaign(instance);
+    saveActiveCampaign(instance, this.profileContext.currentProfile!.id);
     dispatch(this, NavigationEvent({ path: `/campaigns/${instanceId}` }));
   }
 

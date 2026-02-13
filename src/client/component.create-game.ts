@@ -1,5 +1,6 @@
 import { html, css, TemplateResult, LitElement } from "lit";
 import { customElement, state, query } from "lit/decorators.js";
+import { consume } from "@lit/context";
 import { globalStyles } from "./styles.global.js";
 import { GameMode } from "../game/type.game.js";
 import {
@@ -17,9 +18,14 @@ import "./component.modal.js";
 import { GameState } from "../game/game.js";
 import { CanzeltlyModal } from "./component.modal.js";
 import { ModelSubmitEventName } from "./event.modal-submit.js";
+import { ProfileContext, profileContext } from "./context.js";
 
 @customElement("canzeltly-create-game")
 export class CanzeltlyCreateGameComponent extends LitElement {
+  @consume({ context: profileContext, subscribe: true })
+  @state()
+  profileContext!: ProfileContext;
+
   @state() gameName = "";
   @state() worldWidth = 1000;
   @state() worldHeight = 1000;
@@ -101,8 +107,8 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   private loadFromUrlParams(): void {
     const urlParams = new URLSearchParams(window.location.search);
     const modeName = urlParams.get("mode");
-    if (modeName) {
-      const customMode = loadCustomGameMode(modeName);
+    if (modeName && this.profileContext.currentProfile) {
+      const customMode = loadCustomGameMode(modeName, this.profileContext.currentProfile.id);
       if (customMode) {
         this.gameName = customMode.name;
         this.worldWidth = customMode.worldWidth;
@@ -436,10 +442,10 @@ export class CanzeltlyCreateGameComponent extends LitElement {
     } else {
       throw new Error(`Unknown mode: ${this.mode}`);
     }
-    saveNewGameState(gameState);
+    saveNewGameState(gameState, this.profileContext.currentProfile!.id);
     // Set player assignment
     const playerId = gameState.players[0].playerId;
-    setPlayerAssignment(id, playerId);
+    setPlayerAssignment(id, playerId, this.profileContext.currentProfile!.id);
     this.dispatchEvent(new CustomEvent("game-created", { detail: { id, playerId } }));
   }
 
@@ -473,8 +479,8 @@ export class CanzeltlyCreateGameComponent extends LitElement {
 
   private confirmSave = (): void => {
     const name = this.customModeName.trim();
-    if (!name) return;
-    const existing = getAllCustomGameModes().find((m) => m.name === name);
+    if (!name || !this.profileContext.currentProfile) return;
+    const existing = getAllCustomGameModes(this.profileContext.currentProfile.id).find((m) => m.name === name);
     if (existing) {
       this.modalContent = html`
         <h2>Override Custom Game Mode</h2>
@@ -507,7 +513,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       spawnShieldChance: this.spawnShieldChance,
       spawnIceChance: this.spawnIceChance,
     };
-    saveCustomGameMode(mode);
+    saveCustomGameMode(mode, this.profileContext.currentProfile!.id);
     this.modal.close();
   }
 

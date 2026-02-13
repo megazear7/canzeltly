@@ -1,14 +1,20 @@
 import { html, css, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { consume } from "@lit/context";
 import { globalStyles } from "./styles.global.js";
 import { GameState } from "../game/game.js";
 import { getPlayerAssignment } from "./util.storage.js";
 import { NavigationEvent } from "./event.navigation.js";
 import { dispatch } from "./util.events.js";
 import { kebabIcon } from "./icons.js";
+import { ProfileContext, profileContext } from "./context.js";
 
 @customElement("canzeltly-game-preview")
 export class CanzeltlyGamePreview extends LitElement {
+  @consume({ context: profileContext, subscribe: true })
+  @property({ attribute: false })
+  profileContext!: ProfileContext;
+
   @property({ type: Object })
   gameState!: GameState;
 
@@ -73,7 +79,9 @@ export class CanzeltlyGamePreview extends LitElement {
   }
 
   private handlePlay(): void {
-    const playerId = getPlayerAssignment(this.gameState.id);
+    if (!this.profileContext.currentProfile) return;
+
+    const playerId = getPlayerAssignment(this.gameState.id, this.profileContext.currentProfile.id);
     if (playerId) {
       dispatch(this, NavigationEvent({ path: `/play/game/${this.gameState.id}/player/${playerId}` }));
     } else if (this.gameState.players.length > 0) {

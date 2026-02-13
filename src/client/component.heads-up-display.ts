@@ -1,5 +1,6 @@
 import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { consume } from "@lit/context";
 import { Game } from "../game/game.js";
 import { GameMode } from "../game/type.game.js";
 import { globalStyles } from "./styles.global.js";
@@ -10,10 +11,15 @@ import { SuccessEvent } from "./event.success.js";
 import { saveGameState, deleteNewGameState } from "./util.storage.js";
 import { AffectCategory } from "../game/game.affect.js";
 import { HealthState } from "../game/type.object.js";
+import { ProfileContext, profileContext } from "./context.js";
 import "./component.modal.js";
 
 @customElement("canzeltly-heads-up-display")
 export class CanzeltlyHeadsUpDisplay extends LitElement {
+  @consume({ context: profileContext, subscribe: true })
+  @property({ attribute: false })
+  profileContext!: ProfileContext;
+
   @property({ attribute: false })
   game?: Game;
 
@@ -114,10 +120,10 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
   }
 
   private saveGame(): void {
-    if (this.game) {
-      saveGameState(this.game.state);
+    if (this.game && this.profileContext.currentProfile) {
+      saveGameState(this.game.state, this.profileContext.currentProfile.id);
       if (this.isNewGame) {
-        deleteNewGameState();
+        deleteNewGameState(this.profileContext.currentProfile.id);
       }
       dispatch(this, SuccessEvent("Game saved successfully"));
       this.menuModal?.close();
@@ -125,10 +131,10 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
   }
 
   private saveAndExit(): void {
-    if (this.game) {
-      saveGameState(this.game.state);
+    if (this.game && this.profileContext.currentProfile) {
+      saveGameState(this.game.state, this.profileContext.currentProfile.id);
       if (this.isNewGame) {
-        deleteNewGameState();
+        deleteNewGameState(this.profileContext.currentProfile.id);
       }
       this.menuModal?.close();
       dispatch(this, NavigationEvent({ path: "/" }));

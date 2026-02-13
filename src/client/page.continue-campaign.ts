@@ -154,7 +154,7 @@ export class CanzeltlyContinueCampaignPage extends CanzeltlyCampaignsProvider {
 
   private confirmDelete(): void {
     if (this.deleteModalInstanceId) {
-      deleteCampaignInstance(this.deleteModalInstanceId);
+      deleteCampaignInstance(this.deleteModalInstanceId, this.profileContext.currentProfile!.id);
       this.load();
       this.deleteModalInstanceId = null;
     }

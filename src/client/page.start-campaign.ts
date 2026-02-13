@@ -94,7 +94,7 @@ export class CanzeltlyStartCampaignPage extends CanzeltlyCampaignsProvider {
       heroStats: HeroStats.parse({}),
       startedAt: Date.now(),
     };
-    saveActiveCampaign(instance);
+    saveActiveCampaign(instance, this.profileContext.currentProfile!.id);
     dispatch(this, NavigationEvent({ path: `/campaigns/${instance.id}` }));
   }
 

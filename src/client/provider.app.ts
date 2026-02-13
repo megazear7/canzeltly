@@ -1,11 +1,16 @@
 import { provide } from "@lit/context";
 import { property } from "lit/decorators.js";
-import { AppContext, appContext } from "./context.js";
+import { consume } from "@lit/context";
+import { AppContext, appContext, ProfileContext, profileContext } from "./context.js";
 import { LoadingStatus } from "../shared/type.loading.js";
 import { CanzeltlyAbstractProvider } from "./provider.abstract.js";
 import { getAchievements } from "./util.storage.js";
 
 export abstract class CanzeltlyAppProvider extends CanzeltlyAbstractProvider {
+  @consume({ context: profileContext, subscribe: true })
+  @property({ attribute: false })
+  profileContext!: ProfileContext;
+
   @provide({ context: appContext })
   @property({ attribute: false })
   appContext: AppContext = {
@@ -18,10 +23,12 @@ export abstract class CanzeltlyAppProvider extends CanzeltlyAbstractProvider {
   }
 
   async load(): Promise<void> {
+    if (!this.profileContext.currentProfile) return;
+
     this.appContext.status = LoadingStatus.enum.loading;
     this.requestUpdate();
     try {
-      this.appContext.achievements = getAchievements();
+      this.appContext.achievements = getAchievements(this.profileContext.currentProfile.id);
       this.appContext.status = LoadingStatus.enum.success;
     } catch (error) {
       console.error("Failed to load achievements", error);

@@ -111,7 +111,7 @@ export class CanzeltlyCampaignGamesPage extends CanzeltlyCampaignsProvider {
 
   override render(): TemplateResult {
     const instanceId = this.params.instanceId;
-    const instance = getCampaignInstance(instanceId);
+    const instance = getCampaignInstance(instanceId, this.profileContext.currentProfile!.id);
     const campaign = instance ? getCampaignBySlug(instance.campaignSlug) : undefined;
 
     if (!campaign || !instance) {
