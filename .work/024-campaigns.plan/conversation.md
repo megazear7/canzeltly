@@ -6,7 +6,7 @@ This conversation involved implementing a comprehensive campaigns feature for th
 ---
 
 ## User
-Follow instructions in [plan.prompt.md](file:///Users/alexlockhart/src/canzeltly/.github/prompts/plan.prompt.md). campaigns
+Follow instructions in [plan.prompt.md](.github/prompts/plan.prompt.md). campaigns
 
 ---
 
@@ -125,7 +125,7 @@ All implementation complete. The campaigns feature is now fully functional with 
 ---
 
 ## User
-Follow instructions in [save-conversation.prompt.md](file:///Users/alexlockhart/src/canzeltly/.github/prompts/save-conversation.prompt.md).
+Follow instructions in [save-conversation.prompt.md](.github/prompts/save-conversation.prompt.md).
 
 ---
 

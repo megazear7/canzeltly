@@ -73,4 +73,4 @@ Follow instructions in `save-conversation.prompt.md`.
 
 ### Assistant
 Following the instructions to save the conversation history as conversation.md in a new .work directory prefixed with 023.</content>
-<parameter name="filePath">/Users/alexlockhart/src/canzeltly/.work/023-conversation/conversation.md
+<parameter name="filePath">.work/023-conversation/conversation.md

@@ -5,7 +5,7 @@
 ---
 
 ## User
-<attachment id="prompt:plan.prompt.md" filePath="/Users/alexlockhart/src/canzeltly/.github/prompts/plan.prompt.md">
+<attachment id="prompt:plan.prompt.md" filePath=".github/prompts/plan.prompt.md">
 Prompt instructions file:
 -
 
@@ -38,7 +38,7 @@ Prompt instructions file:
  - Do not commit the changes as I will handle that myself.
 
 </attachment>
-Follow instructions in [plan.prompt.md](file:///Users/alexlockhart/src/canzeltly/.github/prompts/plan.prompt.md).
+Follow instructions in [plan.prompt.md](.github/prompts/plan.prompt.md).
 Add badges that the user gets when he defeats a campaign, plays 10/100/1000 games, survive for 1/10/100/100 minutes in a survival game, collect 10/100/1000 green circles, collect 10/100/1000 badges. Add a percentage bar that shows how many badges of the total you have collected.
 
 ---
@@ -59,7 +59,7 @@ Created a high-level plan in plan.md covering overview, key features, badge cate
 ---
 
 ## User
-Please review the detailed work plan in [details.md](file:///Users/alexlockhart/src/canzeltly/.work/030-add-achievement-badges.plan/details.md). Let me know if you'd like any changes before I proceed with the implementation.
+Please review the detailed work plan in [details.md](.work/030-add-achievement-badges.plan/details.md). Let me know if you'd like any changes before I proceed with the implementation.
 
 ---
 
@@ -112,7 +112,7 @@ Added Home button to achievements page consistent with other pages, including im
 ---
 
 ## User
-<attachment id="prompt:save-conversation.prompt.md" filePath="/Users/alexlockhart/src/canzeltly/.github/prompts/save-conversation.prompt.md">
+<attachment id="prompt:save-conversation.prompt.md" filePath=".github/prompts/save-conversation.prompt.md">
 Prompt instructions file:
 -
 
@@ -135,7 +135,7 @@ Prompt instructions file:
  - Do NOT make these file references clickable links. Format them with backticks only.
 
 </attachment>
-Follow instructions in [save-conversation.prompt.md](file:///Users/alexlockhart/src/canzeltly/.github/prompts/save-conversation.prompt.md).
+Follow instructions in [save-conversation.prompt.md](.github/prompts/save-conversation.prompt.md).
 
 ---
 

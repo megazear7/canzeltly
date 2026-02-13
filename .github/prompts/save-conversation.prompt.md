@@ -22,3 +22,5 @@ description: "Preserve our conversation history by saving it as a markdown file 
 
 - Do NOT include the contents of `promopt` and `skill` files in the conversation history, only refer to them by name when relevant.
 - Do NOT make these file references clickable links. Format them with backticks only.
+- All file pth references should be relative to the root of the repository, e.g., `.github/prompts/save-conversation.prompt.md` or `.work/032-user-profiles.plan/conversation.md`.
+- File paths should NOT be absolute file system paths.

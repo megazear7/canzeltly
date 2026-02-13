@@ -86,7 +86,7 @@ Great! Both build and fix succeeded. The refactoring is complete.
 ---
 
 ## User
-Follow instructions in [save-conversation.prompt.md](file:///Users/alexlockhart/src/canzeltly/.github/prompts/save-conversation.prompt.md).
+Follow instructions in [save-conversation.prompt.md](.github/prompts/save-conversation.prompt.md).
 
 ---
 
