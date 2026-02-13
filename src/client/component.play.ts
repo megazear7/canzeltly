@@ -194,6 +194,8 @@ export class CanzeltlyPlay extends LitElement {
     super.connectedCallback();
     document.body.style.overflow = "hidden";
 
+    if (!this.profileContext.currentProfile) return;
+
     if (this.instanceId) {
       await this.initCampaignGame();
       return;

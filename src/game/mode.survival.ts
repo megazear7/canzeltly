@@ -1,6 +1,6 @@
 import { GameState, GameStatus } from "./game.js";
 import { GameMode } from "./type.game.js";
-import { GameObjectCategory } from "./type.object.js";
+import { GameObjectCategory, DrawCategory } from "./type.object.js";
 import { RectangleState, CircleState } from "./type.object.js";
 import { AffectCategory } from "./game.affect.js";
 import { OccurrenceCategory } from "./game.affect.js";
@@ -61,7 +61,10 @@ export function createSurvivalGame({
       mass: width * height,
       x: 0,
       y: 0,
-      color: "#53744c",
+      draw: {
+        category: DrawCategory.enum.square,
+        color: "#53744c",
+      },
     }),
   ];
 
@@ -120,7 +123,6 @@ export function createSurvivalGame({
   // Create a circle for the player
   const circle = heroCircle(game, playerId, health, breakSpeed);
   circle.id = circleId;
-  circle.color = "#0000FF"; // Blue for player circle
   game.layers[1].push(circle);
 
   // Add green collectible circles
@@ -138,7 +140,10 @@ export function createSurvivalGame({
       mass: radius * radius,
       x: Math.random() * width,
       y: Math.random() * height,
-      color: "#00FF00", // Green for collectibles
+      draw: {
+        category: DrawCategory.enum.circle,
+        color: "#00FF00", // Green for collectibles
+      },
     });
     game.layers[1].push(collectible);
   }

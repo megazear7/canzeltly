@@ -10,6 +10,45 @@ export type GameObjectLabel = z.infer<typeof GameObjectLabel>;
 export const GameObjectId = z.uuid();
 export type GameObjectId = z.infer<typeof GameObjectId>;
 
+export const DrawCategory = z.enum(["circle", "square", "image", "ship"]);
+export type DrawCategory = z.infer<typeof DrawCategory>;
+
+export const DrawState = z.object({
+  category: DrawCategory,
+});
+export type DrawState = z.infer<typeof DrawState>;
+
+export const DrawCircle = DrawState.extend({
+  category: z.literal(DrawCategory.enum.circle),
+  color: z.string(),
+});
+export type DrawCircle = z.infer<typeof DrawCircle>;
+
+export const DrawSquare = DrawState.extend({
+  category: z.literal(DrawCategory.enum.square),
+  color: z.string(),
+});
+export type DrawSquare = z.infer<typeof DrawSquare>;
+
+export const DrawImage = DrawState.extend({
+  category: z.literal(DrawCategory.enum.image),
+  image: z.string(),
+});
+export type DrawImage = z.infer<typeof DrawImage>;
+
+export const DrawShip = DrawState.extend({
+  category: z.literal(DrawCategory.enum.ship),
+  noAccelerationImage: z.string(),
+  acceleratingUpImage: z.string(),
+  acceleratingDownImage: z.string(),
+  acceleratingLeftImage: z.string(),
+  acceleratingRightImage: z.string(),
+});
+export type DrawShip = z.infer<typeof DrawShip>;
+
+export const AnyDrawState = z.union([DrawCircle, DrawSquare, DrawImage, DrawShip]);
+export type AnyDrawState = z.infer<typeof AnyDrawState>;
+
 export const AffectState = z.object({
   category: AffectCategory.enum.Bounce,
 });
@@ -150,18 +189,19 @@ export const GameObjectState = z.object({
   mass: z.number().default(1),
   x: z.number(),
   y: z.number(),
+  draw: AnyDrawState.optional(),
 });
 export type GameObjectState = z.infer<typeof GameObjectState>;
 
 export const CircleState = GameObjectState.extend({
   category: z.literal(GameObjectCategory.enum.Circle),
-  color: z.string(),
+  draw: AnyDrawState.optional(),
 });
 export type CircleState = z.infer<typeof CircleState>;
 
 export const RectangleState = GameObjectState.extend({
   category: z.literal(GameObjectCategory.enum.Rectangle),
-  color: z.string(),
+  draw: AnyDrawState.optional(),
   width: z.number(),
   height: z.number(),
 });

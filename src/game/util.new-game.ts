@@ -1,6 +1,6 @@
 import { GameState, GameStatus } from "./game.js";
 import { GameMode } from "./type.game.js";
-import { GameObjectCategory } from "./type.object.js";
+import { GameObjectCategory, DrawCategory } from "./type.object.js";
 import { RectangleState } from "./type.object.js";
 import { randomBouncingCircleState, heroCircle } from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
@@ -27,7 +27,10 @@ export function newGame({
       mass: width * height,
       x: 0,
       y: 0,
-      color: "#53744c",
+      draw: {
+        category: DrawCategory.enum.square,
+        color: "#53744c",
+      },
     }),
   ];
 
@@ -75,7 +78,6 @@ export function newGame({
   // Create a circle for the player
   const circle = heroCircle(game, playerId);
   circle.id = circleId;
-  circle.color = "#00FF00"; // Green for player circle
   game.layers[1].push(circle);
 
   for (let i = 0; i < 6; i++) {

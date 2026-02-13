@@ -1,6 +1,6 @@
 import { GameState, GameStatus } from "./game.js";
 import { GameMode } from "./type.game.js";
-import { GameObjectCategory, GameObjectLabel } from "./type.object.js";
+import { GameObjectCategory, GameObjectLabel, DrawCategory } from "./type.object.js";
 import { RectangleState, CircleState } from "./type.object.js";
 import { AffectCategory, OccurrenceCategory } from "./game.affect.js";
 import {
@@ -64,7 +64,10 @@ export function createAdventureGame({
       mass: width * height,
       x: 0,
       y: 0,
-      color: "#53744c",
+      draw: {
+        category: DrawCategory.enum.square,
+        color: "#53744c",
+      },
     }),
   ];
 
@@ -123,7 +126,6 @@ export function createAdventureGame({
   // Create a circle for the player
   const circle = heroCircle(game, playerId, health, breakSpeed);
   circle.id = circleId;
-  circle.color = "#0000FF"; // Blue for player circle
   game.layers[1].push(circle);
 
   // Add green collectible circles
@@ -147,7 +149,10 @@ export function createAdventureGame({
       labels: [GameObjectLabel.enum.Collectable],
       x: Math.random() * width,
       y: Math.random() * height,
-      color: "#00FF00", // Green for collectibles
+      draw: {
+        category: DrawCategory.enum.circle,
+        color: "#00FF00", // Green for collectibles
+      },
     };
     game.layers[1].push(collectible);
   }

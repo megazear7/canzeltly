@@ -1,0 +1,16 @@
+- Add a `DrawCategory` enum which is an enum with options `circle`, `square`, `image`, `ship`
+- Add a `DrawState` type with a property `category` which is of type `DrawCategory`
+- Add a `DrawCircle`, `DrawSquare`, `DrawImage`, and `DrawShip` types which extend `DrawState`
+    - `DrawCircle`: Add `color` property
+    - `DrawSquare`: Add `color` property
+    - `DrawImage`: Add a `image` property which is a relative path to the image.
+    - `DrawShip`: Add five properties: `noAccelerationImage`, `acceleratingDownImage`, `acceleratingRightImage`, `acceleratingDownImage`, `acceleratingLeftImage` all relative paths to the image
+- Add a `AnyDrawState` which is any of the four draw types
+- Add a `draw` property to `GameObjectState` which is of type `AnyDrawState`
+- Update src/canvas/draw.object.ts to refer to this `draw` property and condition on the `category` property.
+- Update the `src/canvas/draw.circle.ts` and `src/canvas/draw.rectangle.ts` to pull color from the draw state.
+- Create `src/canvas/draw.image.ts` and `src/canvas/draw.ship.ts`
+- Drawing the image using canvas, centering the image on the object and scaling the image based on the objects radius.
+- Drawing the ship should calculate which direction the ship is primarily accerating in and draw the corresponding image.
+- Update all circle objects in `src/game/object.circle.ts` to have the draw property
+- The hero object should use the `DrawShip` option and use the images under `src/static/images/hero`

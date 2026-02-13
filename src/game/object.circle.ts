@@ -1,7 +1,7 @@
 import { AffectCategory } from "./game.affect.js";
 import { Game, GameState } from "./game.js";
 import { GameObject } from "./game.object.js";
-import { CircleState, GameObjectCategory } from "./type.object.js";
+import { CircleState, GameObjectCategory, DrawCategory } from "./type.object.js";
 
 export class Circle extends GameObject<CircleState> {
   override state: CircleState;
@@ -23,7 +23,10 @@ export function randomCircleState(game: Game): CircleState {
     y: Math.random() * (game.state.world.height / 2),
     radius,
     mass: radius * radius,
-    color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+    draw: {
+      category: DrawCategory.enum.circle,
+      color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+    },
   });
 }
 
@@ -53,7 +56,10 @@ export function randomMovingCircleState(game: GameState): CircleState {
     y: Math.random() * (game.world.height / 2),
     radius,
     mass: radius * radius,
-    color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+    draw: {
+      category: DrawCategory.enum.circle,
+      color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+    },
   });
 }
 
@@ -106,7 +112,10 @@ export function randomBouncingCircleState(game: GameState): CircleState {
     y: Math.random() * (game.world.height / 2),
     radius,
     mass: radius * radius,
-    color: `#FF0000`,
+    draw: {
+      category: DrawCategory.enum.circle,
+      color: `#FF0000`,
+    },
   });
 }
 
@@ -138,7 +147,10 @@ export function randomBlockadeCircleState(game: GameState): CircleState {
     y: Math.random() * game.world.height,
     radius,
     mass: Number.MAX_SAFE_INTEGER, // Infinite mass - immovable
-    color: `#808080`,
+    draw: {
+      category: DrawCategory.enum.circle,
+      color: `#808080`,
+    },
   });
 }
 
@@ -169,7 +181,10 @@ export function randomVoidCircleState(game: GameState): CircleState {
     y: Math.random() * game.world.height,
     radius,
     mass: radius * radius,
-    color: `#000000`,
+    draw: {
+      category: DrawCategory.enum.circle,
+      color: `#000000`,
+    },
   });
 }
 
@@ -229,7 +244,10 @@ export function randomHunterCircleState(game: GameState, playerId: string): Circ
     y: Math.random() * (game.world.height / 2),
     radius,
     mass: radius * radius,
-    color: `#800080`, // Purple for hunters
+    draw: {
+      category: DrawCategory.enum.circle,
+      color: `#800080`, // Purple for hunters
+    },
   });
 }
 
@@ -282,7 +300,10 @@ export function randomGhostCircleState(game: GameState, playerId: string): Circl
     y: Math.random() * (game.world.height / 2),
     radius,
     mass: radius * radius,
-    color: `#C0C0C0`, // Silver for ghosts
+    draw: {
+      category: DrawCategory.enum.circle,
+      color: `#C0C0C0`, // Silver for ghosts
+    },
   });
 }
 
@@ -329,7 +350,10 @@ export function randomGravityCircles(game: GameState): CircleState {
     y: Math.random() * (game.world.height / 2),
     radius,
     mass: radius * radius,
-    color: `hsl(200, 70%, 50%)`,
+    draw: {
+      category: DrawCategory.enum.circle,
+      color: `hsl(200, 70%, 50%)`,
+    },
   });
 }
 
@@ -339,7 +363,7 @@ export function heroCircle(
   health: number = 1,
   breakSpeed: number = 0.1,
 ): CircleState {
-  const radius = 15;
+  const radius = 30;
   return CircleState.parse({
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
@@ -395,7 +419,14 @@ export function heroCircle(
     y: (0.5 + Math.random() * 0.5) * game.world.height,
     radius,
     mass: radius * radius,
-    color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+    draw: {
+      category: DrawCategory.enum.ship,
+      noAccelerationImage: "/images/hero/hero.png",
+      acceleratingUpImage: "/images/hero/hero-thrust-up.png",
+      acceleratingDownImage: "/images/hero/hero-thrust-down.png",
+      acceleratingLeftImage: "/images/hero/hero-thrust-left.png",
+      acceleratingRightImage: "/images/hero/hero-thrust-right.png",
+    },
   });
 }
 
@@ -417,7 +448,10 @@ export function foodCircle(game: GameState): CircleState {
     mass: radius * radius,
     x: Math.random() * game.world.width,
     y: Math.random() * game.world.height,
-    color: "#FFA500", // Orange for food
+    draw: {
+      category: DrawCategory.enum.circle,
+      color: "#FFA500", // Orange for food
+    },
   });
 }
 
@@ -439,7 +473,10 @@ export function shieldCircle(game: GameState): CircleState {
     mass: radius * radius,
     x: Math.random() * game.world.width,
     y: Math.random() * game.world.height,
-    color: "#0000FF", // Blue for shield
+    draw: {
+      category: DrawCategory.enum.circle,
+      color: "#0000FF", // Blue for shield
+    },
   });
 }
 
@@ -461,6 +498,9 @@ export function iceCircle(game: GameState): CircleState {
     mass: radius * radius,
     x: Math.random() * game.world.width,
     y: Math.random() * game.world.height,
-    color: "#00FFFF", // Cyan for ice
+    draw: {
+      category: DrawCategory.enum.circle,
+      color: "#00FFFF", // Cyan for ice
+    },
   });
 }
