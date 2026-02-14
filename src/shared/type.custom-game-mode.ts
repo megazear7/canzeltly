@@ -10,7 +10,7 @@ export const CustomGameMode = z.object({
   timeLimit: z.number(),
   health: z.number(),
   numGreenCircles: z.number(),
-  numBouncy: z.number(),
+  numGremlakShips: z.number(),
   numGravity: z.number(),
   numHunter: z.number(),
   numBlockade: z.number(),

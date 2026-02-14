@@ -34,7 +34,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   @state() timeLimit = 60;
   @state() health = 1;
   @state() numGreenCircles = 5;
-  @state() numBouncy = 6;
+  @state() numGremlakShips = 6;
   @state() numGravity = 0;
   @state() numHunter = 0;
   @state() numBlockade = 0;
@@ -118,7 +118,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         this.timeLimit = customMode.timeLimit;
         this.health = customMode.health;
         this.numGreenCircles = customMode.numGreenCircles;
-        this.numBouncy = customMode.numBouncy;
+        this.numGremlakShips = customMode.numGremlakShips;
         this.numGravity = customMode.numGravity;
         this.numHunter = customMode.numHunter;
         this.numBlockade = customMode.numBlockade;
@@ -134,7 +134,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
   private setDefaultsForMode(): void {
     if (this.mode === GameMode.enum.Adventure) {
       this.numGreenCircles = 10;
-      this.numBouncy = 5;
+      this.numGremlakShips = 5;
       this.numGravity = 0;
       this.numHunter = 0;
       this.numBlockade = 3;
@@ -145,7 +145,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       this.spawnIceChance = 0;
     } else if (this.mode === GameMode.enum.Survival) {
       this.numGreenCircles = 0;
-      this.numBouncy = 6;
+      this.numGremlakShips = 6;
       this.numGravity = 0;
       this.numHunter = 0;
       this.numBlockade = 0;
@@ -156,7 +156,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       this.spawnIceChance = 0;
     } else if (this.mode === GameMode.enum.Race) {
       this.numGreenCircles = 5;
-      this.numBouncy = 1;
+      this.numGremlakShips = 1;
       this.numGravity = 0;
       this.numHunter = 0;
       this.numBlockade = 0;
@@ -307,12 +307,12 @@ export class CanzeltlyCreateGameComponent extends LitElement {
               (this.spawnIceChance = Number((e.detail as { value: number }).value))}"></canzeltly-input>
           <canzeltly-input
             type="slider"
-            label="Number of Bouncy Circles (${this.numBouncy})"
-            .value="${this.numBouncy}"
+            label="Number of Gremlak Ships (${this.numGremlakShips})"
+            .value="${this.numGremlakShips}"
             .min="${0}"
             .max="${100}"
             @input-change="${(e: CustomEvent) =>
-              (this.numBouncy = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+              (this.numGremlakShips = Number((e.detail as { value: number }).value))}"></canzeltly-input>
           <canzeltly-input
             type="slider"
             label="Number of Gravity Circles (${this.numGravity})"
@@ -386,7 +386,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         width: this.worldWidth,
         height: this.worldHeight,
         playerId: crypto.randomUUID(),
-        numBouncy: this.numBouncy,
+        numGremlakShips: this.numGremlakShips,
         numGravity: this.numGravity,
         numHunter: this.numHunter,
         numBlockade: this.numBlockade,
@@ -406,7 +406,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         height: this.worldHeight,
         playerId: crypto.randomUUID(),
         numGreenCircles: this.numGreenCircles,
-        numBouncy: this.numBouncy,
+        numGremlakShips: this.numGremlakShips,
         numGravity: this.numGravity,
         numHunter: this.numHunter,
         numBlockade: this.numBlockade,
@@ -426,7 +426,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         playerId: crypto.randomUUID(),
         timeLimit: this.timeLimit,
         numGreenCircles: this.numGreenCircles,
-        numBouncy: this.numBouncy,
+        numGremlakShips: this.numGremlakShips,
         numGravity: this.numGravity,
         numHunter: this.numHunter,
         numBlockade: this.numBlockade,
@@ -503,7 +503,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       timeLimit: this.timeLimit,
       health: this.health,
       numGreenCircles: this.numGreenCircles,
-      numBouncy: this.numBouncy,
+      numGremlakShips: this.numGremlakShips,
       numGravity: this.numGravity,
       numHunter: this.numHunter,
       numBlockade: this.numBlockade,

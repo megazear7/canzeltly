@@ -19,7 +19,7 @@ export function createAdventureGame({
   height = 1000,
   playerId = crypto.randomUUID(),
   numGreenCircles = 10,
-  numBouncy = 5,
+  numGremlakShips = 5,
   numGravity = 0,
   numHunter = 0,
   numBlockade = 0,
@@ -37,7 +37,7 @@ export function createAdventureGame({
   height?: number;
   playerId?: string;
   numGreenCircles?: number;
-  numBouncy?: number;
+  numGremlakShips?: number;
   numGravity?: number;
   numHunter?: number;
   numBlockade?: number;
@@ -134,7 +134,7 @@ export function createAdventureGame({
   }
 
   // Add enemy circles
-  for (let i = 0; i < numBouncy; i++) {
+  for (let i = 0; i < numGremlakShips; i++) {
     game.layers[1].push(gremlakShip(game));
   }
   for (let i = 0; i < numGravity; i++) {

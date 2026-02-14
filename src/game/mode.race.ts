@@ -20,7 +20,7 @@ export function createRaceGame({
   playerId = crypto.randomUUID(),
   timeLimit = 60,
   numGreenCircles = 5,
-  numBouncy = 1,
+  numGremlakShips = 1,
   numGravity = 0,
   numHunter = 0,
   numBlockade = 0,
@@ -39,7 +39,7 @@ export function createRaceGame({
   playerId?: string;
   timeLimit?: number;
   numGreenCircles?: number;
-  numBouncy?: number;
+  numGremlakShips?: number;
   numGravity?: number;
   numHunter?: number;
   numBlockade?: number;
@@ -137,7 +137,7 @@ export function createRaceGame({
   }
 
   // Add enemy circles
-  for (let i = 0; i < numBouncy; i++) {
+  for (let i = 0; i < numGremlakShips; i++) {
     game.layers[1].push(gremlakShip(game));
   }
   for (let i = 0; i < numGravity; i++) {

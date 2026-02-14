@@ -19,7 +19,7 @@ export function createSurvivalGame({
   width = 1000,
   height = 1000,
   playerId = crypto.randomUUID(),
-  numBouncy = 6,
+  numGremlakShips = 6,
   numGravity = 0,
   numHunter = 0,
   numBlockade = 0,
@@ -35,7 +35,7 @@ export function createSurvivalGame({
   width?: number;
   height?: number;
   playerId?: string;
-  numBouncy?: number;
+  numGremlakShips?: number;
   numGravity?: number;
   numHunter?: number;
   numBlockade?: number;
@@ -149,7 +149,7 @@ export function createSurvivalGame({
   }
 
   // Add initial enemy circles
-  for (let i = 0; i < numBouncy; i++) {
+  for (let i = 0; i < numGremlakShips; i++) {
     game.layers[1].push(gremlakShip(game));
   }
   for (let i = 0; i < numGravity; i++) {
