@@ -2,7 +2,6 @@ import { css, html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { globalStyles } from "./styles.global.js";
 import { CanzeltlyAppProvider } from "./provider.app.js";
-import "./component.profile-circle.js";
 
 @customElement("canzeltly-home-page")
 export class CanzeltlyHomePage extends CanzeltlyAppProvider {
@@ -32,7 +31,6 @@ export class CanzeltlyHomePage extends CanzeltlyAppProvider {
         <p><a href="/campaigns/continue" class="standalone">Continue Campaign</a></p>
         <p><a href="/achievements" class="standalone">Achievements</a></p>
       </main>
-      <canzeltly-profile-circle></canzeltly-profile-circle>
     `;
   }
 }

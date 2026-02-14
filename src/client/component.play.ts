@@ -208,15 +208,17 @@ export class CanzeltlyPlay extends LitElement {
     }
 
     let gameState;
+    const drawMode = this.profileContext.currentProfile?.drawMode || "graphical";
     if (this.isNewGame) {
-      gameState = loadNewGameState(this.profileContext.currentProfile!.id) ?? newGame({ playerId: this.playerId });
+      gameState =
+        loadNewGameState(this.profileContext.currentProfile!.id) ?? newGame({ playerId: this.playerId, drawMode });
     } else {
       gameState = loadGameState(this.gameId, this.profileContext.currentProfile!.id);
     }
     if (gameState) {
       this.game = new Game(gameState);
     } else if (this.gameId && this.playerId) {
-      this.game = new Game(createSurvivalGame({ playerId: this.playerId }));
+      this.game = new Game(createSurvivalGame({ playerId: this.playerId, drawMode }));
       this.game.state.id = this.gameId;
     }
 
@@ -376,6 +378,7 @@ export class CanzeltlyPlay extends LitElement {
     const mode = campaignGame.mode;
     const health = instance.heroStats.health;
     const breakSpeed = instance.heroStats.breakSpeed;
+    const campaignDrawMode = this.profileContext.currentProfile?.drawMode || "graphical";
 
     let gameState;
     if (mode.mode === GameMode.enum.Adventure) {
@@ -394,6 +397,7 @@ export class CanzeltlyPlay extends LitElement {
         gameId: this.gameId,
         health,
         breakSpeed,
+        drawMode: campaignDrawMode,
       });
     } else if (mode.mode === GameMode.enum.Race) {
       gameState = createRaceGame({
@@ -412,6 +416,7 @@ export class CanzeltlyPlay extends LitElement {
         gameId: this.gameId,
         health,
         breakSpeed,
+        drawMode: campaignDrawMode,
       });
     } else {
       gameState = createSurvivalGame({
@@ -427,6 +432,7 @@ export class CanzeltlyPlay extends LitElement {
         numGhost: mode.numGhost,
         health,
         breakSpeed,
+        drawMode: campaignDrawMode,
       });
       gameState.id = this.gameId;
     }
@@ -529,6 +535,7 @@ export class CanzeltlyPlay extends LitElement {
   private async initCustomGame(): Promise<void> {
     const customMode = loadCustomGameMode(this.modeName, this.profileContext.currentProfile!.id);
     if (!customMode) return;
+    const customDrawMode = this.profileContext.currentProfile?.drawMode || "graphical";
 
     let gameState;
     if (customMode.mode === GameMode.enum.Survival) {
@@ -544,6 +551,7 @@ export class CanzeltlyPlay extends LitElement {
         numVoid: customMode.numVoid,
         numGhost: customMode.numGhost,
         health: customMode.health,
+        drawMode: customDrawMode,
       });
     } else if (customMode.mode === GameMode.enum.Adventure) {
       gameState = createAdventureGame({
@@ -560,6 +568,7 @@ export class CanzeltlyPlay extends LitElement {
         gameName: customMode.name,
         gameId: this.gameId,
         health: customMode.health,
+        drawMode: customDrawMode,
       });
     } else if (customMode.mode === GameMode.enum.Race) {
       gameState = createRaceGame({
@@ -577,6 +586,7 @@ export class CanzeltlyPlay extends LitElement {
         gameName: customMode.name,
         gameId: this.gameId,
         health: customMode.health,
+        drawMode: customDrawMode,
       });
     } else {
       return;

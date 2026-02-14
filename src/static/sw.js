@@ -1,5 +1,5 @@
 var appCacheName = "app-cache-v3";
-var preCacheFiles = ["/", "/bundle.js", "/app.css", "/manifest.json", "/favicon.ico", "/logo-text.png", "/example.csv"];
+var preCacheFiles = ["/", "/bundle.js", "/app.css", "/manifest.json", "/favicon.ico"];
 
 console.debug("[ServiceWorker] Loaded");
 

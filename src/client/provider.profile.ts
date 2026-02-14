@@ -117,6 +117,17 @@ export abstract class CanzeltlyProfileProvider extends CanzeltlyAbstractProvider
     };
   }
 
+  updateProfileDrawMode(drawMode: "simple" | "graphical"): void {
+    if (!this.profileContext.currentProfile) return;
+    const updatedProfile = { ...this.profileContext.currentProfile, drawMode };
+    saveProfile(updatedProfile);
+    this.profileContext = {
+      ...this.profileContext,
+      currentProfile: updatedProfile,
+      profiles: this.profileContext.profiles.map((p) => (p.id === updatedProfile.id ? updatedProfile : p)),
+    };
+  }
+
   showProfileModal(): void {
     this.profileContext = {
       ...this.profileContext,

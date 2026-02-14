@@ -1,5 +1,6 @@
 import z from "zod";
 import { slugify } from "./util.slug.js";
+import { DrawMode } from "../game/type.object.js";
 
 export const ProfileId = z.string().regex(/^[a-z_]+$/);
 export type ProfileId = z.infer<typeof ProfileId>;
@@ -12,6 +13,7 @@ export const Profile = z.object({
   name: z.string().min(1).max(50),
   primaryColor: ProfileColor,
   secondaryColor: ProfileColor,
+  drawMode: DrawMode.default("graphical"),
   createdAt: z.date(),
 });
 export type Profile = z.infer<typeof Profile>;
@@ -33,6 +35,7 @@ export function createProfile(name: string): Profile {
     name,
     primaryColor: generateRandomProfileColor(),
     secondaryColor: generateRandomProfileColor(),
+    drawMode: "graphical",
     createdAt: new Date(),
   };
 }

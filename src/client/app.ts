@@ -32,6 +32,7 @@ import "./component.save-indicator.js";
 import "./component.play.js";
 import "./component.profile-modal.js";
 import "./component.create-profile-modal.js";
+import "./component.profile-circle.js";
 
 @customElement("canzeltly-app")
 export class CanzeltlyApp extends CanzeltlyProfileProvider {
@@ -89,6 +90,10 @@ export class CanzeltlyApp extends CanzeltlyProfileProvider {
     document.addEventListener("delete-profile", (event: Event) => {
       const customEvent = event as CustomEvent;
       this.deleteProfile(customEvent.detail.profileId);
+    });
+    document.addEventListener("update-profile-draw-mode", (event: Event) => {
+      const customEvent = event as CustomEvent;
+      this.updateProfileDrawMode(customEvent.detail.drawMode);
     });
 
     this.addEventListener(SaveEventName.value, this.handleSaveEvent);
@@ -166,6 +171,7 @@ export class CanzeltlyApp extends CanzeltlyProfileProvider {
 
     return html`
       ${pageContent}
+      <canzeltly-profile-circle></canzeltly-profile-circle>
       <canzeltly-toast
         .message="${this.toastMessage}"
         .type="${this.toastType}"

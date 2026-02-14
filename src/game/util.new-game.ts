@@ -1,6 +1,6 @@
 import { GameState, GameStatus } from "./game.js";
 import { GameMode } from "./type.game.js";
-import { GameObjectCategory, DrawCategory } from "./type.object.js";
+import { GameObjectCategory, DrawCategory, DrawMode } from "./type.object.js";
 import { RectangleState } from "./type.object.js";
 import { gremlakShip, heroCircle } from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
@@ -9,10 +9,12 @@ export function newGame({
   width = 1000,
   height = 1000,
   playerId = crypto.randomUUID(),
+  drawMode = "graphical",
 }: {
   width?: number;
   height?: number;
   playerId?: string;
+  drawMode?: "simple" | "graphical";
 } = {}): GameState {
   const circleId = crypto.randomUUID();
 
@@ -27,10 +29,18 @@ export function newGame({
       mass: width * height,
       x: 0,
       y: 0,
-      draw: {
-        category: DrawCategory.enum.square,
-        color: "#000000",
-      },
+      draw: [
+        {
+          category: DrawCategory.enum.square,
+          mode: DrawMode.enum.simple,
+          color: "#000000",
+        },
+        {
+          category: DrawCategory.enum.square,
+          mode: DrawMode.enum.graphical,
+          color: "#000000",
+        },
+      ],
     }),
   ];
 
@@ -70,6 +80,7 @@ export function newGame({
     status: GameStatus.enum.NotStarted,
     duration: 0,
     mode: GameMode.enum.Survival,
+    drawMode,
     collected: 0,
     totalCollectibles: undefined,
     occurrences: [],

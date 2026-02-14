@@ -3,6 +3,7 @@ import { customElement, property, query } from "lit/decorators.js";
 import { consume } from "@lit/context";
 import { Game } from "../game/game.js";
 import { GameMode } from "../game/type.game.js";
+import { DrawMode } from "../game/type.object.js";
 import { globalStyles } from "./styles.global.js";
 import { CanzeltlyModal } from "./component.modal.js";
 import { dispatch } from "./util.events.js";
@@ -90,6 +91,9 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
         <div slot="body">
           <h2>Game Menu</h2>
           <div class="menu-options">
+            <button class="simple" @click=${this.toggleDrawMode}>
+              Draw Mode: ${this.game?.state.drawMode || "graphical"}
+            </button>
             <button class="simple" @click=${this.saveGame}>Save Game</button>
             <button class="simple" @click=${this.saveAndExit}>Save and Exit</button>
             <button class="simple" @click=${this.exitWithoutSaving}>Exit without Saving</button>
@@ -132,6 +136,14 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
   private exitWithoutSaving(): void {
     this.menuModal?.close();
     dispatch(this, NavigationEvent({ path: "/" }));
+  }
+
+  private toggleDrawMode(): void {
+    if (this.game) {
+      this.game.state.drawMode =
+        this.game.state.drawMode === DrawMode.enum.simple ? DrawMode.enum.graphical : DrawMode.enum.simple;
+      this.requestUpdate();
+    }
   }
 
   private getCollectedText(): string {

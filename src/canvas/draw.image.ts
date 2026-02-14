@@ -12,8 +12,7 @@ function getImage(src: string): HTMLImageElement {
   return imageCache.get(src)!;
 }
 
-export function drawImage(obj: AnyGameObjectState, ctx: CanvasRenderingContext2D): void {
-  const draw = obj.draw as DrawImage;
+export function drawImage(obj: AnyGameObjectState, ctx: CanvasRenderingContext2D, draw: DrawImage): void {
   const img = getImage(draw.image);
   // Note: Images are cached, but may not be fully loaded yet
   if (img.complete) {

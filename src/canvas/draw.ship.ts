@@ -14,9 +14,7 @@ function getImage(src: string): HTMLImageElement {
   return imageCache.get(src)!;
 }
 
-export function drawShip(obj: AnyGameObjectState, ctx: CanvasRenderingContext2D): void {
-  const draw = obj.draw as DrawShip;
-
+export function drawShip(obj: AnyGameObjectState, ctx: CanvasRenderingContext2D, draw: DrawShip): void {
   // Find velocity affect
   const velocityAffect = obj.affects.find((affect) => affect.category === AffectCategory.enum.Velocity) as
     | VelocityState

@@ -1,8 +1,7 @@
 import { GameState, GameStatus } from "./game.js";
+import { GameObjectCategory, DrawCategory, DrawMode, RectangleState, CircleState } from "./type.object.js";
 import { GameMode } from "./type.game.js";
-import { GameObjectCategory, DrawCategory } from "./type.object.js";
-import { RectangleState, CircleState } from "./type.object.js";
-import { AffectCategory } from "./game.affect.js";
+import { GameObjectCategory, DrawCategory, DrawMode, RectangleState, CircleState } from "./type.object.js";
 import { OccurrenceCategory } from "./game.affect.js";
 import {
   gremlakShip,
@@ -14,7 +13,6 @@ import {
   randomGhostCircleState,
 } from "./object.circle.js";
 import { Player } from "../shared/type.player.js";
-
 export function createSurvivalGame({
   width = 1000,
   height = 1000,
@@ -31,6 +29,7 @@ export function createSurvivalGame({
   spawnFoodChance = 0,
   spawnShieldChance = 0,
   spawnIceChance = 0,
+  drawMode = "graphical",
 }: {
   width?: number;
   height?: number;
@@ -47,6 +46,7 @@ export function createSurvivalGame({
   spawnFoodChance?: number;
   spawnShieldChance?: number;
   spawnIceChance?: number;
+  drawMode?: "simple" | "graphical";
 } = {}): GameState {
   const circleId = crypto.randomUUID();
 
@@ -61,10 +61,18 @@ export function createSurvivalGame({
       mass: width * height,
       x: 0,
       y: 0,
-      draw: {
-        category: DrawCategory.enum.square,
-        color: "#111111",
-      },
+      draw: [
+        {
+          category: DrawCategory.enum.square,
+          mode: DrawMode.enum.simple,
+          color: "#111111",
+        },
+        {
+          category: DrawCategory.enum.square,
+          mode: DrawMode.enum.graphical,
+          color: "#111111",
+        },
+      ],
     }),
   ];
 
@@ -104,6 +112,7 @@ export function createSurvivalGame({
     status: GameStatus.enum.NotStarted,
     duration: 0,
     mode: GameMode.enum.Survival,
+    drawMode,
     collected: 0,
     totalCollectibles: numGreenCircles > 0 ? numGreenCircles : undefined,
     occurrences: [],
@@ -140,10 +149,18 @@ export function createSurvivalGame({
       mass: radius * radius,
       x: Math.random() * width,
       y: Math.random() * height,
-      draw: {
-        category: DrawCategory.enum.image,
-        image: "/images/coin/coin.png",
-      },
+      draw: [
+        {
+          category: DrawCategory.enum.circle,
+          mode: DrawMode.enum.simple,
+          color: "#FFFF00",
+        },
+        {
+          category: DrawCategory.enum.image,
+          mode: DrawMode.enum.graphical,
+          image: "/images/coin/coin.png",
+        },
+      ],
     });
     game.layers[1].push(collectible);
   }

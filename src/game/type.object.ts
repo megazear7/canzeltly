@@ -13,8 +13,12 @@ export type GameObjectId = z.infer<typeof GameObjectId>;
 export const DrawCategory = z.enum(["circle", "square", "image", "ship"]);
 export type DrawCategory = z.infer<typeof DrawCategory>;
 
+export const DrawMode = z.enum(["simple", "graphical"]);
+export type DrawMode = z.infer<typeof DrawMode>;
+
 export const DrawState = z.object({
   category: DrawCategory,
+  mode: DrawMode,
 });
 export type DrawState = z.infer<typeof DrawState>;
 
@@ -189,19 +193,19 @@ export const GameObjectState = z.object({
   mass: z.number().default(1),
   x: z.number(),
   y: z.number(),
-  draw: AnyDrawState.optional(),
+  draw: z.array(AnyDrawState).optional(),
 });
 export type GameObjectState = z.infer<typeof GameObjectState>;
 
 export const CircleState = GameObjectState.extend({
   category: z.literal(GameObjectCategory.enum.Circle),
-  draw: AnyDrawState.optional(),
+  draw: z.array(AnyDrawState).optional(),
 });
 export type CircleState = z.infer<typeof CircleState>;
 
 export const RectangleState = GameObjectState.extend({
   category: z.literal(GameObjectCategory.enum.Rectangle),
-  draw: AnyDrawState.optional(),
+  draw: z.array(AnyDrawState).optional(),
   width: z.number(),
   height: z.number(),
 });

@@ -4,7 +4,7 @@ import { GameObjectId } from "./type.object.js";
 import { hydrateObjects } from "./util.hydrate.js";
 import { GameInput } from "./game.input.js";
 import { GameId, GameName, GameObjectLayer, GameMode } from "./type.game.js";
-import { AnyGameObjectState } from "./type.object.js";
+import { AnyGameObjectState, DrawMode } from "./type.object.js";
 import { Player } from "../shared/type.player.js";
 import { OccurrenceState } from "./game.affect.js";
 import { spawnFood } from "./occurrence.spawn-food.js";
@@ -52,6 +52,7 @@ export const GameState = z.object({
   ended: z.number().optional(),
   duration: z.number().default(0),
   mode: GameMode,
+  drawMode: DrawMode.default("graphical"),
   collected: z.number().default(0),
   totalCollectibles: z.number().optional(),
   timeLimit: z.number().optional(),

@@ -1,5 +1,13 @@
 import { Game } from "../game/game.js";
-import { DrawCategory, GameObjectCategory } from "../game/type.object.js";
+import {
+  DrawCategory,
+  DrawCircle,
+  DrawImage,
+  DrawShip,
+  DrawSquare,
+  GameObjectCategory,
+  DrawMode,
+} from "../game/type.object.js";
 import { AnyGameObjectState } from "../game/type.object.js";
 import { drawCircle } from "./draw.circle.js";
 import { drawSquare } from "./draw.rectangle.js";
@@ -15,28 +23,46 @@ export function drawObject(
 ): void {
   obj = mapToCanvas(game.state.viewports[viewportIndex], ctx.canvas, obj);
 
-  const drawCategory = obj.draw?.category;
+  if (!obj.draw || obj.draw.length === 0) {
+    // Legacy object without draw property or empty array
+    if (obj.category === GameObjectCategory.enum.Circle) {
+      const defaultDraw: DrawCircle = {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: "#cccccc",
+      };
+      drawCircle(obj, ctx, defaultDraw);
+    } else if (obj.category === GameObjectCategory.enum.Rectangle) {
+      const defaultDraw: DrawSquare = {
+        category: DrawCategory.enum.square,
+        mode: DrawMode.enum.simple,
+        color: "#cccccc",
+      };
+      drawSquare(obj, ctx, defaultDraw);
+    } else {
+      console.warn(`No drawing logic for object category: ${obj.category}`);
+    }
+    return;
+  }
+
+  // Find the draw option that matches the game's draw mode, or default to the first one
+  const drawOption = obj.draw.find((d) => d.mode === game.state.drawMode) || obj.draw[0];
+
+  const drawCategory = drawOption.category;
   switch (drawCategory) {
     case DrawCategory.enum.circle:
-      drawCircle(obj, ctx);
+      drawCircle(obj, ctx, drawOption as DrawCircle);
       break;
     case DrawCategory.enum.square:
-      drawSquare(obj, ctx);
+      drawSquare(obj, ctx, drawOption as DrawSquare);
       break;
     case DrawCategory.enum.image:
-      drawImage(obj, ctx);
+      drawImage(obj, ctx, drawOption as DrawImage);
       break;
     case DrawCategory.enum.ship:
-      drawShip(obj, ctx);
+      drawShip(obj, ctx, drawOption as DrawShip);
       break;
     default:
-      // Legacy object without draw property or unknown
-      if (obj.category === GameObjectCategory.enum.Circle) {
-        drawCircle(obj, ctx);
-      } else if (obj.category === GameObjectCategory.enum.Rectangle) {
-        drawSquare(obj, ctx);
-      } else {
-        console.warn(`No drawing logic for object category: ${obj.category}`);
-      }
+      console.warn(`Unknown draw category: ${drawCategory}`);
   }
 }

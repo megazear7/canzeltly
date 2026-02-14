@@ -380,6 +380,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
       return;
     }
     // Create game state
+    const drawMode = this.profileContext.currentProfile?.drawMode || "graphical";
     let gameState: GameState;
     if (this.mode === GameMode.enum.Survival) {
       gameState = createSurvivalGame({
@@ -397,6 +398,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         spawnFoodChance: this.spawnFoodChance,
         spawnShieldChance: this.spawnShieldChance,
         spawnIceChance: this.spawnIceChance,
+        drawMode,
       });
       gameState.name = this.gameName;
       gameState.id = id;
@@ -418,6 +420,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         spawnFoodChance: this.spawnFoodChance,
         spawnShieldChance: this.spawnShieldChance,
         spawnIceChance: this.spawnIceChance,
+        drawMode,
       });
     } else if (this.mode === GameMode.enum.Race) {
       gameState = createRaceGame({
@@ -438,6 +441,7 @@ export class CanzeltlyCreateGameComponent extends LitElement {
         spawnFoodChance: this.spawnFoodChance,
         spawnShieldChance: this.spawnShieldChance,
         spawnIceChance: this.spawnIceChance,
+        drawMode,
       });
     } else {
       throw new Error(`Unknown mode: ${this.mode}`);

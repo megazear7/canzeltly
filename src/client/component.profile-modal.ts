@@ -189,6 +189,14 @@ export class CanzeltlyProfileModal extends LitElement {
     `,
   ];
 
+  public handleCreateProfile(): void {
+    this.dispatchEvent(
+      new CustomEvent("show-create-profile-modal", {
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
   private getProfileInitials(name: string): string {
     return name
       .split(" ")
@@ -198,18 +206,36 @@ export class CanzeltlyProfileModal extends LitElement {
   }
 
   override render(): TemplateResult {
+    const currentProfile = this.profileContext.currentProfile;
     return html`
       <div class="modal-content">
         <div class="modal-header">
-          <h2 class="modal-title">Select Profile</h2>
+          <h2 class="modal-title">Profile Settings</h2>
           <button class="close-button" @click=${this.handleClose}>&times;</button>
         </div>
+
+        ${currentProfile ? this.renderCurrentProfileSettings(currentProfile) : ""}
 
         <div class="profile-list">
           ${this.profileContext.profiles.map((profile) => this.renderProfileItem(profile))}
         </div>
 
         <button class="create-profile-button" @click=${this.handleCreateProfile}>Create New Profile</button>
+      </div>
+    `;
+  }
+
+  private renderCurrentProfileSettings(profile: Profile): TemplateResult {
+    return html`
+      <div class="current-profile-settings">
+        <h3>Current Profile: ${profile.name}</h3>
+        <div class="setting">
+          <label for="draw-mode">Draw Mode:</label>
+          <select id="draw-mode" .value=${profile.drawMode} @change=${this.handleDrawModeChange}>
+            <option value="simple">Simple</option>
+            <option value="graphical">Graphical</option>
+          </select>
+        </div>
       </div>
     `;
   }
@@ -295,9 +321,12 @@ export class CanzeltlyProfileModal extends LitElement {
     }
   }
 
-  private handleCreateProfile(): void {
+  private handleDrawModeChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    const newDrawMode = select.value as "simple" | "graphical";
     this.dispatchEvent(
-      new CustomEvent("show-create-profile-modal", {
+      new CustomEvent("update-profile-draw-mode", {
+        detail: { drawMode: newDrawMode },
         bubbles: true,
         composed: true,
       }),

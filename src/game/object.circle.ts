@@ -1,7 +1,7 @@
 import { AffectCategory } from "./game.affect.js";
 import { Game, GameState } from "./game.js";
 import { GameObject } from "./game.object.js";
-import { CircleState, GameObjectCategory, DrawCategory, GameObjectLabel } from "./type.object.js";
+import { CircleState, GameObjectCategory, DrawCategory, GameObjectLabel, DrawMode } from "./type.object.js";
 
 export class Circle extends GameObject<CircleState> {
   override state: CircleState;
@@ -23,10 +23,18 @@ export function randomCircleState(game: Game): CircleState {
     y: Math.random() * (game.state.world.height / 2),
     radius,
     mass: radius * radius,
-    draw: {
-      category: DrawCategory.enum.circle,
-      color: `hsl(${Math.random() * 360}, 70%, 50%)`,
-    },
+    draw: [
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+      },
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.graphical,
+        color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+      },
+    ],
   });
 }
 
@@ -79,10 +87,18 @@ export function gremlakShip(game: GameState): CircleState {
     y: Math.random() * (game.world.height / 2),
     radius,
     mass: radius * radius,
-    draw: {
-      category: DrawCategory.enum.image,
-      image: "/images/gremlak/ship.png",
-    },
+    draw: [
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: "#ff0000",
+      },
+      {
+        category: DrawCategory.enum.image,
+        mode: DrawMode.enum.graphical,
+        image: "/images/gremlak/ship.png",
+      },
+    ],
   });
 }
 
@@ -114,10 +130,18 @@ export function randomBlockadeCircleState(game: GameState): CircleState {
     y: Math.random() * game.world.height,
     radius,
     mass: Number.MAX_SAFE_INTEGER, // Infinite mass - immovable
-    draw: {
-      category: DrawCategory.enum.circle,
-      color: `#808080`,
-    },
+    draw: [
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: `#808080`,
+      },
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.graphical,
+        color: `#808080`,
+      },
+    ],
   });
 }
 
@@ -148,10 +172,18 @@ export function randomVoidCircleState(game: GameState): CircleState {
     y: Math.random() * game.world.height,
     radius,
     mass: radius * radius,
-    draw: {
-      category: DrawCategory.enum.image,
-      image: "/images/void/void.png",
-    },
+    draw: [
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: "#800080", // Purple for void
+      },
+      {
+        category: DrawCategory.enum.image,
+        mode: DrawMode.enum.graphical,
+        image: "/images/void/void.png",
+      },
+    ],
   });
 }
 
@@ -211,10 +243,18 @@ export function randomHunterCircleState(game: GameState, playerId: string): Circ
     y: Math.random() * (game.world.height / 2),
     radius,
     mass: radius * radius,
-    draw: {
-      category: DrawCategory.enum.circle,
-      color: `#800080`, // Purple for hunters
-    },
+    draw: [
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: `#800080`, // Purple for hunters
+      },
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.graphical,
+        color: `#800080`, // Purple for hunters
+      },
+    ],
   });
 }
 
@@ -267,10 +307,18 @@ export function randomGhostCircleState(game: GameState, playerId: string): Circl
     y: Math.random() * (game.world.height / 2),
     radius,
     mass: radius * radius,
-    draw: {
-      category: DrawCategory.enum.circle,
-      color: `#C0C0C0`, // Silver for ghosts
-    },
+    draw: [
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: `#C0C0C0`, // Silver for ghosts
+      },
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.graphical,
+        color: `#C0C0C0`, // Silver for ghosts
+      },
+    ],
   });
 }
 
@@ -317,10 +365,18 @@ export function randomGravityCircles(game: GameState): CircleState {
     y: Math.random() * (game.world.height / 2),
     radius,
     mass: radius * radius,
-    draw: {
-      category: DrawCategory.enum.circle,
-      color: `hsl(200, 70%, 50%)`,
-    },
+    draw: [
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: `hsl(200, 70%, 50%)`,
+      },
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.graphical,
+        color: `hsl(200, 70%, 50%)`,
+      },
+    ],
   });
 }
 
@@ -386,10 +442,18 @@ export function heroCircle(
     y: (0.5 + Math.random() * 0.5) * game.world.height,
     radius,
     mass: radius * radius,
-    draw: {
-      category: DrawCategory.enum.image,
-      image: "/images/hero/hero.png",
-    },
+    draw: [
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: "#00FF00", // Green for hero
+      },
+      {
+        category: DrawCategory.enum.image,
+        mode: DrawMode.enum.graphical,
+        image: "/images/hero/hero.png",
+      },
+    ],
   });
 }
 
@@ -411,10 +475,18 @@ export function foodCircle(game: GameState): CircleState {
     mass: radius * radius,
     x: Math.random() * game.world.width,
     y: Math.random() * game.world.height,
-    draw: {
-      category: DrawCategory.enum.circle,
-      color: "#FFA500", // Orange for food
-    },
+    draw: [
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: "#FFA500", // Orange for food
+      },
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.graphical,
+        color: "#FFA500", // Orange for food
+      },
+    ],
   });
 }
 
@@ -436,10 +508,18 @@ export function shieldCircle(game: GameState): CircleState {
     mass: radius * radius,
     x: Math.random() * game.world.width,
     y: Math.random() * game.world.height,
-    draw: {
-      category: DrawCategory.enum.circle,
-      color: "#0000FF", // Blue for shield
-    },
+    draw: [
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: "#0000FF", // Blue for shield
+      },
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.graphical,
+        color: "#0000FF", // Blue for shield
+      },
+    ],
   });
 }
 
@@ -463,10 +543,18 @@ export function coin(game: GameState): CircleState {
     labels: [GameObjectLabel.enum.Collectable],
     x: Math.random() * game.world.width,
     y: Math.random() * game.world.height,
-    draw: {
-      category: DrawCategory.enum.image,
-      image: "/images/coin/coin.png",
-    },
+    draw: [
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: "#FFFF00", // Yellow for coin
+      },
+      {
+        category: DrawCategory.enum.image,
+        mode: DrawMode.enum.graphical,
+        image: "/images/coin/coin.png",
+      },
+    ],
   });
 }
 
@@ -498,9 +586,17 @@ export function iceCircle(game: GameState): CircleState {
     y: Math.random() * game.world.height,
     radius,
     mass: Number.MAX_SAFE_INTEGER, // Infinite mass - immovable
-    draw: {
-      category: DrawCategory.enum.circle,
-      color: `#ADD8E6`, // Light blue for ice
-    },
+    draw: [
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.simple,
+        color: `#ADD8E6`, // Light blue for ice
+      },
+      {
+        category: DrawCategory.enum.circle,
+        mode: DrawMode.enum.graphical,
+        color: `#ADD8E6`, // Light blue for ice
+      },
+    ],
   });
 }

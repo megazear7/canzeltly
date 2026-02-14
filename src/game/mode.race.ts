@@ -1,6 +1,6 @@
 import { GameState, GameStatus } from "./game.js";
 import { GameMode } from "./type.game.js";
-import { DrawCategory, RectangleState, GameObjectCategory } from "./type.object.js";
+import { DrawCategory, DrawMode, RectangleState, GameObjectCategory } from "./type.object.js";
 import { OccurrenceCategory } from "./game.affect.js";
 import {
   heroCircle,
@@ -33,6 +33,7 @@ export function createRaceGame({
   spawnFoodChance = 0,
   spawnShieldChance = 0,
   spawnIceChance = 0,
+  drawMode = "graphical",
 }: {
   width?: number;
   height?: number;
@@ -52,6 +53,7 @@ export function createRaceGame({
   spawnFoodChance?: number;
   spawnShieldChance?: number;
   spawnIceChance?: number;
+  drawMode?: "simple" | "graphical";
 } = {}): GameState {
   const circleId = crypto.randomUUID();
 
@@ -66,10 +68,18 @@ export function createRaceGame({
       mass: width * height,
       x: 0,
       y: 0,
-      draw: {
-        category: DrawCategory.enum.square,
-        color: "#111111",
-      },
+      draw: [
+        {
+          category: DrawCategory.enum.square,
+          mode: DrawMode.enum.simple,
+          color: "#111111",
+        },
+        {
+          category: DrawCategory.enum.square,
+          mode: DrawMode.enum.graphical,
+          color: "#111111",
+        },
+      ],
     }),
   ];
 
@@ -109,6 +119,7 @@ export function createRaceGame({
     status: GameStatus.enum.NotStarted,
     duration: 0,
     mode: GameMode.enum.Race,
+    drawMode,
     collected: 0,
     totalCollectibles: numGreenCircles,
     timeLimit: timeLimit,
