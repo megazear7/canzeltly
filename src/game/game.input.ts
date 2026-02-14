@@ -113,8 +113,8 @@ export class GameInput {
   }
 
   applyZoomOutConstraints(): void {
-    // Calculate the maximum viewport size to contain the entire world with a 10% margin
-    const margin = 1.5;
+    // Calculate the maximum viewport size to contain the entire world with a margin for the HUD
+    const margin = 1.3;
     const world = this.game.state.world;
 
     this.game.state.viewports.forEach((viewport) => {

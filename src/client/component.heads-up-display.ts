@@ -37,15 +37,17 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
       .hud {
         position: fixed;
         z-index: 100;
+        box-sizing: border-box;
+        color: black;
+        font-weight: bold;
         bottom: var(--size-10);
         left: 50%;
         transform: translateX(-50%);
         width: var(--size-600);
-        height: var(--size-83);
+        aspect-ratio: 1800 / 250;
         display: flex;
         align-items: center;
         padding: 0 var(--size-medium);
-        background-color: var(--color-primary-surface);
         border-radius: var(--border-radius-medium);
         box-shadow: var(--shadow-normal);
         background-image: url("/images/plank-1800x250.png");
@@ -56,32 +58,18 @@ export class CanzeltlyHeadsUpDisplay extends LitElement {
         justify-content: space-around;
       }
 
-      .fps {
-        font-size: var(--font-large);
-        font-weight: bold;
-        color: var(--color-primary-text);
+      .hud :last-child {
+        margin-right: var(--size-medium);
       }
 
       .fps.low {
         color: var(--color-error);
       }
 
-      .collected {
-        font-size: var(--font-large);
-        font-weight: bold;
-        color: var(--color-primary-text-bold);
-      }
-
-      .health {
-        font-size: var(--font-large);
-        font-weight: bold;
-        color: var(--color-primary-text-bold);
-      }
-
       .menu-options {
         display: flex;
         flex-direction: column;
-        gap: var(--size-medium);
+        gap: var(--size-small);
       }
 
       h2 {

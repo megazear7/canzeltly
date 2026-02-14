@@ -122,7 +122,7 @@ export function randomBlockadeCircleState(game: GameState): CircleState {
 }
 
 export function randomVoidCircleState(game: GameState): CircleState {
-  const radius = 20 + Math.random() * 20;
+  const radius = 30 + Math.random() * 30;
   return CircleState.parse({
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
@@ -149,8 +149,8 @@ export function randomVoidCircleState(game: GameState): CircleState {
     radius,
     mass: radius * radius,
     draw: {
-      category: DrawCategory.enum.circle,
-      color: `#000000`,
+      category: DrawCategory.enum.image,
+      image: "/images/void/void.png",
     },
   });
 }
@@ -387,12 +387,8 @@ export function heroCircle(
     radius,
     mass: radius * radius,
     draw: {
-      category: DrawCategory.enum.ship,
-      noAccelerationImage: "/images/hero/hero.png",
-      acceleratingUpImage: "/images/hero/hero-thrust-up.png",
-      acceleratingDownImage: "/images/hero/hero-thrust-down.png",
-      acceleratingLeftImage: "/images/hero/hero-thrust-left.png",
-      acceleratingRightImage: "/images/hero/hero-thrust-right.png",
+      category: DrawCategory.enum.image,
+      image: "/images/hero/hero.png",
     },
   });
 }
@@ -448,7 +444,7 @@ export function shieldCircle(game: GameState): CircleState {
 }
 
 export function coin(game: GameState): CircleState {
-  const radius = 10;
+  const radius = 20;
   return CircleState.parse({
     category: GameObjectCategory.enum.Circle,
     id: crypto.randomUUID(),
