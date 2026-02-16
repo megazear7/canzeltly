@@ -1,8 +1,7 @@
 import { GameState, GameStatus } from "./game.js";
 import { GameObjectCategory, DrawCategory, DrawMode, RectangleState, CircleState } from "./type.object.js";
 import { GameMode } from "./type.game.js";
-import { GameObjectCategory, DrawCategory, DrawMode, RectangleState, CircleState } from "./type.object.js";
-import { OccurrenceCategory } from "./game.affect.js";
+import { OccurrenceCategory, AffectCategory } from "./game.affect.js";
 import {
   gremlakShip,
   heroCircle,
