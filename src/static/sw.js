@@ -1,5 +1,27 @@
-var appCacheName = "app-cache-v3";
-var preCacheFiles = ["/", "/bundle.js", "/app.css", "/manifest.json", "/favicon.ico"];
+var appCacheName = "app-cache-v4";
+var preCacheFiles = [
+  "/",
+  "/bundle.js",
+  "/app.css",
+  "/manifest.json",
+  "/favicon.ico",
+  // Object images
+  "/images/hero/hero.png",
+  "/images/void/void.png",
+  "/images/coin/coin.png",
+  "/images/gremlak/ship.png",
+  "/images/plank-900-250.png",
+  "/images/plank-1800x250.png",
+  // Logo images
+  "/logo/logo-16x16.png",
+  "/logo/logo-24x24.png",
+  "/logo/logo-32x32.png",
+  "/logo/logo-64x64.png",
+  "/logo/logo-128x128.png",
+  "/logo/logo-256x256.png",
+  "/logo/logo-512x512.png",
+  "/logo/logo-original.png",
+];
 
 console.debug("[ServiceWorker] Loaded");
 
