@@ -51,13 +51,20 @@ export class CanzeltlyCustomGameModesList extends LitElement {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: var(--size-medium);
-        border: 1px solid var(--color-border);
+        padding: var(--size-medium) var(--size-large);
+        border: var(--border-subtle);
         margin-bottom: var(--size-small);
-        border-radius: var(--border-radius);
+        border-radius: var(--border-radius-medium);
+        background: var(--color-secondary-surface);
+        box-shadow: var(--shadow-normal);
+        transition: var(--transition-all);
+      }
+      .mode-item:hover {
+        transform: var(--transform-hover);
+        box-shadow: var(--shadow-hover);
       }
       .mode-name {
-        font-weight: bold;
+        font-weight: var(--font-weight-semibold);
       }
       .actions {
         display: flex;
@@ -66,13 +73,19 @@ export class CanzeltlyCustomGameModesList extends LitElement {
       .kebab-menu {
         background: none;
         border: none;
+        box-shadow: none;
         font-size: var(--font-large);
         cursor: pointer;
         padding: var(--size-small);
         border-radius: var(--border-radius-small);
+        color: var(--color-primary-text-muted);
+        transition: var(--transition-all);
       }
       .kebab-menu:hover {
-        background-color: var(--color-hover);
+        background-color: var(--color-tertiary-surface);
+        box-shadow: none;
+        color: var(--color-primary-text);
+        transform: none;
       }
     `,
   ];

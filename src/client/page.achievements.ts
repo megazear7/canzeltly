@@ -19,10 +19,19 @@ export class CanzeltlyAchievementsPage extends CanzeltlyAppProvider {
       }
       h1 {
         text-align: center;
-        margin-bottom: var(--size-large);
+        margin-bottom: var(--size-xl);
+        background: linear-gradient(135deg, var(--color-1-light), var(--color-1));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
       .progress-section {
-        margin-bottom: var(--size-large);
+        margin-bottom: var(--size-xl);
+        background: var(--color-secondary-surface);
+        padding: var(--size-large);
+        border-radius: var(--border-radius-medium);
+        border: var(--border-subtle);
+        box-shadow: var(--shadow-normal);
       }
     `,
   ];

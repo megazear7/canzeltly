@@ -22,15 +22,17 @@ export class CanzeltlyBadgeProgress extends LitElement {
       }
       .progress-bar {
         width: 100%;
-        height: 8px;
+        height: 10px;
         background-color: var(--color-secondary-surface);
-        border-radius: var(--border-radius-small);
+        border-radius: var(--border-radius-pill);
         overflow: hidden;
+        border: var(--border-subtle);
       }
       .progress-fill {
         height: 100%;
-        background-color: var(--color-success);
-        transition: width 0.3s ease;
+        background: linear-gradient(90deg, var(--color-success), var(--color-2-light));
+        transition: width var(--time-slow) var(--ease-out);
+        border-radius: var(--border-radius-pill);
       }
     `,
   ];

@@ -178,15 +178,80 @@ export class CanzeltlyCreateGameComponent extends LitElement {
     globalStyles,
     css`
       main {
-        max-width: 600px;
+        max-width: var(--size-600);
         margin: 0 auto;
         padding: var(--size-large);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: var(--size-xl);
+      }
+
+      .mode-selector {
+        display: flex;
+        gap: 0;
+        margin: var(--size-medium) 0;
+        border-radius: var(--border-radius-small);
+        overflow: hidden;
+        border: var(--border-subtle);
+      }
+
+      .mode-selector label {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--size-small) var(--size-medium);
+        cursor: pointer;
+        background: var(--color-secondary-surface);
+        color: var(--color-primary-text-muted);
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-small);
+        transition: var(--transition-all);
+        margin: 0;
+        border-right: var(--border-subtle);
+      }
+
+      .mode-selector label:last-child {
+        border-right: none;
+      }
+
+      .mode-selector label:hover {
+        background: var(--color-secondary-surface-hover);
+        color: var(--color-primary-text);
+      }
+
+      .mode-selector input[type="radio"] {
+        display: none;
+      }
+
+      .mode-selector input[type="radio"]:checked + span {
+        color: var(--color-primary-text);
+      }
+
+      .mode-selector label:has(input:checked) {
+        background: var(--color-1);
+        color: var(--color-primary-text);
       }
 
       .button-row {
         display: flex;
         gap: var(--size-medium);
-        margin-top: var(--size-medium);
+        margin-top: var(--size-xl);
+        justify-content: center;
+      }
+
+      .section-label {
+        font-size: var(--font-small);
+        color: var(--color-primary-text-muted);
+        text-transform: uppercase;
+        letter-spacing: var(--letter-spacing-wide);
+        font-weight: var(--font-weight-semibold);
+        margin-top: var(--size-large);
+        margin-bottom: var(--size-small);
+        padding-bottom: var(--size-small);
+        border-bottom: var(--border-subtle);
       }
     `,
   ];
@@ -202,38 +267,43 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             .value="${this.gameName}"
             @input-change="${(e: CustomEvent) =>
               (this.gameName = (e.detail as { value: string }).value)}"></canzeltly-input>
-          <div>
-            <label>Mode:</label>
-            <input
-              type="radio"
-              name="mode"
-              value="${GameMode.enum.Survival}"
-              .checked="${this.mode === GameMode.enum.Survival}"
-              @change="${(e: Event) => {
-                this.mode = (e.target as HTMLInputElement).value as GameMode;
-                this.setDefaultsForMode();
-              }}"></canzeltly-input>
-            Survival
-            <input
-              type="radio"
-              name="mode"
-              value="${GameMode.enum.Adventure}"
-              .checked="${this.mode === GameMode.enum.Adventure}"
-              @change="${(e: Event) => {
-                this.mode = (e.target as HTMLInputElement).value as GameMode;
-                this.setDefaultsForMode();
-              }}"></canzeltly-input>
-            Adventure
-            <input
-              type="radio"
-              name="mode"
-              value="${GameMode.enum.Race}"
-              .checked="${this.mode === GameMode.enum.Race}"
-              @change="${(e: Event) => {
-                this.mode = (e.target as HTMLInputElement).value as GameMode;
-                this.setDefaultsForMode();
-              }}"></canzeltly-input>
-            Race
+          <div class="mode-selector">
+            <label>
+              <input
+                type="radio"
+                name="mode"
+                value="${GameMode.enum.Survival}"
+                .checked="${this.mode === GameMode.enum.Survival}"
+                @change="${(e: Event) => {
+                  this.mode = (e.target as HTMLInputElement).value as GameMode;
+                  this.setDefaultsForMode();
+                }}" />
+              <span>Survival</span>
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="mode"
+                value="${GameMode.enum.Adventure}"
+                .checked="${this.mode === GameMode.enum.Adventure}"
+                @change="${(e: Event) => {
+                  this.mode = (e.target as HTMLInputElement).value as GameMode;
+                  this.setDefaultsForMode();
+                }}" />
+              <span>Adventure</span>
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="mode"
+                value="${GameMode.enum.Race}"
+                .checked="${this.mode === GameMode.enum.Race}"
+                @change="${(e: Event) => {
+                  this.mode = (e.target as HTMLInputElement).value as GameMode;
+                  this.setDefaultsForMode();
+                }}" />
+              <span>Race</span>
+            </label>
           </div>
           <canzeltly-input
             type="slider"
@@ -259,20 +329,18 @@ export class CanzeltlyCreateGameComponent extends LitElement {
             .max="${100}"
             @input-change="${(e: CustomEvent) =>
               (this.health = Number((e.detail as { value: number }).value))}"></canzeltly-input>
-          ${
-            this.mode === GameMode.enum.Race
-              ? html`
-                  <canzeltly-input
-                    type="slider"
-                    label="Time Limit (${this.timeLimit} seconds)"
-                    .value="${this.timeLimit}"
-                    .min="${1}"
-                    .max="${300}"
-                    @input-change="${(e: CustomEvent) =>
-                      (this.timeLimit = Number((e.detail as { value: number }).value))}"></canzeltly-input>
-                `
-              : ""
-          }
+          ${this.mode === GameMode.enum.Race
+            ? html`
+                <canzeltly-input
+                  type="slider"
+                  label="Time Limit (${this.timeLimit} seconds)"
+                  .value="${this.timeLimit}"
+                  .min="${1}"
+                  .max="${300}"
+                  @input-change="${(e: CustomEvent) =>
+                    (this.timeLimit = Number((e.detail as { value: number }).value))}"></canzeltly-input>
+              `
+            : ""}
           <canzeltly-input
             type="slider"
             label="Number of Green Circles (${this.numGreenCircles})"

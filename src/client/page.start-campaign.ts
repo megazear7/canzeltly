@@ -23,17 +23,32 @@ export class CanzeltlyStartCampaignPage extends CanzeltlyCampaignsProvider {
       .campaign-card {
         background: var(--color-secondary-surface);
         border-radius: var(--border-radius-large);
-        padding: var(--size-large);
+        padding: var(--size-xl);
         margin-bottom: var(--size-large);
         box-shadow: var(--shadow-normal);
+        border: var(--border-subtle);
+        transition: var(--transition-all);
+      }
+
+      .campaign-card:hover {
+        transform: var(--transform-hover);
+        box-shadow: var(--shadow-hover);
+        border-color: rgba(255, 255, 255, 0.1);
       }
 
       .campaign-card h2 {
         margin-top: 0;
+        color: var(--color-primary-text);
       }
 
       .campaign-card p {
         color: var(--color-secondary-text-muted);
+      }
+
+      .game-count {
+        font-size: var(--font-small);
+        color: var(--color-1);
+        font-weight: var(--font-weight-semibold);
       }
 
       .campaign-actions {
@@ -74,7 +89,7 @@ export class CanzeltlyStartCampaignPage extends CanzeltlyCampaignsProvider {
             <div class="campaign-card">
               <h2>${campaign.name}</h2>
               <p>${campaign.description}</p>
-              <p>${campaign.games.length} games</p>
+              <p class="game-count">${campaign.games.length} games</p>
               <div class="campaign-actions">
                 <button class="primary" @click=${() => this.startCampaign(campaign.slug)}>Begin Campaign</button>
               </div>

@@ -24,8 +24,8 @@ export class CanzeltlyGameOverModal extends LitElement {
       }
 
       .result {
-        font-size: var(--font-size-xl);
-        font-weight: bold;
+        font-size: var(--font-xl);
+        font-weight: var(--font-weight-bold);
         margin: var(--size-large) 0;
       }
 

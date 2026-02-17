@@ -24,9 +24,10 @@ export class CanzeltlyContinueCampaignPage extends CanzeltlyCampaignsProvider {
       .campaign-card {
         background: var(--color-secondary-surface);
         border-radius: var(--border-radius-large);
-        padding: var(--size-large);
+        padding: var(--size-xl);
         margin-bottom: var(--size-large);
         box-shadow: var(--shadow-normal);
+        border: var(--border-subtle);
         cursor: pointer;
         transition: var(--transition-all);
         position: relative;
@@ -34,6 +35,8 @@ export class CanzeltlyContinueCampaignPage extends CanzeltlyCampaignsProvider {
 
       .campaign-card:hover {
         box-shadow: var(--shadow-hover);
+        transform: var(--transform-hover);
+        border-color: rgba(255, 255, 255, 0.1);
       }
 
       .campaign-card h2 {
@@ -46,6 +49,7 @@ export class CanzeltlyContinueCampaignPage extends CanzeltlyCampaignsProvider {
         right: var(--size-medium);
         background: none;
         border: none;
+        box-shadow: none;
         color: var(--color-secondary-text-muted);
         cursor: pointer;
         padding: var(--size-small);
@@ -54,8 +58,10 @@ export class CanzeltlyContinueCampaignPage extends CanzeltlyCampaignsProvider {
       }
 
       .kebab-menu:hover {
-        background: var(--color-secondary-surface-hover);
+        background: var(--color-tertiary-surface);
+        box-shadow: none;
         color: var(--color-primary-text);
+        transform: none;
       }
 
       .progress {
@@ -65,8 +71,22 @@ export class CanzeltlyContinueCampaignPage extends CanzeltlyCampaignsProvider {
 
       .no-campaigns {
         text-align: center;
-        padding: var(--size-xl);
+        padding: var(--size-2x) var(--size-xl);
         color: var(--color-secondary-text-muted);
+        background: var(--color-secondary-surface);
+        border-radius: var(--border-radius-large);
+        border: var(--border-subtle);
+      }
+
+      .no-campaigns p {
+        margin-bottom: var(--size-large);
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: var(--size-medium);
+        justify-content: flex-end;
+        margin-top: var(--size-large);
       }
     `,
   ];
@@ -117,23 +137,9 @@ export class CanzeltlyContinueCampaignPage extends CanzeltlyCampaignsProvider {
         <div slot="body">
           <h3>Delete Campaign</h3>
           <p>Are you sure you want to delete this campaign instance? This action cannot be undone.</p>
-          <div
-            style="display: flex; gap: var(--size-medium); justify-content: flex-end; margin-top: var(--size-large);">
+          <div class="modal-actions">
             <button @click=${this.closeDeleteModal}>Cancel</button>
-            <button class="danger" @click=${this.confirmDelete}>
-              <div style="display: flex; flex-direction: column; align-items: center; gap: var(--size-small);">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                  fill="currentColor"
-                  aria-hidden="true">
-                  <path d="M3 6h18v2H3V6zm0 3h18v12c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V9zm5 2v8h2v-8H8zm4 0v8h2v-8h-2z" />
-                </svg>
-                Delete
-              </div>
-            </button>
+            <button class="danger" @click=${this.confirmDelete}>Delete</button>
           </div>
         </div>
       </canzeltly-modal>

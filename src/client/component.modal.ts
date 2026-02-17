@@ -33,7 +33,8 @@ export class CanzeltlyModal extends LitElement {
       .modal-content {
         background: var(--color-secondary-surface);
         border-radius: var(--border-radius-large);
-        box-shadow: var(--shadow-active);
+        box-shadow: var(--shadow-elevated);
+        border: var(--border-subtle);
         width: 40vw;
         max-height: 80vh;
         overflow-y: scroll;

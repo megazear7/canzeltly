@@ -12,7 +12,7 @@ export class CanzeltlySavedGamesPage extends CanzeltlyGamesProvider {
     globalStyles,
     css`
       main {
-        max-width: 800px;
+        max-width: var(--size-800);
         margin: 0 auto;
         padding: var(--size-large);
       }

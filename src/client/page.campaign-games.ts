@@ -33,21 +33,30 @@ export class CanzeltlyCampaignGamesPage extends CanzeltlyCampaignsProvider {
         border-radius: var(--border-radius-medium);
         padding: var(--size-medium) var(--size-large);
         box-shadow: var(--shadow-normal);
+        border: var(--border-subtle);
         display: flex;
         align-items: center;
         gap: var(--size-medium);
+        transition: var(--transition-all);
       }
 
       .game-item.completed {
-        opacity: 0.8;
+        opacity: 0.7;
       }
 
       .game-item.locked {
-        opacity: 0.4;
+        opacity: 0.35;
+        filter: grayscale(0.3);
       }
 
       .game-item.next {
-        border: var(--border-width-normal) solid var(--color-1);
+        border-color: var(--color-1);
+        box-shadow: var(--shadow-normal), var(--shadow-glow-1);
+      }
+
+      .game-item.next:hover {
+        transform: var(--transform-hover);
+        box-shadow: var(--shadow-hover), var(--shadow-glow-1);
       }
 
       .check-icon {
@@ -74,9 +83,10 @@ export class CanzeltlyCampaignGamesPage extends CanzeltlyCampaignsProvider {
       .hero-stats {
         background: var(--color-secondary-surface);
         border-radius: var(--border-radius-medium);
-        padding: var(--size-medium) var(--size-large);
+        padding: var(--size-large);
         margin-bottom: var(--size-large);
         box-shadow: var(--shadow-normal);
+        border: var(--border-subtle);
       }
 
       .stats-grid {
@@ -105,6 +115,10 @@ export class CanzeltlyCampaignGamesPage extends CanzeltlyCampaignsProvider {
         padding: var(--size-xl);
         color: var(--color-success);
         font-size: var(--font-large);
+        font-weight: var(--font-weight-bold);
+        background: var(--color-success-light);
+        border-radius: var(--border-radius-medium);
+        margin-bottom: var(--size-large);
       }
     `,
   ];

@@ -33,26 +33,29 @@ export class CanzeltlyGamePreview extends LitElement {
       .game-preview {
         display: flex;
         align-items: center;
-        padding: var(--size-medium);
+        padding: var(--size-medium) var(--size-large);
         box-shadow: var(--shadow-normal);
-        border: var(--border-normal);
+        border: var(--border-subtle);
         border-radius: var(--border-radius-medium);
-        margin-bottom: var(--size-large);
+        margin-bottom: var(--size-medium);
         background: var(--color-secondary-surface);
         transition: var(--transition-all);
       }
       .game-preview:hover {
         box-shadow: var(--shadow-hover);
+        transform: var(--transform-hover);
+        border-color: rgba(255, 255, 255, 0.1);
       }
       .game-preview.selected {
         border: var(--border-active);
+        box-shadow: var(--shadow-active), var(--shadow-glow-1);
       }
       .checkbox {
         margin-right: var(--size-medium);
       }
       .name {
         flex: 1;
-        font-weight: bold;
+        font-weight: var(--font-weight-semibold);
       }
       .actions {
         display: flex;

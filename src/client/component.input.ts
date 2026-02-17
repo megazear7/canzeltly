@@ -30,10 +30,11 @@ export class CanzeltlyInput extends LitElement {
         width: 100%;
         padding: var(--size-small) var(--size-medium);
         font-size: var(--font-medium);
-        border-radius: var(--border-radius-medium);
-        border: var(--border-normal);
+        border-radius: var(--border-radius-small);
+        border: var(--border-subtle);
         background-color: var(--color-secondary-surface);
         color: var(--color-secondary-text);
+        transition: var(--transition-all);
       }
       .on-secondary-surface input,
       .on-secondary-surface select,

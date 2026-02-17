@@ -41,18 +41,22 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
         border-radius: var(--border-radius-medium);
         padding: var(--size-large);
         box-shadow: var(--shadow-normal);
+        border: var(--border-subtle);
         cursor: pointer;
         transition: var(--transition-all);
-        border: var(--border-normal);
+        text-align: left;
       }
 
       .upgrade-option:hover {
         box-shadow: var(--shadow-hover);
+        transform: var(--transform-hover);
+        border-color: rgba(255, 255, 255, 0.1);
       }
 
       .upgrade-option.selected {
         border-color: var(--color-1);
-        box-shadow: var(--shadow-active);
+        box-shadow: var(--shadow-active), var(--shadow-glow-1);
+        background: var(--color-secondary-surface-hover);
       }
 
       .upgrade-name {
@@ -94,6 +98,12 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
 
       .selections-info {
         color: var(--color-secondary-text-muted);
+        margin-bottom: var(--size-medium);
+      }
+
+      .helper-text {
+        color: var(--color-secondary-text-muted);
+        font-size: var(--font-small);
         margin-bottom: var(--size-medium);
       }
     `,
@@ -147,15 +157,13 @@ export class CanzeltlyCampaignUpgradePage extends CanzeltlyAppProvider {
         </p>
         ${this.selectedUpgrades.length === numSelections
           ? html`
-              <p
-                style="color: var(--color-secondary-text-muted); font-size: var(--font-small); margin-bottom: var(--size-medium);">
+              <p class="helper-text">
                 You have selected the maximum number of upgrades. To change your selection, first deselect one of the
                 upgrades you have already selected.
               </p>
             `
           : html`
-              <p
-                style="color: var(--color-secondary-text-muted); font-size: var(--font-small); margin-bottom: var(--size-medium);">
+              <p class="helper-text">
                 Select up to ${numSelections} upgrade${numSelections > 1 ? "s" : ""} from the below list. After each
                 mission you may have different options available. Choose wisely.
               </p>

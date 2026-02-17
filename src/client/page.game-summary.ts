@@ -23,6 +23,16 @@ export class CanzeltlyGameSummaryPage extends CanzeltlyAppProvider {
         text-align: center;
       }
 
+      h1 {
+        margin-bottom: var(--size-small);
+      }
+
+      h2 {
+        color: var(--color-primary-text-muted);
+        font-weight: var(--font-weight-medium);
+        margin-bottom: var(--size-large);
+      }
+
       .stats {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -32,19 +42,38 @@ export class CanzeltlyGameSummaryPage extends CanzeltlyAppProvider {
 
       .stat {
         background: var(--color-secondary-surface);
-        padding: var(--size-medium);
+        padding: var(--size-large) var(--size-medium);
         border-radius: var(--border-radius-medium);
+        border: var(--border-subtle);
+        box-shadow: var(--shadow-normal);
+        transition: var(--transition-all);
+      }
+
+      .stat:hover {
+        transform: var(--transform-hover);
+        box-shadow: var(--shadow-hover);
       }
 
       .stat-label {
-        font-size: var(--font-size-small);
-        color: var(--color-secondary-text);
+        font-size: var(--font-small);
+        color: var(--color-secondary-text-muted);
         margin-bottom: var(--size-small);
+        text-transform: uppercase;
+        letter-spacing: var(--letter-spacing-wide);
+        font-weight: var(--font-weight-medium);
       }
 
       .stat-value {
-        font-size: var(--font-size-large);
-        font-weight: bold;
+        font-size: var(--font-large);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-1);
+      }
+
+      .actions {
+        display: flex;
+        gap: var(--size-medium);
+        justify-content: center;
+        margin-top: var(--size-large);
       }
     `,
   ];
@@ -95,14 +124,18 @@ export class CanzeltlyGameSummaryPage extends CanzeltlyAppProvider {
           </div>
         </div>
 
-        <a href="/" class="standalone">Back to Home</a>
-        ${this.gameState.status !== GameStatus.enum.GameOver
-          ? html`
-              <a href="/play/game/${this.params.gameId}/player/${this.params.playerId}" class="standalone secondary">
-                Continue Game
-              </a>
-            `
-          : ""}
+        <div class="actions">
+          <a href="/">
+            <button>Back to Home</button>
+          </a>
+          ${this.gameState.status !== GameStatus.enum.GameOver
+            ? html`
+                <a href="/play/game/${this.params.gameId}/player/${this.params.playerId}">
+                  <button class="primary">Continue Game</button>
+                </a>
+              `
+            : ""}
+        </div>
       </main>
     `;
   }

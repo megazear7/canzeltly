@@ -14,27 +14,34 @@ export class CanzeltlyBadge extends LitElement {
       .badge {
         display: flex;
         align-items: center;
-        padding: var(--size-medium);
+        padding: var(--size-medium) var(--size-large);
         border-radius: var(--border-radius-medium);
-        border: var(--border-normal);
+        border: var(--border-subtle);
         background-color: var(--color-secondary-surface);
         margin-bottom: var(--size-small);
+        transition: var(--transition-all);
+        box-shadow: var(--shadow-normal);
+      }
+      .badge:hover {
+        transform: var(--transform-hover);
+        box-shadow: var(--shadow-hover);
       }
       .badge.unlocked {
         background-color: var(--color-success-light);
         border-color: var(--color-success);
       }
       .badge-icon {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
-        background-color: var(--color-primary);
+        background-color: var(--color-tertiary-surface);
         display: flex;
         align-items: center;
         justify-content: center;
         margin-right: var(--size-medium);
         font-size: var(--font-large);
         color: var(--color-primary-text);
+        flex-shrink: 0;
       }
       .badge.unlocked .badge-icon {
         background-color: var(--color-success);
@@ -43,8 +50,8 @@ export class CanzeltlyBadge extends LitElement {
         flex: 1;
       }
       .badge-name {
-        font-weight: bold;
-        margin-bottom: var(--size-small);
+        font-weight: var(--font-weight-semibold);
+        margin-bottom: var(--size-tiny);
       }
       .badge-description {
         font-size: var(--font-small);
